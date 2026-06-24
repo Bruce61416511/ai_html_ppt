@@ -1,0 +1,2641 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN" data-theme="corporate-clean">
+
+<head>
+
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>电商AI赋能 — 从数据驱动到智能决策</title>
+
+<style>
+/* html-ppt :: shared webfonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@200;300;400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
+
+/* html-ppt :: base.css — reset + shared tokens + layout primitives */
+/* Default tokens. Themes in assets/themes/*.css override the :root block. */
+:root {
+  --bg: #ffffff;
+  --bg-soft: #f7f7f8;
+  --surface: #ffffff;
+  --surface-2: #f2f2f4;
+  --border: rgba(0,0,0,.08);
+  --border-strong: rgba(0,0,0,.16);
+  --text-1: #111216;
+  --text-2: #55596a;
+  --text-3: #8a8f9e;
+  --accent: #3b6cff;
+  --accent-2: #7a5cff;
+  --accent-3: #ff5c8a;
+  --good: #1aaf6c;
+  --warn: #f5a524;
+  --bad:  #e0445a;
+  --grad: linear-gradient(135deg,#3b6cff,#7a5cff 55%,#ff5c8a);
+  --grad-soft: linear-gradient(135deg,#eef2ff,#f5ecff 55%,#ffeef5);
+  --radius: 18px;
+  --radius-sm: 12px;
+  --radius-lg: 26px;
+  --shadow: 0 10px 30px rgba(18,24,40,.08), 0 2px 6px rgba(18,24,40,.04);
+  --shadow-lg: 0 24px 60px rgba(18,24,40,.14), 0 6px 16px rgba(18,24,40,.06);
+  --font-sans: 'Inter','Noto Sans SC',-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
+  --font-serif: 'Playfair Display','Noto Serif SC',Georgia,serif;
+  --font-mono: 'JetBrains Mono','IBM Plex Mono',SFMono-Regular,Menlo,monospace;
+  --font-display: var(--font-sans);
+  --letter-tight: -.03em;
+  --letter-normal: -.01em;
+  --ease: cubic-bezier(.4,0,.2,1);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);
+  font-family:var(--font-sans);font-weight:400;line-height:1.6;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  letter-spacing:var(--letter-normal)}
+img,svg,video{max-width:100%;display:block}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+code,kbd,pre,samp{font-family:var(--font-mono)}
+
+/* ================= SLIDE SYSTEM ================= */
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--bg)}
+.slide{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:72px 96px;
+  box-sizing:border-box;
+  opacity:0;pointer-events:none;
+  transition:opacity .5s var(--ease), transform .5s var(--ease);
+  transform:translateX(30px);
+  overflow:hidden;
+}
+.slide.is-active{opacity:1;pointer-events:auto;transform:translateX(0);z-index:2}
+.slide.is-prev{transform:translateX(-30px)}
+
+/* single-page standalone (used when a layout file is opened directly) */
+body.single .slide{position:relative;width:100vw;height:100vh;opacity:1;transform:none;pointer-events:auto}
+
+/* ================= TYPOGRAPHY ================= */
+.eyebrow{font-size:13px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.kicker{font-size:14px;font-weight:600;color:var(--accent);letter-spacing:.08em;text-transform:uppercase}
+h1.title,.h1{font-family:var(--font-display);font-size:72px;line-height:1.05;font-weight:800;letter-spacing:var(--letter-tight);margin:0 0 18px;color:var(--text-1)}
+h2.title,.h2{font-family:var(--font-display);font-size:42px;line-height:1.1;font-weight:700;letter-spacing:var(--letter-tight);margin:0 0 14px}
+h3,.h3{font-size:28px;line-height:1.2;font-weight:600;letter-spacing:var(--letter-normal);margin:0 0 10px}
+h4,.h4{font-size:22px;line-height:1.3;font-weight:600;margin:0 0 8px}
+.lede{font-size:22px;line-height:1.55;color:var(--text-2);font-weight:300;max-width:62ch}
+.dim{color:var(--text-2)}
+.dim2{color:var(--text-3)}
+.mono{font-family:var(--font-mono)}
+.serif{font-family:var(--font-serif)}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+
+/* ================= LAYOUT PRIMITIVES ================= */
+.stack>*+*{margin-top:14px}
+.row{display:flex;gap:24px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grid{display:grid;gap:24px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+.center{display:flex;align-items:center;justify-content:center;text-align:center}
+.fill{flex:1}
+.sp-t{padding-top:24px}.sp-b{padding-bottom:24px}
+.mt-s{margin-top:8px}.mt-m{margin-top:18px}.mt-l{margin-top:32px}
+.mb-s{margin-bottom:8px}.mb-m{margin-bottom:18px}.mb-l{margin-bottom:32px}
+
+/* ================= CARDS ================= */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:26px 28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.card-soft{background:var(--surface-2);border:1px solid var(--border)}
+.card-outline{background:transparent;border:1.5px solid var(--border-strong);box-shadow:none}
+.card-accent{background:var(--surface);border-top:3px solid var(--accent)}
+.card-hover{transition:transform .3s var(--ease),box-shadow .3s var(--ease)}
+.card-hover:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+
+.pill{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:500;
+  background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.pill-accent{background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent);border-color:color-mix(in srgb,var(--accent) 28%,transparent)}
+
+/* ================= BARS / DIVIDERS ================= */
+.divider{height:1px;background:var(--border);width:100%}
+.divider-accent{height:3px;width:72px;background:var(--accent);border-radius:2px}
+
+/* ================= CHROME (header/footer/progress) ================= */
+.deck-header{position:absolute;top:24px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;z-index:10;pointer-events:none}
+.deck-footer{position:absolute;bottom:24px;left:40px;right:40px;display:flex;align-items:center;justify-content:space-between;
+  font-size:12px;color:var(--text-3);z-index:10;pointer-events:none}
+.slide-number::before{content:attr(data-current)}
+.slide-number::after{content:" / " attr(data-total)}
+.progress-bar{position:fixed;left:0;right:0;bottom:0;height:3px;background:transparent;z-index:20}
+.progress-bar > span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s var(--ease)}
+
+/* ================= PRESENTER / OVERVIEW ================= */
+.notes{display:none!important}
+.notes-overlay{position:fixed;inset:auto 0 0 0;max-height:42vh;background:rgba(20,22,30,.95);color:#e8ebf4;
+  padding:20px 32px;font-size:16px;line-height:1.6;border-top:1px solid rgba(255,255,255,.1);transform:translateY(100%);
+  transition:transform .3s var(--ease);z-index:40;overflow:auto;font-family:var(--font-sans)}
+.notes-overlay.open{transform:translateY(0)}
+.overview{position:fixed;inset:0;background:rgba(10,12,18,.92);backdrop-filter:blur(12px);z-index:50;
+  display:none;padding:40px;overflow:auto}
+.overview.open{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;align-content:start}
+.overview .thumb{background:var(--surface);border:1px solid var(--border);border-radius:12px;
+  aspect-ratio:16/9;overflow:hidden;cursor:pointer;position:relative;color:var(--text-1);padding:16px;
+  font-size:11px;transition:transform .2s var(--ease)}
+.overview .thumb:hover{transform:scale(1.04)}
+.overview .thumb .n{position:absolute;top:8px;left:10px;font-weight:700;font-size:14px;color:var(--text-3)}
+.overview .thumb .t{position:absolute;bottom:10px;left:14px;right:14px;font-weight:600;color:var(--text-1)}
+
+/* ================= PRESENTER VIEW ================= */
+/* Presenter view opens in a separate popup window (S key).
+ * All presenter styles are self-contained in the popup HTML generated by runtime.js.
+ * The audience window (this file) is NOT affected — it stays as normal deck view.
+ * Only the .notes class below is needed to hide speaker notes from audience. */
+
+/* ================= UTILITY ================= */
+.hidden{display:none!important}
+.nowrap{white-space:nowrap}
+.tr{text-align:right}.tc{text-align:center}.tl{text-align:left}
+.uppercase{text-transform:uppercase;letter-spacing:.12em}
+
+/* ================= PRINT ================= */
+@media print{
+  .slide{position:relative;opacity:1!important;transform:none!important;page-break-after:always;height:100vh}
+  .deck-header,.deck-footer,.progress-bar,.notes-overlay,.overview{display:none!important}
+}
+
+
+/* theme: corporate-clean — 企业商务 */
+:root{
+  --bg:#ffffff;--bg-soft:#f5f7fa;--surface:#ffffff;--surface-2:#f0f3f7;
+  --border:rgba(10,37,64,.12);--border-strong:rgba(10,37,64,.28);
+  --text-1:#0a2540;--text-2:#425466;--text-3:#8898aa;
+  --accent:#0a2540;--accent-2:#1d4ed8;--accent-3:#64748b;
+  --good:#0e9f6e;--warn:#d97706;--bad:#dc2626;
+  --grad:linear-gradient(135deg,#0a2540,#1d4ed8);
+  --grad-soft:linear-gradient(135deg,#f0f4fb,#e4ecf7);
+  --radius:6px;--radius-sm:4px;--radius-lg:10px;
+  --shadow:0 1px 3px rgba(10,37,64,.08),0 4px 12px rgba(10,37,64,.05);
+  --shadow-lg:0 4px 12px rgba(10,37,64,.1),0 16px 40px rgba(10,37,64,.08);
+  --font-sans:'Inter','Noto Sans SC',sans-serif;
+  --font-display:'Inter','Noto Sans SC',sans-serif;
+}
+.card{border:1px solid var(--border)}
+.divider-accent{background:var(--accent);height:3px;width:56px}
+.kicker{color:var(--accent-2)}
+h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
+
+
+/* html-ppt :: animations.css
+ * Apply by adding class="anim-<name>" or data-anim="<name>".
+ * Durations are deliberately snappy; tweak --anim-dur per element.
+ */
+:root{--anim-dur:.7s;--anim-ease:cubic-bezier(.4,0,.2,1)}
+
+/* ---------- FADE DIRECTIONALS ---------- */
+@keyframes kf-fade-up{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
+@keyframes kf-fade-down{from{opacity:0;transform:translateY(-32px)}to{opacity:1;transform:none}}
+@keyframes kf-fade-left{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+@keyframes kf-fade-right{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+.anim-fade-up{animation:kf-fade-up var(--anim-dur) var(--anim-ease) both}
+.anim-fade-down{animation:kf-fade-down var(--anim-dur) var(--anim-ease) both}
+.anim-fade-left{animation:kf-fade-left var(--anim-dur) var(--anim-ease) both}
+.anim-fade-right{animation:kf-fade-right var(--anim-dur) var(--anim-ease) both}
+
+/* ---------- RISE / DROP / ZOOM / BLUR / GLITCH ---------- */
+@keyframes kf-rise{from{opacity:0;transform:translateY(60px) scale(.97);filter:blur(6px)}to{opacity:1;transform:none;filter:none}}
+@keyframes kf-drop{from{opacity:0;transform:translateY(-60px) scale(.97)}to{opacity:1;transform:none}}
+@keyframes kf-zoom{0%{opacity:0;transform:scale(.6)}60%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+@keyframes kf-blur{from{opacity:0;filter:blur(18px)}to{opacity:1;filter:none}}
+@keyframes kf-glitch{0%{opacity:0;transform:translateX(0);clip-path:inset(0 0 0 0)}
+  20%{opacity:1;transform:translateX(-6px);clip-path:inset(20% 0 30% 0)}
+  40%{transform:translateX(4px);clip-path:inset(50% 0 10% 0)}
+  60%{transform:translateX(-3px);clip-path:inset(10% 0 60% 0)}
+  80%{transform:translateX(2px);clip-path:inset(0 0 0 0)}
+  100%{opacity:1;transform:none}}
+.anim-rise-in{animation:kf-rise .9s var(--anim-ease) both}
+.anim-drop-in{animation:kf-drop .8s var(--anim-ease) both}
+.anim-zoom-pop{animation:kf-zoom .7s cubic-bezier(.22,1.3,.36,1) both}
+.anim-blur-in{animation:kf-blur .8s var(--anim-ease) both}
+.anim-glitch-in{animation:kf-glitch .8s steps(5,end) both}
+
+/* ---------- TYPEWRITER ---------- */
+.anim-typewriter{display:inline-block;overflow:hidden;white-space:nowrap;border-right:2px solid currentColor;
+  width:0;animation:kf-type 2.4s steps(40,end) forwards, kf-caret 1s step-end infinite}
+@keyframes kf-type{to{width:100%}}
+@keyframes kf-caret{50%{border-color:transparent}}
+
+/* ---------- GLOW / SHIMMER / GRADIENT-FLOW ---------- */
+@keyframes kf-neon{0%,100%{text-shadow:0 0 8px var(--accent),0 0 20px var(--accent)}
+  50%{text-shadow:0 0 16px var(--accent),0 0 40px var(--accent),0 0 80px var(--accent)}}
+.anim-neon-glow{animation:kf-neon 2s ease-in-out infinite}
+
+.anim-shimmer-sweep{position:relative;overflow:hidden}
+.anim-shimmer-sweep::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.55) 50%,transparent 60%);
+  transform:translateX(-100%);animation:kf-shimmer 2.4s var(--anim-ease) infinite}
+@keyframes kf-shimmer{to{transform:translateX(100%)}}
+
+.anim-gradient-flow{background:linear-gradient(90deg,var(--accent),var(--accent-2,var(--accent)),var(--accent-3,var(--accent)),var(--accent));
+  background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+  animation:kf-gradflow 4s linear infinite}
+@keyframes kf-gradflow{to{background-position:300% 0}}
+
+/* ---------- STAGGER LIST ---------- */
+.anim-stagger-list > *{opacity:0;animation:kf-rise .65s var(--anim-ease) both}
+.anim-stagger-list > *:nth-child(1){animation-delay:.05s}
+.anim-stagger-list > *:nth-child(2){animation-delay:.15s}
+.anim-stagger-list > *:nth-child(3){animation-delay:.25s}
+.anim-stagger-list > *:nth-child(4){animation-delay:.35s}
+.anim-stagger-list > *:nth-child(5){animation-delay:.45s}
+.anim-stagger-list > *:nth-child(6){animation-delay:.55s}
+.anim-stagger-list > *:nth-child(7){animation-delay:.65s}
+.anim-stagger-list > *:nth-child(8){animation-delay:.75s}
+.anim-stagger-list > *:nth-child(n+9){animation-delay:.85s}
+
+/* ---------- COUNTER-UP (JS-driven, marker class only) ---------- */
+.counter{font-variant-numeric:tabular-nums}
+
+/* ---------- SVG PATH DRAW ---------- */
+.anim-path-draw path,.anim-path-draw line,.anim-path-draw polyline,.anim-path-draw circle,.anim-path-draw rect{
+  stroke-dasharray:1000;stroke-dashoffset:1000;animation:kf-draw 2s var(--anim-ease) forwards}
+@keyframes kf-draw{to{stroke-dashoffset:0}}
+
+/* ---------- PARALLAX TILT (hover) ---------- */
+.anim-parallax-tilt{transform-style:preserve-3d;transition:transform .4s var(--anim-ease)}
+.anim-parallax-tilt:hover{transform:perspective(900px) rotateX(6deg) rotateY(-8deg) translateZ(10px)}
+
+/* ---------- CARD FLIP 3D ---------- */
+@keyframes kf-flip{from{transform:perspective(1200px) rotateY(-90deg);opacity:0}
+  to{transform:perspective(1200px) rotateY(0);opacity:1}}
+.anim-card-flip-3d{animation:kf-flip .9s var(--anim-ease) both;transform-style:preserve-3d;backface-visibility:hidden}
+
+/* ---------- CUBE ROTATE 3D ---------- */
+@keyframes kf-cube{from{transform:perspective(1200px) rotateX(20deg) rotateY(-90deg) translateZ(-200px);opacity:0}
+  to{transform:perspective(1200px) rotateX(0) rotateY(0) translateZ(0);opacity:1}}
+.anim-cube-rotate-3d{animation:kf-cube 1s var(--anim-ease) both}
+
+/* ---------- PAGE TURN 3D ---------- */
+@keyframes kf-pageturn{from{transform:perspective(1600px) rotateY(-85deg);transform-origin:left center;opacity:0}
+  to{transform:perspective(1600px) rotateY(0);opacity:1}}
+.anim-page-turn-3d{animation:kf-pageturn 1s var(--anim-ease) both;transform-origin:left center}
+
+/* ---------- PERSPECTIVE ZOOM ---------- */
+@keyframes kf-pzoom{from{opacity:0;transform:perspective(1400px) translateZ(-400px) rotateX(12deg)}
+  to{opacity:1;transform:none}}
+.anim-perspective-zoom{animation:kf-pzoom 1s var(--anim-ease) both}
+
+/* ---------- MARQUEE SCROLL ---------- */
+.anim-marquee-scroll{display:flex;gap:48px;white-space:nowrap;animation:kf-marquee 20s linear infinite}
+@keyframes kf-marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ---------- KEN BURNS ---------- */
+@keyframes kf-kenburns{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.15) translate(-2%,-1%)}}
+.anim-kenburns{animation:kf-kenburns 14s ease-in-out infinite alternate}
+
+/* ---------- CONFETTI BURST (pseudo — pure CSS sparkles) ---------- */
+.anim-confetti-burst{position:relative}
+.anim-confetti-burst::before,.anim-confetti-burst::after{
+  content:"";position:absolute;top:50%;left:50%;width:8px;height:8px;border-radius:50%;
+  background:var(--accent);box-shadow:
+    20px -30px 0 var(--accent-2,var(--accent)),-25px -20px 0 var(--accent-3,var(--accent)),
+    30px 20px 0 var(--good,#1aaf6c),-30px 25px 0 var(--warn,#f5a524),
+    40px -10px 0 var(--bad,#e0445a),-45px 0 0 var(--accent),
+    10px 40px 0 var(--accent-2,var(--accent)),-15px -40px 0 var(--accent-3,var(--accent));
+  opacity:0;animation:kf-confetti 1.2s var(--anim-ease) forwards}
+.anim-confetti-burst::after{animation-delay:.15s;transform:rotate(45deg)}
+@keyframes kf-confetti{0%{opacity:0;transform:scale(.2)}30%{opacity:1}100%{opacity:0;transform:scale(2.2)}}
+
+/* ---------- SPOTLIGHT ---------- */
+@keyframes kf-spot{0%{clip-path:circle(0% at 50% 50%)}100%{clip-path:circle(140% at 50% 50%)}}
+.anim-spotlight{animation:kf-spot 1.1s var(--anim-ease) both}
+
+/* ---------- MORPH SHAPE (SVG) ---------- */
+.anim-morph-shape path{animation:kf-morph 6s ease-in-out infinite alternate}
+@keyframes kf-morph{0%{d:path("M60,120 Q120,20 180,120 T300,120")}
+  100%{d:path("M60,120 Q120,220 180,120 T300,120")}}
+
+/* ---------- RIPPLE REVEAL ---------- */
+@keyframes kf-ripple{0%{clip-path:circle(0% at 20% 80%);opacity:.4}
+  100%{clip-path:circle(160% at 20% 80%);opacity:1}}
+.anim-ripple-reveal{animation:kf-ripple 1.2s var(--anim-ease) both}
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce){
+  [class*="anim-"]{animation:none!important;transition:none!important}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="deck">
+
+<section class="slide" data-title="封面">
+
+<div class="deck-header"><span class="eyebrow">E-Commerce · 2026</span><span class="eyebrow">AI Empowerment</span></div>
+
+<div class="anim-stagger-list">
+
+<p class="kicker">E-Commerce × Artificial Intelligence</p>
+
+<h1 class="h1 anim-fade-up" data-anim="fade-up">电商<span class="gradient-text">AI 赋能</span></h1>
+
+<p class="lede" style="text-align:left;font-size:22px;margin-top:8px;font-weight:400;color:var(--text-2)">从数据驱动到智能决策</p>
+
+<p class="lede">产品研发 · 内容创建 · 供应链 · 智能客服 — AI 重塑电商全链路效率</p>
+
+<div class="row wrap mt-l"><span class="pill pill-accent">GPT-4o</span><span class="pill">SDXL</span><span class="pill">TFT</span><span class="pill">XGBoost</span><span class="pill">RAG</span></div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">电商AI赋能 · 2026</span><span class="slide-number" data-current="1" data-total="23"></span></div>
+
+<div class="notes">开场白：大家好，今天分享电商AI赋能。从产品研发、内容创建、供应链和智能客服四个维度，展示AI如何重塑电商全链路效率。每个环节都会涉及具体工具、模型和实践案例。</div>
+
+</section>
+
+<section class="slide" data-title="目录">
+
+<p class="eyebrow">Agenda · 目录</p>
+
+<h2 class="h2">今天讲四件大事</h2>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:12px">
+
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px;flex-shrink:0">01</div><div><h4>产品研发</h4><p class="dim">AI 数据分析与智能选品 — 市场洞察 / 竞品拆解 / 智能选品</p></div></div></div>
+
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px;flex-shrink:0">02</div><div><h4>内容创建</h4><p class="dim">AI 批量生成图片与视频 — 商品图 / 短视频 / 文案 / 审核</p></div></div></div>
+
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px;flex-shrink:0">03</div><div><h4>供应链</h4><p class="dim">AI 预测库存与需求优化 — 需求预测 / 智能补货 / 物流调度</p></div></div></div>
+
+<div class="card"><div class="row"><div class="h3 dim2" style="width:56px;flex-shrink:0">04</div><div><h4>AI 智能客服</h4><p class="dim">全天候自动化服务 — 多轮对话 / 售前售后 / 多语言全球化</p></div></div></div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">电商AI赋能</span><span>目录</span></div>
+
+<div class="notes">四部分逻辑：选品决定卖什么 → 内容决定怎么卖 → 供应链保证卖得好 → 客服保证卖得久。这是一个完整的业务闭环。</div>
+
+</section>
+
+<section class="slide tc center" data-title="产品研发">
+
+<div style="max-width:780px;margin:0 auto">
+
+<p class="kicker anim-fade-down" data-anim="fade-down">Part · 01</p>
+
+<h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:96px">产品<span class="gradient-text">研发</span></h1>
+
+<div class="divider-accent" style="margin:24px auto"></div>
+
+<p class="lede" style="margin:0 auto">AI 数据分析与智能选品 — 让数据告诉你该卖什么</p>
+
+</div>
+
+<div class="notes">第一部分：产品研发。核心命题是"卖什么"。我们将看到AI如何从海量数据中挖掘趋势、拆解竞品、评估选品、优化定价。</div>
+
+</section>
+
+<section class="slide" data-title="市场趋势洞察">
+
+<p class="kicker">01 · 市场趋势洞察</p>
+
+<h2 class="h2">用 AI 看透市场，发现蓝海</h2>
+
+<button onclick="document.getElementById(&quot;prompt-modal-4&quot;).style.display=&quot;flex&quot;" style="position:absolute;top:16px;right:16px;z-index:100;background:var(--accent);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600">📋 选品策略 Prompt</button>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:8px">
+
+<p style="text-align:center;font-size:12px;color:var(--text-3);margin:0 0 4px 0">📥 数据采集 → 🧠 GPT-4o 分析 → 📊 结果输出</p>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">看信号</span><div style="flex:1"><h4 style="margin:0 0 6px">发现上升品类，抓住市场风口</h4>
+<div style="display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;margin-bottom:2px">
+  <span style="background:var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;line-height:1.6;min-width:0;flex:1">
+    <b>📥 输入</b><br>
+    <span style="font-size:11px;opacity:0.85">🔧 八爪鱼 →</span> 平台热销榜排名、1688 搜索热词<br>
+    <span style="font-size:11px;opacity:0.85">🔧 蝉妈妈 →</span> 抖音/TikTok 搜索趋势、爆款数据<br>
+    <span style="font-size:11px;opacity:0.85">🔧 Apify →</span> Amazon 搜索趋势、Shopee 热销、Instagram 标签<br>
+    <span style="font-size:11px;opacity:0.85">🔧 Google Trends →</span> 搜索量趋势对比、地域分布、季节性规律
+  </span>
+  <span style="font-size:18px;color:var(--accent);font-weight:700;line-height:2.5">→</span>
+  <span style="background:var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;line-height:1.6;min-width:0;flex:1">
+    <b>📊 输出</b><br>
+    TOP 10 上升品类+增速 &nbsp; 趋势真假标注 &nbsp; TOP 3 推荐+入场理由
+  </span>
+</div>
+</div></div></div>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">挖痛点</span><div style="flex:1"><h4 style="margin:0 0 6px">从差评里提炼痛点，找到改进方向</h4>
+<div style="display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;margin-bottom:2px">
+  <span style="background:var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;line-height:1.6;min-width:0;flex:1">
+    <b>📥 输入</b><br>
+    <span style="font-size:11px;opacity:0.85">🔧 八爪鱼 →</span> 各平台商品 1-2 星差评、问答讨论<br>
+    <span style="font-size:11px;opacity:0.85">🔧 魔镜市场情报 →</span> 竞品口碑数据、客服投诉记录<br>
+    <span style="font-size:11px;opacity:0.85">🔧 Apify →</span> Reddit / Trustpilot 用户吐槽、海外独立站评价<br>
+    <span style="font-size:11px;opacity:0.85">🔧 平台后台 →</span> 退款退货原因、售后纠纷高频词
+  </span>
+  <span style="font-size:18px;color:var(--accent);font-weight:700;line-height:2.5">→</span>
+  <span style="background:var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;line-height:1.6;min-width:0;flex:1">
+    <b>📊 输出</b><br>
+    5-8 个核心需求缺口 &nbsp; 频次+影响面+优先级 &nbsp; 痛点×改进方案矩阵
+  </span>
+</div>
+</div></div></div>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">探跨界</span><div style="flex:1"><h4 style="margin:0 0 6px">从品类关联中，找到意想不到的蓝海</h4>
+<div style="display:flex;align-items:flex-start;gap:6px;flex-wrap:wrap;margin-bottom:2px">
+  <span style="background:var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;line-height:1.6;min-width:0;flex:1">
+    <b>📥 输入</b><br>
+    <span style="font-size:11px;opacity:0.85">🔧 八爪鱼 →</span> 跨品类购买数据、商品关联分析<br>
+    <span style="font-size:11px;opacity:0.85">🔧 Apify →</span> 海外平台品类关联、社媒搭配讨论<br>
+    <span style="font-size:11px;opacity:0.85">🔧 Amazon FBT →</span> Frequently Bought Together 官方关联推荐<br>
+    <span style="font-size:11px;opacity:0.85">🔧 生意参谋 →</span> 品类关键词关联搜索、连带率数据
+  </span>
+  <span style="font-size:18px;color:var(--accent);font-weight:700;line-height:2.5">→</span>
+  <span style="background:var(--accent);border-radius:6px;padding:5px 10px;font-size:12px;color:#fff;line-height:1.6;min-width:0;flex:1">
+    <b>📊 输出</b><br>
+    5 个跨界方向+关联强度 &nbsp; 市场规模+竞品数+1688匹配 &nbsp; TOP 3 推荐+可行性判断
+  </span>
+</div>
+</div></div></div>
+
+</div>
+<div class="pipeline mt-m" style="display:flex;justify-content:center;gap:8px;align-items:center;font-size:12px"><span class="pill pill-accent" style="font-size:12px">① 市场洞察</span><span style="color:var(--text-3)">→</span><span class="pill" style="font-size:12px;border:1px solid var(--line);color:var(--text-3)">② 竞品拆解</span><span style="color:var(--text-3)">→</span><span class="pill" style="font-size:12px;border:1px solid var(--line);color:var(--text-3)">③ 智能选品</div>
+
+<!-- 提示词弹窗 -->
+
+<div id="prompt-modal-4" onclick="this.style.display=&quot;none&quot;" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center">
+
+<div onclick="event.stopPropagation()" style="background:var(--bg);border-radius:12px;padding:28px 32px;max-width:800px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative">
+
+<button onclick="document.getElementById(&quot;prompt-modal-4&quot;).style.display=&quot;none&quot;" style="position:sticky;top:0;float:right;background:var(--bg-2);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text-3);z-index:1">&times;</button>
+
+<h2 style="margin:0 0 16px;font-size:22px">📋 选品策略 Prompt</h2>
+
+<pre style="white-space:pre;font-family:Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text-1);background:var(--bg-2);padding:20px;border-radius:8px;overflow-x:auto;margin:0"># 产品概念生成 · 全流程 Prompt
+
+## 角色
+
+你是电商产品策略顾问。基于多源数据，完成从市场信号捕捉、用户需求挖掘到跨界概念生成的全流程分析，最终输出可落地的产品开发建议。
+
+三步串联：第一步的品类结果 → 作为第二步、第三步的分析范围，确保三步围绕同一批品类。
+
+---
+
+## 第一步：看信号 — 多源数据采集 &amp; 趋势发现
+
+### 数据采集
+
+- 🔧 八爪鱼 → 平台热销榜排名、1688 搜索热词
+
+- 🔧 蝉妈妈 → 抖音/TikTok 搜索趋势、爆款数据
+
+- 🔧 Apify → Amazon 搜索趋势、Shopee 热销、Instagram 标签
+
+- 🔧 Google Trends → 搜索量趋势对比、地域分布、季节性规律
+
+### AI 分析
+
+用 🧠 GPT-4o 完成：
+
+1. 多源爬取 + 清洗标准化：将不同来源的数据统一为结构化格式，去除重复和噪声
+
+2. 识别上升品类 + 增速排序：找出搜索量、销量、讨论量同步增长的品类，按增速降序排列 TOP 10
+
+3. 判断趋势真假：区分短期炒作（突然爆量后回落）和长期趋势（稳定增长 3 个月以上），标注每个品类的趋势可信度
+
+### 输出要求
+
+- 搜索量趋势（月环比增长率）
+
+- 转化率（搜索到购买的转化比例）
+
+- 评论热度（评论数增速 + 情感倾向）
+
+- 增速排名 TOP 10 + 趋势真假判断
+
+- 3 个最值得切入的品类，每个附 100 字入场理由
+
+→ 以上 TOP 3 品类作为第二步、第三步的目标品类，后续分析围绕这 3 个品类展开
+
+---
+
+## 第二步：挖痛点 — 差评痛点挖掘
+
+### 数据采集
+
+以第一步输出的 TOP 3 品类为目标，采集：
+
+- 🔧 八爪鱼 → 各平台商品 1-2 星差评、问答讨论
+
+- 🔧 魔镜市场情报 → 竞品口碑数据、客服投诉记录
+
+- 🔧 Apify → Reddit / Trustpilot 用户吐槽、海外独立站评价
+
+- 🔧 平台后台 → 退款退货原因、售后纠纷高频词
+
+### AI 分析
+
+用 🧠 GPT-4o 完成：
+
+1. 提取差评高频词：按出现频次统计 TOP 20 负面关键词（如“太重”、“续航短”、“掉色”）
+
+2. 聚类归纳痛点：将高频词归纳为 5-8 个核心需求缺口，区分功能性痛点（产品不好用）和体验性痛点（用起来不爽）
+
+3. 排序 + 情景模拟：按影响面（提及人数 × 严重程度）排序，模拟改进后的用户满意度变化
+
+### 输出要求
+
+- 5-8 个核心需求缺口，每个标注频次、影响面、痛点类型
+
+- 每个缺口给出具体的产品改进方向（100 字内）
+
+- 痛点 × 改进方案矩阵，标注优先级（高/中/低）
+
+---
+
+## 第三步：探跨界 — 跨界机会发现
+
+### 数据采集
+
+以第一步输出的 TOP 3 品类为锚点，采集：
+
+- 🔧 八爪鱼 → 跨品类购买数据、商品关联分析
+
+- 🔧 Apify → 海外平台品类关联、社媒搭配讨论
+
+- 🔧 Amazon FBT → Frequently Bought Together 官方关联推荐
+
+- 🔧 生意参谋 → 品类关键词关联搜索、连带率数据
+
+### AI 分析
+
+用 🧠 GPT-4o 完成：
+
+1. 关联发现：从跨品类购买数据中识别强关联但供给不足的品类组合（如「瑜伽 + 蛋白粉」共购率高但竞品少 → 蓝海机会）
+2. 可行性验证：综合市场规模、竞争强度、供给门槛三个维度评估
+### 输出要求
+
+- 5 个跨界产品方向，每个标注关联强度和供给密度
+
+- 每个方向附市场规模预估、现有竞品数量、1688 工厂匹配度
+
+- TOP 3 推荐方向，附 200 字可行性判断
+
+---
+
+## 最终输出格式
+
+使用 Markdown 表格 + 要点列表，不超过 2000 字：
+
+| 维度 | 看信号 | 挖痛点 | 探跨界 |
+
+|------|--------|--------|--------|
+
+| 核心发现 | 3 个上升品类 + 增速 | 5-8 个痛点缺口 | 3-5 个跨界方向 |
+
+| 数据支撑 | 搜索量/转化率/热度 | 高频词/影响面/类型 | 关联强度/供给密度 |
+
+| 行动建议 | 立即入场/观察/放弃 | 改进优先级 | 可行性判断 |
+
+## 补充说明
+
+- 每步列出 4 个工具/数据源，覆盖国内外主流平台和场景，实际使用时按需选用
+
+- 各工具采集的数据统一清洗为结构化格式后，送入 GPT-4o 分析
+
+- 分析结果需标注置信度（高/中/低），避免过度自信
+
+- 优先使用近 3 个月数据，趋势判断可拉长至 6 个月</pre>
+
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">产品研发</span><span>4 / 23</span></div>
+
+<div class="notes">市场趋势洞察不是拍脑袋，是用三条AI探针并行扫描。趋势发现：八爪鱼+蝉妈妈采集各平台热搜数据，GPT-4o分析增速和机会。需求挖掘：八爪鱼+魔镜抓取用户评论，GPT-4o提炼痛点、沉淀知识图谱。跨界发现：用Neo4j构建品类关联图谱，GPT-4o推理跨界机会。三管齐下，360度扫描蓝海。</div>
+
+<div class="notes">数据来源说明：热搜数据 = 各平台搜索趋势（Amazon搜索词、1688询盘热词、Google Trends）；销量数据 = 各平台热销榜（Amazon Best Sellers、TikTok Shop爆款、Shopee热销）；社媒数据 = 社交媒体消费趋势（TikTok热门话题、小红书种草笔记、Instagram趋势标签）。采集工具：八爪鱼 = 通用网页爬虫，Apify = 海外平台数据采集，蝉妈妈 = 抖音/TikTok电商数据分析平台。</div></section>
+
+<section class="slide" data-title="竞品数据拆解">
+
+<p class="kicker">02 · 竞品数据拆解</p>
+
+<h2 class="h2">知己知彼，AI 自动拆解竞品</h2>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:12px">
+
+<div class="card" style="position:relative"><button onclick="document.getElementById(&quot;prompt-modal-5a&quot;).style.display=&quot;flex&quot;" style="position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;border:none;padding:2px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;z-index:10">📋 Prompt</button><h4>💡 拆价格：盯住怎么变价</h4><p class="dim" style="font-size:13px"><b>流程</b>：📥 标价/券后价/促销标签（🏷️ Keepa + 魔镜市场情报 每日抓取）→ 📈 Prophet + LSTM → 📊 7天价格走势预测 + 异动秒级告警 + 调价建议<br><span style="font-size:11px;color:var(--text-3)"><b>📈 Prophet</b>（Meta 开源算法库）：擅长分解趋势、季节性、节假日效应，可解释性强<br><b>🧠 LSTM</b>（Google 提出预测模型）：擅长捕捉非线性长程依赖，<br><br><span style="color:var(--text-3)">☁️ 零代码替代服务：</span><span style="font-size:10px;color:var(--text-3)">AWS Forecast &nbsp;|&nbsp; Google Vertex AI &nbsp;|&nbsp; Azure AutoML &nbsp;|&nbsp; 阿里云 PAI &nbsp;|&nbsp; 华为云 ModelArts</span></p></div>
+
+<div class="card" style="position:relative"><button onclick="document.getElementById(&quot;prompt-modal-5b&quot;).style.display=&quot;flex&quot;" style="position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;border:none;padding:2px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;z-index:10">📋 Prompt</button><h4>🔍 拆产品：看图识别属性</h4><p class="dim" style="font-size:13px"><b>流程</b>：📥 竞品主图（🔧 八爪鱼 爬取商品页）→ 🧠 GPT-4V 识别 领型/袖长/面料/风格 + CLIP 向量聚类 → 🏷️ 竞品风格标签 + 自动归类<br><span style="font-size:11px;color:var(--text-3)"><b>🧠 CLIP</b>（OpenAI 多模态模型）：将图片与文字映射到同一向量空间，通过向量聚类实现风格自动分组，无需人工标注</span></p></div>
+
+<div class="card" style="position:relative"><button onclick="document.getElementById(&quot;prompt-modal-5c&quot;).style.display=&quot;flex&quot;" style="position:absolute;top:8px;right:8px;background:var(--accent);color:#fff;border:none;padding:2px 8px;border-radius:4px;font-size:11px;cursor:pointer;font-weight:600;z-index:10">📋 Prompt</button><h4>💡 拆全局：自动出 SWOT 报告（优势·劣势·机会·威胁）</h4><p class="dim" style="font-size:13px"><b>流程</b>：📥 价格/特征/评论/上新数据（🔧 八爪鱼 + Keepa 多源聚合）→ 🧠 GPT-4o → 📊 结构化 SWOT 报告 + 自动填入 PPT + 每周推送管理群</p></div>
+
+</div>
+
+<div class="pipeline mt-m" style="display:flex;justify-content:center;gap:8px;align-items:center;font-size:12px"><span class="pill" style="font-size:12px;border:1px solid var(--line);color:var(--text-3)">① 市场洞察</span><span style="color:var(--text-3)">→</span><span class="pill pill-accent" style="font-size:12px">② 竞品拆解</span><span style="color:var(--text-3)">→</span><span class="pill" style="font-size:12px;border:1px solid var(--line);color:var(--text-3)">③ 智能选品</div>
+
+<!-- 拆价格提示词弹窗 -->
+<div id="prompt-modal-5a" onclick="this.style.display=&quot;none&quot;" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center">
+<div onclick="event.stopPropagation()" style="background:var(--bg);border-radius:12px;padding:28px 32px;max-width:750px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative">
+<button onclick="document.getElementById(&quot;prompt-modal-5a&quot;).style.display=&quot;none&quot;" style="position:sticky;top:0;float:right;background:var(--bg-2);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text-3);z-index:1">&times;</button>
+<h2 style="margin:0 0 16px;font-size:22px">💡 拆价格 Prompt</h2>
+<pre style="white-space:pre;font-family:Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text-1);background:var(--bg-2);padding:20px;border-radius:8px;overflow-x:auto;margin:0"># 竞品价格分析 Prompt
+
+你是一个电商竞品分析师。请基于提供的竞品价格数据，完成以下分析：
+
+【数据采集工具】
+- Keepa：追踪 Amazon 商品历史价格，每日自动抓取标价、券后价、促销标签
+- 魔镜市场情报：监控竞品价格变动、促销活动节奏
+- 零代码替代：AWS Forecast | Google Vertex AI | Azure AutoML | 阿里云 PAI | 华为云 ModelArts
+  （无需编写 Prophet/LSTM 代码，上传历史价格数据即可自动建模预测）
+
+【输入数据】
+- 竞品 X 近 7 天每日标价、券后价、促销标签（满减/秒杀/会员价）
+- 竞品 X 近 30 天价格历史（用于对比趋势）
+- 平台大促日历（618/双11/品类日等节点标注）
+
+【分析任务】
+1. 价格波动识别：标注 7 天内所有调价节点，计算幅度、频率、方向
+2. 策略模式判定：高频调价/阶梯降价/活动前涨价/跟随定价/清仓甩卖
+3. 营销意图推测：冲销量/清库存/拉新客/利润收割/防守阻击
+4. 应对建议：针对每种意图给出 3 条可执行对策，标注优先级
+
+【AI 模型】
+- Prophet（Meta 开源）：分解趋势 + 季节性 + 节假日效应，可解释性强
+- LSTM（深度学习）：捕捉非线性长程依赖，精度更高
+- 两者互补：Prophet 做基线预测，LSTM 做精细校准
+
+【输出格式】 Markdown 表格：时间 | 动作 | 模式 | 意图 | 我方对策 | 优先级
+末尾附 200 字结论摘要，给出「跟进 / 观望 / 反击」建议。</pre>
+</div>
+</div>
+
+<!-- 拆产品提示词弹窗 -->
+<div id="prompt-modal-5b" onclick="this.style.display=&quot;none&quot;" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center">
+<div onclick="event.stopPropagation()" style="background:var(--bg);border-radius:12px;padding:28px 32px;max-width:750px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative">
+<button onclick="document.getElementById(&quot;prompt-modal-5b&quot;).style.display=&quot;none&quot;" style="position:sticky;top:0;float:right;background:var(--bg-2);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text-3);z-index:1">&times;</button>
+<h2 style="margin:0 0 16px;font-size:22px">🔍 拆产品 Prompt</h2>
+<pre style="white-space:pre;font-family:Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text-1);background:var(--bg-2);padding:20px;border-radius:8px;overflow-x:auto;margin:0"># 竞品产品属性识别 Prompt
+
+你是一个电商产品分析师。请基于提供的竞品主图，识别以下属性：
+
+【数据采集工具】
+- 八爪鱼：批量爬取竞品商品页主图（正面/背面/细节图）
+- 同品类 TOP 10 竞品图片（用于对比归类）
+
+【AI 模型】
+- GPT-4V：视觉识别领型、袖长、面料、图案、场景风格等属性
+- CLIP（OpenAI 多模态模型）：将图片与文字映射到同一向量空间，通过向量聚类实现风格自动分组，无需人工标注
+
+【分析任务】
+1. 视觉属性提取：领型/袖长/面料/图案/配件/模特身高/场景风格
+2. CLIP 向量聚类：将所有主图转为向量 → 自动聚类 → 输出风格分组（如韩系简约/美式街头/日系文艺）
+3. 风格归类：对照风格分组的聚类结果，标注每款产品的风格标签
+4. 差异化点分析：与同品类竞品相比，该产品的独特卖点
+
+【输出格式】
+每张图输出 JSON：{"属性":{...},"风格":"...","差异化":"..."}
+汇总表格：商品名 | 领型 | 袖长 | 面料 | CLIP风格分组 | 独特卖点</pre>
+</div>
+</div>
+
+<!-- 拆全局提示词弹窗 -->
+<div id="prompt-modal-5c" onclick="this.style.display=&quot;none&quot;" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center">
+<div onclick="event.stopPropagation()" style="background:var(--bg);border-radius:12px;padding:28px 32px;max-width:750px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative">
+<button onclick="document.getElementById(&quot;prompt-modal-5c&quot;).style.display=&quot;none&quot;" style="position:sticky;top:0;float:right;background:var(--bg-2);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text-3);z-index:1">&times;</button>
+<h2 style="margin:0 0 16px;font-size:22px">📊 拆全局 SWOT Prompt</h2>
+<pre style="white-space:pre;font-family:Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text-1);background:var(--bg-2);padding:20px;border-radius:8px;overflow-x:auto;margin:0"># 竞品 SWOT 分析 Prompt
+
+你是一个电商战略分析师。请基于以下多源数据，生成竞品 SWOT 报告：
+
+【数据采集工具】
+- 八爪鱼：爬取竞品商品属性、评论、上新记录
+- Keepa：追踪竞品价格历史与促销变动
+- 多源聚合：价格 + 属性 + 评论 + 上新频率统一清洗为结构化数据
+
+【输入数据】
+- 价格数据：近 30 天标价/券后价/促销变动（来源：Keepa）
+- 产品特征：款式/材质/功能/规格（来源：八爪鱼 + GPT-4V 识别）
+- 用户评论：好评/差评高频词（来源：八爪鱼 爬取）
+- 上新频率：近 90 天新品数量/节奏（来源：八爪鱼 监控）
+
+【分析任务】
+用 GPT-4o 按 SWOT 框架输出：
+- S 优势：价格/产品/运营方面的竞争优势
+- W 劣势：差评集中的缺点/上新缓慢/价格过高
+- O 机会：市场空白/竞品弱点/季节窗口
+- T 威胁：竞品价格战/新品快速跟进/平台规则变化
+
+【输出格式】
+结构化 SWOT 报告，每项 2-3 条，带具体数据支撑。
+自动填入 PPT 模板，每周一推送至管理群。
+末尾附 200 字综合建议：跟进 / 观望 / 反击。</pre>
+</div>
+</div><div class="deck-footer"><span class="dim2">产品研发</span><span>5 / 23</span></div>
+
+<div class="notes">竞品拆解的重点不是看竞品卖多少钱，而是理解对方的价格策略和营销意图。GPT-4V 可以直接看懂竞品图里的设计元素。每周一份自动生成的SWOT报告可以大幅降低分析师的重复劳动。</div>
+
+</section>
+
+<section class="slide" data-title="智能选品决策">
+
+<p class="kicker">03 · 智能选品决策</p>
+
+<h2 class="h2">四维选品矩阵：从"感觉"到"科学"</h2>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:4px">
+
+<div class="card" style="padding:12px 18px"><h4 style="margin:0 0 4px">💡 利润维度</h4><p class="dim" style="font-size:13px;margin:0"><b>流程</b>：📥 标价/券后价（← Keepa + 魔镜市场情报 每日抓取） + 我方预估成本（采购/物流/佣金）→ 📊 XGBoost 预估利润率 → 📊 利润得分<br><span style="font-size:11px;color:var(--text-3)"><b>📊 XGBoost</b>：开源集成学习算法，AWS SageMaker / Google Vertex AI / Azure ML / 阿里云 PAI 均封装为零代码服务，上传 CSV 即可预测利润率</span></p></div>
+<div class="card" style="padding:12px 18px"><h4 style="margin:0 0 4px">💡 需求维度</h4><p class="dim" style="font-size:13px;margin:0"><b>流程</b>：📥 搜索量 / 评论增速 / 趋势加速度（← 蝉妈妈 / Apify / Google Trends）→ 📊 加权评分公式 → 📊 需求得分<br><span style="font-size:11px;color:var(--text-3)"><b>📊 加权评分公式</b>：多指标加权评分，需求得分 = 搜索量分 × 0.5 + 评论增速分 × 0.3 + 趋势加速度分 × 0.2</span></p></div>
+<div class="card" style="padding:12px 18px"><h4 style="margin:0 0 4px">💡 竞争强度</h4><p class="dim" style="font-size:13px;margin:0"><b>流程</b>：📥 竞品数量 / 价格带饱和度 / 评论壁垒（← 八爪鱼 + Keepa 多源聚合）→ 📊 加权评分（反比） → 📊 竞争得分<br><span style="font-size:11px;color:var(--text-3)"><b>📊 加权评分（反比）</b>：多指标加权评分（反比），竞争得分 = 数量分 × 0.4 + 饱和分 × 0.3 + 壁垒分 × 0.3，分越高 = 竞争越弱</span></p></div>
+<div class="card" style="padding:12px 18px"><h4 style="margin:0 0 4px">💡 供应链风险</h4><p class="dim" style="font-size:13px;margin:0"><b>流程</b>：📥 供应商数量 / 交期 / 起订量（← 1688 + 行业数据）→ 📊 加权评分 → 📊 供应链得分<br><span style="font-size:11px;color:var(--text-3)"><b>📊 加权评分</b>：多指标加权评分，供应链得分 = 供应商数量分 × 0.4 + 交期分 × 0.3 + 起订量分 × 0.3，分越高 = 越稳</span></p></div>
+
+</div>
+
+<div class="mt-m"><p class="dim" style="text-align:center;font-size:14px"><b>综合决策</b>：📋 四维综合排序 → TOP N 选品清单 + 理由 → 人审核拍板</p></div>
+
+<div class="pipeline mt-m" style="display:flex;justify-content:center;gap:8px;align-items:center;font-size:12px"><span class="pill" style="font-size:12px;border:1px solid var(--line);color:var(--text-3)">① 市场洞察</span><span style="color:var(--text-3)">→</span><span class="pill" style="font-size:12px;border:1px solid var(--line);color:var(--text-3)">② 竞品拆解</span><span style="color:var(--text-3)">→</span><span class="pill pill-accent" style="font-size:12px">③ 智能选品</div>
+
+<div class="deck-footer"><span class="dim2">产品研发</span><span>6 / 23</span></div>
+
+<div class="notes">选品不靠直觉。我们建立四维评分体系：利润、需求、竞争、供应链。每个维度独立打分，TOPSIS综合排序。DeepFM模型每天推荐Top10潜力爆品，每个推荐都附带AI生成的选品理由。关键是要让买手理解"为什么这个品会爆"——SHAP值解释每个特征的贡献。</div>
+
+</section>
+
+<section class="slide tc center" data-title="工具落地">
+
+<div style="max-width:780px;margin:0 auto">
+
+<p class="kicker anim-fade-down" data-anim="fade-down">工具落地</p>
+
+<h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:52px"><span class="gradient-text">AI 全链路</span>，两个入口</h1>
+
+<div class="divider-accent" style="margin:24px auto"></div>
+
+<div class="grid g2 mt-l" style="gap:20px;max-width:720px;margin:24px auto 0">
+
+<div class="card"><div style="font-size:40px;margin:0 0 8px">📊</div><h4 style="margin:0 0 4px">Accio</h4><p class="dim" style="font-size:13px;line-height:1.6;margin:0">阿里国际站 B2B AI 搜索引擎<br>外国人，找中国供应商进货<br>海外批发商 · 零售店老板 · 跨境卖家<br><a href="https://www.accio.com/" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none">www.accio.com →</a></p></div>
+
+<div class="card"><div style="font-size:40px;margin:0 0 8px">📊</div><h4 style="margin:0 0 4px">遨虾 AlphaShop</h4><p class="dim" style="font-size:13px;line-height:1.6;margin:0">1688 跨境 AI 智能体<br>中国人，找国内货源出海<br>Amazon · TikTok · Shopee 卖家<br><a href="https://www.alphashop.cn" target="_blank" style="font-size:12px;color:var(--accent);text-decoration:none">www.alphashop.cn →</a></p></div>
+
+</div>
+
+<p class="dim mt-m" style="text-align:center;font-size:14px">同一个阿里生态，同一套方法论 — 市场洞察 · 竞品拆解 · 智能选品</p>
+
+</div>
+
+<div class="notes">Accio 是阿里国际站的 B2B AI 搜索引擎，2024年11月推出，定位个人采购助理，通过多轮对话帮用户搜索商品和匹配供应商。遨虾 AlphaShop 是 1688 的跨境 AI 智能体，帮中国卖家完成选品、采购和供应链管理。两个产品分别服务跨境贸易的两端。</div>
+
+</section>
+
+<section class="slide" data-title="Accio">
+
+<p class="kicker">工具 ① · Accio</p>
+
+<h2 class="h2">Accio：外国人，找中国供应商进货</h2>
+
+<p class="dim" style="margin:0;font-size:14px">阿里国际站 B2B AI 搜索引擎 · 2024年11月推出 · 海外批发商 / 零售店老板 / 跨境卖家</p>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:8px">
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">①</span><div style="flex:1"><h4 style="margin:0 0 6px">市场趋势洞察</h4><p class="dim" style="margin:0;font-size:13px">💡 全球 200+ 国家热销品类 + 买家搜索趋势（Accio 平台数据）→ 🧠 AI 趋势分析 → 📋 热门品类清单 + 市场机会排名</p></div></div></div>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">②</span><div style="flex:1"><h4 style="margin:0 0 6px">竞品数据拆解</h4><p class="dim" style="margin:0;font-size:13px">💡 竞品价格 / 销量 / 评价 / 采购商画像（Accio 平台内数据）→ 🧠 AI 竞品画像 → 📋 差异化采购策略 + 供应商匹配</p></div></div></div>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">③</span><div style="flex:1"><h4 style="margin:0 0 6px">智能选品 + 全链路执行</h4><p class="dim" style="margin:0;font-size:13px">💡 趋势 + 竞品 + 供应商报价 → 📊 四维评分 + AI 定价 → 📋 选品推荐 + 报价策略 + 利润预测 + 一键采购</p></div></div></div>
+
+<div style="background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);border-radius:12px;padding:20px 24px;margin-top:4px;border:1px solid rgba(100,140,255,0.25)">
+
+<h4 style="margin:0 0 10px;color:#8ab4f8;font-size:16px">💡 不只是搜索 — Accio 的智能体团队</h4>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+
+<span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">电商专家</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">数据分析</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">自主采购</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">内容创作</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">一件代发</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">营销物流</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">网店运营</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">一键建店</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">合规管理</span>
+
+</div>
+
+<p style="font-size:13px;line-height:1.7;margin:0;color:rgba(255,255,255,0.75)">每个智能体专精一个业务场景，自动拆解任务、调用插件、协同执行。<br>💡 <b style="color:#8ab4f8">插件生态</b>：读取文件 · 运行代码 · 连接业务系统 · 一键发布<br>💡 <b style="color:#8ab4f8">150万+供应商</b> · 自主询价多轮谈判 · 100+市场合规 · 30分钟从创意到上架</p>
+
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">工具链</span><span>8 / 27</span></div>
+
+<div class="notes">Accio 是阿里国际站的 AI 平台，定位是"全球中小企业的一站式跨境电商解决方案"。核心能力：买家从发现市场机会、分析竞争对手、匹配供应商、到定价和采购，全链路 AI 自动化。不需要在多个工具之间跳转。</div>
+
+</section>
+
+<section class="slide" data-title="遨虾">
+
+<p class="kicker">工具 ② · 遨虾 AlphaShop</p>
+
+<h2 class="h2">遨虾：中国人，找国内货源出海</h2>
+
+<p class="dim" style="margin:0;font-size:14px">1688 跨境 AI 智能体 · Amazon / TikTok / Shopee 卖家 · 找工厂 · 选品 · 出海</p>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:8px">
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">①</span><div style="flex:1"><h4 style="margin:0 0 6px">市场趋势洞察</h4><p class="dim" style="margin:0;font-size:13px">💡 Amazon / TikTok / Shopee 多平台热销数据（遨虾采集）→ 🧠 AI 趋势分析 + 增速排序 → 📊 各平台爆品趋势 + 切入时机建议</p></div></div></div>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">②</span><div style="flex:1"><h4 style="margin:0 0 6px">竞品数据拆解</h4><p class="dim" style="margin:0;font-size:13px">💡 竞品销量 / 定价 / 评论 / 广告投放 / 供应链（遨虾深度采集）→ 🧠 AI 竞品拆解 → 📊 SWOT + 差异化策略 + 1688 工厂匹配</p></div></div></div>
+
+<div class="card"><div class="row" style="align-items:flex-start"><span class="pill pill-accent" style="flex-shrink:0;margin-top:2px">③</span><div style="flex:1"><h4 style="margin:0 0 6px">智能选品 + 一键上架</h4><p class="dim" style="margin:0;font-size:13px">💡 市场数据 + 竞品数据 + 1688 工厂报价 → 📊 四维评分 + AI 定价模型 → 📋 选品推荐 + 定价方案 + 运营策略 + 一键上架</p></div></div></div>
+
+</div>
+
+<div style="background:linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);border-radius:12px;padding:20px 24px;margin-top:4px;border:1px solid rgba(100,140,255,0.25)">
+
+<h4 style="margin:0 0 10px;color:#8ab4f8;font-size:16px">💡 AlphaClaw — 遨虾的 AI 执行引擎</h4>
+
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+
+<span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">智能选品</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">自动调价</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">自动询盘</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">数据报表</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">一键铺货</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">库存管理</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">AI 客服</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">多平台打通</span><span style="background:rgba(138,180,248,0.15);color:#aecbfa;padding:4px 10px;border-radius:20px;font-size:12px;border:1px solid rgba(138,180,248,0.3)">云端初始化</span>
+
+</div>
+
+<p style="font-size:13px;line-height:1.7;margin:0;color:rgba(255,255,255,0.75)">深度适配电商全链路，打通 1688、Ozon 等多平台接口。<br>无需技术背景，像聊天一样指挥 AI 选品、上架、查库存、调价，7×24 小时在线。<br>💡 <b style="color:#8ab4f8">50+ 电商专用 Skill</b>：选品 · 铺货 · 自动询盘 · 云端初始化 · 限时免费零成本开启智能经营</p>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">工具链</span><span>9 / 27</span></div>
+
+<div class="notes">遨虾 AlphaShop 是 1688 推出的跨境 AI 智能体，定位是"帮中国卖家一键出海"。核心能力：打通 1688 货源和海外平台，从选品、定价、找工厂、到上架的全链路 AI 决策 + 执行。</div>
+
+</section><section class="slide" data-title="内容创建">
+
+<div style="max-width:780px;margin:0 auto">
+
+<p class="kicker anim-fade-down" data-anim="fade-down">Part · 02</p>
+
+<h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:96px">内容<span class="gradient-text">创建</span></h1>
+
+<div class="divider-accent" style="margin:24px auto"></div>
+
+<p class="lede" style="margin:0 auto">AI 批量生成图片与视频 — 一个人就是一个内容团队</p>
+
+</div>
+
+<div class="notes">第二部分：内容创建。商品图、短视频、文案——传统上这些都是烧钱耗人的活。AI让一个人+一套工具就能产出千级SKU素材。</div>
+
+</section>
+
+<section class="slide" data-title="AI内容供应链">
+
+<p class="kicker">内容创建 · 全景</p>
+
+<h2 class="h2">AI 驱动的内容供应链</h2>
+
+<div style="display:flex;gap:6px;align-items:stretch;justify-content:center;flex-wrap:wrap;margin-top:12px">
+
+<div class="card" style="padding:14px 12px;text-align:center;flex:1;min-width:130px">
+<span class="pill pill-accent" style="font-size:16px;padding:4px 10px">①</span>
+<h4 style="margin:8px 0 4px;font-size:15px">叙事框架</h4>
+<p style="font-size:11px;color:var(--text-2);margin:0;line-height:1.5">预制专业模板<br>逻辑清晰·有说服力·合规</p>
+</div>
+
+<span style="font-size:22px;color:var(--accent);display:flex;align-items:center;font-weight:700">→</span>
+
+<div class="card" style="padding:14px 12px;text-align:center;flex:1;min-width:130px">
+<span class="pill pill-accent" style="font-size:16px;padding:4px 10px">②</span>
+<h4 style="margin:8px 0 4px;font-size:15px">素材库</h4>
+<p style="font-size:11px;color:var(--text-2);margin:0;line-height:1.5">AI 分类标签<br>秒级检索·一键复用</p>
+</div>
+
+<span style="font-size:22px;color:var(--accent);display:flex;align-items:center;font-weight:700">→</span>
+
+<div class="card" style="padding:14px 12px;text-align:center;flex:1;min-width:130px">
+<span class="pill pill-accent" style="font-size:16px;padding:4px 10px">③</span>
+<h4 style="margin:8px 0 4px;font-size:15px">批量生产</h4>
+<p style="font-size:11px;color:var(--text-2);margin:0;line-height:1.5">文案+脚本+图文+视频<br>AI 规模化自动产出</p>
+</div>
+
+<span style="font-size:22px;color:var(--accent);display:flex;align-items:center;font-weight:700">→</span>
+
+<div class="card" style="padding:14px 12px;text-align:center;flex:1;min-width:130px">
+<span class="pill pill-accent" style="font-size:16px;padding:4px 10px">④</span>
+<h4 style="margin:8px 0 4px;font-size:15px">KOC 分发</h4>
+<p style="font-size:11px;color:var(--text-2);margin:0;line-height:1.5">AI 匹配达人<br>自动推送·追踪效果</p>
+</div>
+
+<span style="font-size:22px;color:var(--accent);display:flex;align-items:center;font-weight:700">→</span>
+
+<div class="card" style="padding:14px 12px;text-align:center;flex:1;min-width:130px">
+<span class="pill pill-accent" style="font-size:16px;padding:4px 10px">⑤</span>
+<h4 style="margin:8px 0 4px;font-size:15px">数据闭环</h4>
+<p style="font-size:11px;color:var(--text-2);margin:0;line-height:1.5">回收→分析→迭代<br>日循环持续提升</p>
+</div>
+
+</div>
+
+<div style="position:relative;margin-top:8px;height:60px">
+<svg width="100%" height="60" viewBox="0 0 900 60" preserveAspectRatio="none" style="position:absolute;top:0;left:0">
+  <path d="M800 4 L800 40 Q800 52 788 52 L520 52 Q508 52 508 40 L508 4" stroke="var(--accent)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <polygon points="508,4 514,10 502,10" fill="var(--accent)"/>
+</svg>
+<div style="position:absolute;top:46px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--accent);font-weight:600;white-space:nowrap">数据回流，优化模板与策略</div>
+</div>
+
+<div class="deck-footer"><span class="dim2">内容创建</span><span>10 / 27</span></div>
+
+<div class="notes">内容供应链全景图：从叙事框架到数据闭环，五个环节串联成AI驱动的自动化内容生产线。核心不是工具本身，而是“模板沉淀→批量生产→分发回收→迭代优化”的飞轮效应。</div>
+
+</section>
+
+<section class="slide" data-title="叙事框架">
+
+<button onclick="document.getElementById('prompt-narrative').style.display='flex'" style="position:absolute;top:16px;right:16px;z-index:100;background:var(--accent);color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:13px;cursor:pointer;font-weight:600">📋 模板提炼 Prompt</button>
+
+<p class="kicker">内容供应链 · ①</p>
+
+<h2 class="h2">AI 叙事框架</h2>
+
+<p class="lede" style="max-width:640px;margin-top:4px">从历史爆款反推模板 → 合规审查 → 多模态适配，文字·图片·视频全覆盖</p>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:10px">
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">① 反推</span>
+<div style="flex:1">
+<p style="margin:0 0 4px;font-size:14px;font-weight:600">从历史爆款中提炼模板</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">GPT-4o 分析高转化率的文字/图片/视频 → 提取共性结构（文案四段式、构图公式、脚本框架）+ 平台算法偏好 → 沉淀为可复用的模板库<br><span style="font-size:11px;color:var(--text-3)">共性结构：文案四段式 = 痛点→方案→背书→行动 &nbsp;|&nbsp; 构图公式 = 主图占比×场景×文字位×配色 &nbsp;|&nbsp; 脚本框架 = 开篇钩子→展示→说服→转化引导<br>平台偏好：Amazon 重关键词密度 &nbsp;|&nbsp; TikTok 重前3秒完播率 &nbsp;|&nbsp; 小红书重真实种草感+收藏率</span></p>
+</div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">② 合规审查</span>
+<div style="flex:1">
+<p style="margin:0 0 4px;font-size:14px;font-weight:600">生成前自动拦截风险</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">文字端检测违规词（极限词、医疗宣称、虚假促销）；图片/视频端检测敏感画面、侵权素材、平台违禁内容。对接各平台规则库，生成即过审</p>
+</div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">③ 多模态适配</span>
+<div style="flex:1">
+<p style="margin:0 0 4px;font-size:14px;font-weight:600">一套叙事，全渠道输出</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">一个品，一次叙事，针对不同平台偏好自动适配，品牌调性一致</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div id="prompt-narrative" onclick="this.style.display='none'" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:9999;align-items:center;justify-content:center">
+
+<div onclick="event.stopPropagation()" style="background:var(--bg);border-radius:12px;padding:28px 32px;max-width:750px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);position:relative">
+
+<button onclick="document.getElementById('prompt-narrative').style.display='none'" style="position:sticky;top:0;float:right;background:var(--bg-2);border:1px solid var(--line);border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer;color:var(--text-3);z-index:1">&times;</button>
+
+<h2 style="margin:0 0 16px;font-size:22px">📋 模板提炼 Prompt</h2>
+
+<pre style="white-space:pre;font-family:Consolas,'Courier New',monospace;font-size:13px;line-height:1.6;color:var(--text-1);background:var(--bg-2);padding:20px;border-radius:8px;overflow-x:auto;margin:0"># 内容模板提炼 · Prompt
+
+你是一个内容策略分析师。请基于输入的视频（或文字/图片素材），完成模板提炼与入库：
+
+【输入】
+- 一个高转化率的视频（提供口播文本 + 分镜描述 + 关键帧截图）
+- 该视频的历史效果数据（播放量、完播率、转化率、互动率）
+
+【分析任务】
+1. 结构拆解：识别视频的叙事节奏
+   - 开篇钩子：前 3 秒用了什么手法（痛点/悬念/反常识/强视觉）？
+   - 产品展示：如何演示核心卖点（对比/场景化/数据可视化）？
+   - 说服构建：用了什么信任元素（认证/好评/专家/KOL）？
+   - 转化引导：CTA 的位置、话术、紧迫感策略
+
+2. 模板提炼：将以上分析抽象为可复用的模板
+   - 脚本框架：每段的时长占比、话术模式、情绪曲线
+   - 视觉模板：构图规律、配色偏好、字幕风格
+   - 标注适用平台及平台偏好（Amazon / TikTok / 小红书 / Shopee）
+
+3. 向量化入库
+   - 模板输出为结构化 JSON（含框架 + 标签 + 平台偏好 + 效果基线）
+   - 生成文本 embedding（OpenAI text-embedding-3-small），写入向量数据库
+   - 标签体系：品类、风格、平台、时长、转化率区间
+
+【输出格式】
+JSON，每个字段含具体可执行的模板内容：
+
+{
+  "template_id": "uuid",
+  "type": "video",
+  "source_video": {
+    "title": "原始视频标题",
+    "duration": "28s",
+    "platform": "TikTok",
+    "metrics": {"views": 2100000, "completion_rate": 0.68, "conversion_rate": 0.092}
+  },
+  "framework": {
+    "hook": {
+      "duration_ratio": "18%",
+      "pattern": "场景痛点",
+      "transcript_template": "可复用的口播模板，{商品名}替换即可",
+      "visual_rule": "画面规则描述"
+    },
+    "showcase": {
+      "duration_ratio": "43%",
+      "pattern": "使用过程演示",
+      "transcript_template": "演示话术模板",
+      "visual_rule": "画面规则描述"
+    },
+    "persuasion": {
+      "duration_ratio": "21%",
+      "pattern": "数据+场景想象",
+      "transcript_template": "信任构建话术模板",
+      "visual_rule": "画面规则描述"
+    },
+    "cta": {
+      "duration_ratio": "18%",
+      "pattern": "限时福利",
+      "transcript_template": "转化引导话术模板",
+      "visual_rule": "画面规则描述"
+    }
+  },
+  "visual_template": {
+    "composition": "70% 产品画面, 20% 场景, 10% 文字弹窗",
+    "color_scheme": "配色偏好",
+    "subtitle_style": "字幕位置/字号/颜色",
+    "pace": "快节奏, 平均 2s/镜头"
+  },
+  "platform": ["TikTok"],
+  "platform_preference": {"TikTok": "该平台对应的算法偏好"},
+  "performance_baseline": {"avg_completion": 0.62, "avg_ctr": 0.08, "avg_conversion": 0.07},
+  "tags": ["痛点型", "便携", "小家电", "场景化", "快节奏"]
+}
+
+入库后，后续新品可通过向量相似度检索匹配最佳模板。</pre>
+
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">内容供应链</span><span>12 / 27</span></div>
+
+</section>
+
+<section class="slide" data-title="智能素材库">
+
+<p class="kicker">内容供应链 · ②</p>
+
+<h2 class="h2">AI 智能素材库</h2>
+
+<p class="lede" style="max-width:640px;margin-top:4px">自动分类标签，秒级检索，一键复用历史素材</p>
+
+<div class="grid g2 mt-m anim-stagger-list" data-anim-target style="gap:10px">
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">自动入库</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">图片/视频/文案上传即自动打标（CLIP 多模态识别 + GPT-4o 语义标签），按品类、风格、渠道、效果分库</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">智能检索</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">自然语言搜索（"去年618爆款红色连衣裙场景图"），RAG 向量检索 + 元数据过滤，秒级命中</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">一键复用</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">历史爆款素材一键换品复用，保留已验证的构图/配色/文案结构，新品快速获得成熟素材</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">版本管理</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">素材迭代自动记录版本，A/B 测试结果关联，优胜劣汰自动归档</p>
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">内容供应链</span><span>13 / 27</span></div>
+
+</section>
+
+<section class="slide" data-title="批量生产">
+
+<p class="kicker">内容供应链 · ③</p>
+
+<h2 class="h2">AI 批量生产与渲染</h2>
+
+<p class="lede" style="max-width:640px;margin-top:4px">文案 + 脚本 + 图文 + 视频，AI 规模化自动产出</p>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:10px">
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">文案</span>
+<div style="flex:1">
+<p style="margin:0 0 2px;font-size:14px;font-weight:600">匹配模板 → 填入商品 → 批量生成</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">向量检索匹配最优文案模板（GPT-4o + 模板引擎），自动填入商品信息 → 批量产出标题 20 个 + 详情页 5 版 + 多语言本地化，千品千面</p>
+</div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">图片</span>
+<div style="flex:1">
+<p style="margin:0 0 2px;font-size:14px;font-weight:600">选定构图模板 → 替换商品+场景 → 批量渲染</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">向量检索匹配最优视觉模板（构图×场景×配色×模特），ComfyUI 工作流自动抠图（SAM2）+ 场景融合（SDXL），多尺寸/多风格一键批量出图</p>
+</div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">视频</span>
+<div style="flex:1">
+<p style="margin:0 0 2px;font-size:14px;font-weight:600">选定脚本模板 → 口播+分镜+合成 → 流水线生成</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">向量检索匹配最优脚本框架（开篇钩子→展示→说服→转化引导），SVD 生成 360° 旋转 + CosyVoice AI 配音 + CapCut API 字幕叠加 + FFmpeg 合成，百条视频自动产出</p>
+</div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">多平台</span>
+<div style="flex:1">
+<p style="margin:0 0 2px;font-size:14px;font-weight:600">模板自带平台参数 → 一键输出全渠道规格</p>
+<p style="margin:0;font-size:13px;color:var(--text-2)">模板中已存储对应平台的规格偏好（尺寸/时长/字幕位置/关键词密度），一次生产自动适配 Amazon / TikTok / Shopee / Instagram / 小红书全渠道</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">内容供应链</span><span>14 / 27</span></div>
+
+</section>
+
+<section class="slide" data-title="KOC分发">
+
+<p class="kicker">内容供应链 · ④</p>
+
+<h2 class="h2">KOC 矩阵智能分发</h2>
+
+<p class="lede" style="max-width:640px;margin-top:4px">AI 匹配达人，自动推送内容，追踪投放效果</p>
+
+<div class="grid g2 mt-m anim-stagger-list" data-anim-target style="gap:10px">
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">达人匹配</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">AI 分析 KOC 粉丝画像、内容风格、历史带货数据，自动匹配最适合的达人和素材组合</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">批量分发</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">一键推送至多个 KOC，附带定制化发布文案和使用指导，降低沟通成本</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">效果追踪</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">实时监控每个 KOC 的曝光、互动、转化数据，自动生成达人效果排行榜</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<h4 style="margin:0 0 6px">预算优化</h4>
+<p style="margin:0;font-size:13px;color:var(--text-2)">AI 动态分配预算，高 ROI 达人自动加投，低效达人自动停投或换品</p>
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">内容供应链</span><span>15 / 27</span></div>
+
+</section>
+
+<section class="slide" data-title="数据闭环">
+
+<p class="kicker">内容供应链 · ⑤</p>
+
+<h2 class="h2">数据驱动日循环</h2>
+
+<p class="lede" style="max-width:640px;margin-top:4px">回收 → 分析 → 迭代，形成每日闭环，持续提升效果</p>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:10px">
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">数据回收</span>
+<div style="flex:1"><p style="margin:0;font-size:13px">全链路埋点：曝光 → 点击 → 加购，每个素材独立追踪 ID，前置数据（完播率/互动率/点击量）全自动回收，成交归因需手动补全</p></div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">智能分析</span>
+<div style="flex:1"><p style="margin:0;font-size:13px">GPT-4o 解读前置数据（完播率/互动率/点击量），自动输出日报：哪些模板大概率表现好、哪些需要优化、哪些建议淘汰</p></div>
+</div>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<div class="row" style="align-items:flex-start;gap:12px">
+<span class="pill pill-accent" style="flex-shrink:0">策略迭代</span>
+<div style="flex:1"><p style="margin:0;font-size:13px">高互动模板自动加权推荐，低效模板标注建议淘汰；反馈至 ③ 批量生产环节，次日素材自动优化</p></div>
+</div>
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">内容供应链</span><span>16 / 27</span></div>
+
+</section>
+
+<section class="slide" data-title="自动化现状">
+
+<p class="kicker">内容供应链 · 自动化现状</p>
+
+<h2 class="h2">哪些能全自动？哪些还不行？</h2>
+
+<div class="grid g2 mt-m" style="gap:10px">
+
+<div class="card card-soft" style="padding:14px 18px;background:var(--good-bg);border:1px solid var(--good)">
+<h4 style="margin:0 0 6px;color:var(--good)">⚡ 已可全自动</h4>
+
+<div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+
+<p style="margin:0 0 6px"><b>① 叙事框架</b><br>→ GPT-4o 分析爆款 → 提炼模板 → embedding 入库<br><span style="color:var(--text-3)">🛠️ GPT-4o + OpenAI Embedding + Qdrant/Milvus</span></p>
+
+<p style="margin:0 0 6px"><b>② 素材库</b><br>→ CLIP 自动打标 + 向量检索 + 版本管理<br><span style="color:var(--text-3)">🛠️ CLIP + Qdrant + MinIO</span></p>
+
+<p style="margin:0"><b>③ 批量生产</b><br>→ 选模板 → 填商品 → 渲染 全流程自动化<br><span style="color:var(--text-3)">🛠️ ComfyUI + SAM2 + SDXL + CosyVoice</span></p>
+
+</div>
+</div>
+
+<div class="card card-soft" style="padding:14px 18px;background:var(--warn-bg, #fff8e1);border:1px solid var(--warn, #f0ad4e)">
+<h4 style="margin:0 0 6px;color:var(--warn, #e67e22)">✋ 仍需人工</h4>
+
+<div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+
+<p style="margin:0 0 6px"><b>④ KOC 分发</b><br>→ 达人匹配可辅助，但沟通/合同/寄样只能人工<br><span style="color:var(--text-3)">❌ 原因：平台不开放达人数据 API，合规风险需人判断</span></p>
+
+<p style="margin:0"><b>⑤ 数据闭环</b><br>→ 前置数据自动，成交归因无法全自动<br><span style="color:var(--text-3)">❌ 原因：同品多素材归因不透明，跨平台链路断裂</span></p>
+
+</div>
+</div>
+
+</div>
+
+<div style="margin-top:12px;font-size:12px;color:var(--text-3);text-align:center">
+①②③ 可用 Vibe coding 快速搭建 MVP &nbsp;|&nbsp; ④⑤ 最多做到「半自动 + 人辅助」
+</div>
+
+<div class="deck-footer"><span class="dim2">内容供应链</span><span>17 / 27</span></div>
+
+</section>
+
+<section class="slide tc center" data-title="供应链">
+
+<div style="max-width:780px;margin:0 auto">
+
+<p class="kicker anim-fade-down" data-anim="fade-down">Part · 03</p>
+
+<h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:96px"><span class="gradient-text">供应链</span></h1>
+
+<div class="divider-accent" style="margin:24px auto"></div>
+
+<p class="lede" style="margin:0 auto">AI 预测库存与需求优化 — 让库存周转飞起来</p>
+
+</div>
+
+<div class="notes">第三部分：供应链。在电商里，库存就是现金流。卖得好的品缺货是灾难，卖不动的品积压也是灾难。AI的核心价值就是让预测更准、补货更聪明。</div>
+
+</section>
+
+<section class="slide" data-title="需求预测引擎">
+
+<p class="kicker">01 · 需求预测引擎</p>
+
+<h2 class="h2">多因素融合，让预测不再是"拍脑袋"</h2>
+
+<div class="grid g1 mt-m anim-stagger-list" data-anim-target style="gap:12px">
+
+<div class="card" style="padding:16px 20px">
+
+<div class="grid g2" style="gap:8px;font-size:12px">
+<div>
+<p style="margin:0 0 4px;font-weight:700;color:var(--accent)">💡 TFT · 多因素预测模型</p>
+<p style="margin:0 0 6px;color:var(--text-3);font-size:11px">① 根据：Google/Oxford 2021 论文，M5 时序预测竞赛前列，自带可解释性</p>
+<p style="margin:0 0 2px"><b>② 输入</b></p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">历史销量（店铺后台）+ 促销标签/折扣深度（商家后台活动配置）+ 城市天气（和风天气/OpenWeatherMap API）+ 节假日/大促日（人工维护大促日历表）+ 社媒搜索指数（Google Trends / 蝉妈妈 / 百度指数）</p>
+<p style="margin:0 0 2px"><b>③ 工具</b></p>
+<p style="margin:0 0 2px;color:var(--text-2);font-size:11px;font-weight:600">TFT 算法（Temporal Fusion Transformer）</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">⚡ 零代码：AWS Forecast | Google Vertex AI | 阿里云 PAI</p>
+<p style="margin:0 0 2px"><b>④ 输出</b></p>
+<p style="margin:0;color:var(--text-2);font-size:11px">未来30天日级销量预测表</p>
+</div>
+
+<div>
+<p style="margin:0 0 4px;font-weight:700;color:var(--accent)">📊 分层预测 · 量级分策略</p>
+<p style="margin:0 0 6px;color:var(--text-3);font-size:11px">① 根据：零售行业通行做法，不同量级商品统计特性不同，需分层建模</p>
+<p style="margin:0 0 2px"><b>② 输入</b></p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">商品日均销量分层（店铺后台订单数据）：爆款（>100件/天）、腰部（10-100）、长尾（<10）</p>
+<p style="margin:0 0 2px"><b>③ 工具</b></p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">爆款：DeepAR | 腰部：LightGBM | 长尾：Croston 间歇加权评分公式</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">⚡ 零代码：DeepAR → AWS Forecast &nbsp;|&nbsp; LightGBM → 阿里云 PAI / Azure AutoML &nbsp;|&nbsp; Croston → 需自写</p>
+<p style="margin:0 0 6px;color:var(--text-3);font-size:10px">均为专用时序预测算法，非语言大模型</p>
+<p style="margin:0 0 2px"><b>④ 输出</b></p>
+<p style="margin:0;color:var(--text-2);font-size:11px">爆款未来30天销量预测 / 腰部未来30天销量预测 / 长尾未来30天销量预测</p>
+</div>
+</div>
+
+<div class="card" style="padding:14px 20px">
+<div class="grid g2" style="gap:8px;font-size:11px">
+<div>
+<p style="margin:0 0 4px;font-weight:700;color:var(--accent)">⚡ TFT · 算力 & 成本</p>
+<p style="margin:0;color:var(--text-2);line-height:1.7">算力：高 — 全量 SKU 训练，需 GPU<br>成本：贵 — 按训练时长 + 调用次数计费<br>适合：SKU 少、数据丰富、预算充足</p>
+</div>
+<div>
+<p style="margin:0 0 4px;font-weight:700;color:var(--accent)">💰 分层 · 算力 & 成本</p>
+<p style="margin:0;color:var(--text-2);line-height:1.7">算力：低 — 仅爆款用 DeepAR，其余轻量<br>成本：省 — 总成本约 TFT 的 20-30%<br>适合：SKU 多、长尾占比大、控预算</p>
+</div>
+</div>
+</div>
+</div>
+
+<div class="deck-footer"><span class="dim2">供应链</span><span>17 / 27</span></div>
+
+<div class="notes">左边TFT是单品精细预测，右边分层是全店策略。爆款用TFT日级精算，腰部用LightGBM周级够用，长尾用Croston判断会不会卖。好钢用在刀刃上——全店1000个SKU不用都上TFT。——它能同时处理销量、促销、天气、节假日等多种因素，输出未来30天的预测和置信区间。分层预测的关键：爆款要日粒度精细管理，长尾商品用间歇加权评分公式，不要一刀切。</div>
+
+</section>
+
+<section class="slide" data-title="智能库存管理">
+
+<p class="kicker">02 · 智能库存管理</p>
+
+<h2 class="h2">安全库存 + 多仓调拨 + 滞销预警</h2>
+
+<div class="mt-l anim-stagger-list" data-anim-target style="display:flex;flex-direction:column;gap:14px">
+
+<div class="grid g2" style="gap:10px;font-size:12px">
+
+<div class="card" style="padding:16px 20px">
+<p style="margin:0 0 6px;font-weight:700;color:var(--accent);font-size:14px">📦 安全库存动态计算</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">① 输入</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">需求预测（上一页 TFT 输出）+ 供应商历史交货天数 + 目标服务水平 98%</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">② 模型</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">Monte Carlo 仿真：同时随机抽取历史需求 + 历史交货天数，仿真一万次 → 计算不同库存水平下的断货概率<br><span style="font-size:10px;color:var(--text-3)">⚡ @RISK / Oracle Crystal Ball（零代码）</span></p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">③ 输出</p>
+<p style="margin:0;color:var(--text-2);font-size:11px">98% 不断货所需的最小安全库存量</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<p style="margin:0 0 6px;font-weight:700;color:var(--accent);font-size:14px">🚚 多仓智能调拨</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">① 输入</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">各仓当前库存 + 各区域需求预测（← 上一页 TFT 输出）+ 仓间运输成本</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">② 模型</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">整数规划（Google OR-Tools）求解：运输成本 + 持有成本 + 缺货损失最小化<br><span style="font-size:10px;color:var(--text-3)">⚡ Gurobi / CPLEX（企业版）</span></p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">③ 输出</p>
+<p style="margin:0;color:var(--text-2);font-size:11px">最优调拨方案：从哪仓调到哪仓、调多少</p>
+</div>
+
+</div>
+
+<div class="grid g2" style="gap:10px;font-size:12px">
+
+<div class="card" style="padding:16px 20px">
+<p style="margin:0 0 6px;font-weight:700;color:var(--accent);font-size:14px">🚨 滞销预警</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">① 输入</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">商品库龄（入仓日期）+ 近30天销量趋势（店铺后台）+ 品类利润率（渠道毛利率）</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">② 模型</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">规则引擎综合判断：库龄(30/60/90天) + 销量趋势(是否还在走量) + 利润率(薄利/厚利) → 黄/橙/红三级预警<br><span style="font-size:10px;color:var(--text-3)">⚡ 旺店通 / 聚水潭（ERP 内置）</span></p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">③ 输出</p>
+<p style="margin:0;color:var(--text-2);font-size:11px">预警等级</p>
+</div>
+
+<div class="card" style="padding:16px 20px">
+<p style="margin:0 0 6px;font-weight:700;color:var(--accent);font-size:14px">📉 自动清仓</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">① 输入</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">预警等级 + 商品信息（品类/售价/利润率/当前库存）</p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">② 模型</p>
+<p style="margin:0 0 6px;color:var(--text-2);font-size:11px">规则引擎匹配清仓策略库 → GPT-4o 辅助生成执行方案<br><span style="font-size:10px;color:var(--text-3)">策略库由运营维护 &nbsp;|&nbsp; ⚡ GPT-4o（OpenAI API / Azure OpenAI）只做方案生成和文案撰写</span></p>
+<p style="margin:0 0 2px;color:var(--text-3);font-size:11px">③ 输出</p>
+<p style="margin:0;color:var(--text-2);font-size:11px">折扣阶梯 / 捆绑搭配建议 / 推荐清仓渠道</p>
+</div>
+
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">供应链</span><span>20 / 27</span></div>
+
+<div class="notes">库存管理的四个核心：Monte Carlo仿真定安全库存；整数规划解决多仓调拨；规则引擎做滞销预警；GPT-4o辅助出清仓方案。</div>
+
+</section>
+
+<section class="slide" data-title="供应链工具现状">
+
+<p class="kicker">供应链 · 工具现状</p>
+
+<h2 class="h2">有没有现成的全自动工具？</h2>
+
+<div class="grid g2 mt-m" style="gap:10px">
+
+<div class="card" style="padding:14px 18px;background:var(--good-bg);border:1px solid var(--good)">
+<h4 style="margin:0 0 6px;color:var(--good)">✅ 大型品牌/平台（已打通）</h4>
+<div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+
+<p style="margin:0 0 6px"><b>SAP</b><span style="color:var(--text-3);font-size:10px">（厂商）</span> · <b>S/4HANA + IBP</b><span style="color:var(--text-3);font-size:10px">（产品）</span><br>安全库存（自研 Monte Carlo）+ 多仓调拨（自研整数规划）+ 库龄预警（规则引擎）<br><span style="color:var(--text-3);font-size:10px">三模块内部 API 打通，百万起/年，6~18个月部署</span></p>
+
+<p style="margin:0 0 6px"><b>Microsoft</b><span style="color:var(--text-3);font-size:10px">（厂商）</span> · <b>Dynamics 365 SCM</b><span style="color:var(--text-3);font-size:10px">（产品）</span><br>同上，Azure 云原生，几十万起/年</p>
+
+</div>
+</div>
+
+<div class="card" style="padding:14px 18px">
+<h4 style="margin:0 0 6px;color:var(--warn, #e67e22)">⚠️ 中小卖家（功能一体，算法简化）</h4>
+<div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+
+<p style="margin:0 0 6px"><b>旺店通 / 聚水潭 / 慧策</b><br>三步都有，但算法精度不同：<br><span style="color:var(--text-3);font-size:10px">安全库存 = 日均销量 × 交期 × 系数（非 Monte Carlo）<br>调拨 = 人工规则（非整数规划）<br>滔销预警 = 规则引擎（能做）</span></p>
+
+<p style="margin:0"><b>📉 自动清仓</b><br>尚无现成 AI 产品，需自拼 GPT-4o + 规则引擎</p>
+
+</div>
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">供应链</span><span>21 / 27</span></div>
+
+</section>
+
+<section class="slide tc center" data-title="AI智能客服">
+
+<div style="max-width:780px;margin:0 auto">
+
+<p class="kicker anim-fade-down" data-anim="fade-down">Part · 04</p>
+
+<h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:96px">AI <span class="gradient-text">智能客服</span></h1>
+
+<div class="divider-accent" style="margin:24px auto"></div>
+
+<p class="lede" style="margin:0 auto">全天候自动化服务 — 让每个客户都被"懂"</p>
+
+</div>
+
+<div class="notes">第四部分：AI智能客服。不是传统的关键词匹配机器人，是基于大语言模型的真正对话引擎。理解上下文、识别意图、调用工具、多模态交互，7×24小时在线。</div>
+
+</section>
+
+<section class="slide" data-title="多轮对话引擎">
+
+<p class="kicker">01 · 技术架构</p>
+
+<h2 class="h2">从"关键词匹配"到"📋大模型对话引擎"</h2>
+
+<div class="mt-m" style="display:flex;align-items:stretch;gap:6px">
+
+<div class="card" style="flex:1;text-align:center;padding:14px 8px;min-width:0">
+<div style="font-size:28px;margin-bottom:4px">📥</div>
+<div style="font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:2px">多模态输入</div>
+<div style="font-size:10px;color:var(--text-3);line-height:1.4">文字 / 语音<br>图片</div>
+<div style="font-size:10px;color:var(--text-3);margin-top:3px">Whisper · GPT-4V</div>
+</div>
+
+<div style="display:flex;align-items:center;color:var(--accent);font-size:20px;font-weight:700;flex-shrink:0">→</div>
+
+<div class="card" style="flex:1;text-align:center;padding:14px 8px;min-width:0">
+<div style="font-size:28px;margin-bottom:4px">🏷️</div>
+<div style="font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:2px">意图识别</div>
+<div style="font-size:10px;color:var(--text-3);line-height:1.4">26类意图分类<br>自动抽取关键信息</div>
+<div style="font-size:10px;color:var(--text-3);margin-top:3px">订单号·商品名·日期·金额</div>
+</div>
+
+<div style="display:flex;align-items:center;color:var(--accent);font-size:20px;font-weight:700;flex-shrink:0">→</div>
+
+<div class="card" style="flex:1;text-align:center;padding:14px 8px;min-width:0">
+<div style="font-size:28px;margin-bottom:4px">🔍</div>
+<div style="font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:2px">知识检索</div>
+<div style="font-size:10px;color:var(--text-3);line-height:1.4">语义向量匹配<br>知识库精准召回</div>
+<div style="font-size:10px;color:var(--text-3);margin-top:3px">BGE-M3 · RAG</div>
+</div>
+
+<div style="display:flex;align-items:center;color:var(--accent);font-size:20px;font-weight:700;flex-shrink:0">→</div>
+
+<div class="card" style="flex:1;text-align:center;padding:14px 8px;min-width:0">
+<div style="font-size:28px;margin-bottom:4px">🧠</div>
+<div style="font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:2px">大模型推理</div>
+<div style="font-size:10px;color:var(--text-3);line-height:1.4">生成回答<br>调用业务系统</div>
+<div style="font-size:10px;color:var(--text-3);margin-top:3px">GPT-4o · Function Calling</div>
+</div>
+
+<div style="display:flex;align-items:center;color:var(--accent);font-size:20px;font-weight:700;flex-shrink:0">→</div>
+
+<div class="card" style="flex:1;text-align:center;padding:14px 8px;min-width:0">
+<div style="font-size:28px;margin-bottom:4px">📤</div>
+<div style="font-size:11px;font-weight:700;color:var(--text-1);margin-bottom:2px">多模态回复</div>
+<div style="font-size:10px;color:var(--text-3);line-height:1.4">文字 / 语音<br>最终确认</div>
+<div style="font-size:10px;color:var(--text-3);margin-top:3px">CosyVoice TTS</div>
+</div>
+
+</div>
+
+</section>
+
+<section class="slide" data-title="智能客服工具">
+
+<p class="kicker">智能客服 · 工具现状</p>
+
+<h2 class="h2">现成的 AI 客服怎么选？</h2>
+
+<div class="grid g2 mt-m" style="gap:10px">
+
+<div class="card" style="padding:14px 18px;background:var(--good-bg);border:1px solid var(--good)">
+<h4 style="margin:0 0 6px;color:var(--good)">✅ 大型品牌/平台</h4>
+<div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+
+<p style="margin:0 0 6px"><b>Salesforce</b><span style="color:var(--text-3);font-size:10px">（厂商）</span> · <b>Einstein GPT</b><span style="color:var(--text-3);font-size:10px">（产品）</span><br>CRM 内生 AI 客服，自动化工单、意图路由，年费百万起</p>
+
+<p style="margin:0 0 6px"><b>Zendesk</b><span style="color:var(--text-3);font-size:10px">（厂商）</span> · <b>Zendesk AI</b><span style="color:var(--text-3);font-size:10px">（产品）</span><br>智能工单分类 + 自动回复 + 知识库建议，年费几十万起</p>
+
+<p style="margin:0"><b>Intercom</b><span style="color:var(--text-3);font-size:10px">（厂商）</span> · <b>Fin AI Agent</b><span style="color:var(--text-3);font-size:10px">（产品）</span><br>GPT-4o 驱动，直接回答用户问题，无需人工配置话术</p>
+
+</div>
+</div>
+
+<div class="card" style="padding:14px 18px">
+<h4 style="margin:0 0 6px;color:var(--warn, #e67e22)">⚠️ 中小卖家（国内电商）</h4>
+<div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+
+<p style="margin:0 0 6px"><b>店小蜜</b>（阿里官方 · 淘宝/天猫内置）<br>关键词匹配 + LLM 增强，免费基础版，专业版数千/年</p>
+
+<p style="margin:0 0 6px"><b>智齿科技</b> · 智能客服机器人<br>多平台接入，意图识别 + 知识库，数千~数万/年</p>
+
+<p style="margin:0"><b>网易七鱼</b> · 在线客服 + AI 机器人<br>全渠道覆盖，大模型问答，数万/年起</p>
+
+</div>
+</div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">AI智能客服</span><span>23 / 25</span></div>
+
+</section>
+
+<section class="slide center tc" data-title="AI客服案例">
+
+<div style="max-width:800px;margin:0 auto">
+
+<p class="kicker" style="color:var(--accent-2)">💡 案例：某电商平台</p>
+
+<div class="row mt-l" style="justify-content:center;gap:48px;align-items:baseline">
+
+<div><div class="h1 gradient-text" style="font-size:110px;line-height:1">85<span style="font-size:36px">%</span></div><p class="dim">AI 客服解决率</p></div>
+
+<div><div class="h1" style="font-size:110px;line-height:1;color:var(--good)">-60<span style="font-size:36px">%</span></div><p class="dim">人工咨询量下降</p></div>
+
+</div>
+
+<p class="lede mt-l" style="margin:16px auto 0">GPT-4o 多轮对话 + RAG 知识库 + 26 类意图识别 → <b style="color:var(--accent-2)">7×24 小时无间断服务</b></p>
+
+<div class="row mt-m" style="justify-content:center;gap:24px"><span class="pill" style="font-size:12px">平均响应 < 3 秒</span><span class="pill pill-accent" style="font-size:12px">50+ 语种覆盖</span><span class="pill" style="font-size:12px">用户满意度 4.2/5</span></div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">AI智能客服</span><span>25 / 27</span></div>
+
+<div class="notes">85%解决率意味着只有15%的问题需要人工介入。关键数据：响应时间不到3秒，传统人工客服平均响应45秒。50+语种覆盖让一个客服团队服务全球。用户满意度4.2/5，说明AI客服不是"能用"，而是"好用"。</div>
+
+</section>
+
+<section class="slide center tc" data-title="总结">
+
+<div style="max-width:900px">
+
+<p class="kicker">Summary · 总结</p>
+
+<h1 class="h1 anim-rise-in" data-anim="rise-in" style="font-size:64px">AI 赋能电商<br><span class="gradient-text">四大模块闭环</span></h1>
+
+<div class="mt-l anim-stagger-list" data-anim-target style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap">
+
+<span class="pill pill-accent" style="font-size:15px;padding:10px 18px">💡 产品研发 → 选对品</span>
+
+<span style="font-size:18px;color:var(--text-3);display:flex;align-items:center">→</span>
+
+<span class="pill pill-accent" style="font-size:15px;padding:10px 18px">💡 内容创建 → 卖相好</span>
+
+<span style="font-size:18px;color:var(--text-3);display:flex;align-items:center">→</span>
+
+<span class="pill pill-accent" style="font-size:15px;padding:10px 18px">💡 供应链 → 不断货</span>
+
+<span style="font-size:18px;color:var(--text-3);display:flex;align-items:center">→</span>
+
+<span class="pill pill-accent" style="font-size:15px;padding:10px 18px">💡 智能客服 → 服务好</span>
+
+</div>
+
+<div class="divider-accent" style="margin:28px auto"></div>
+
+<p class="lede" style="margin:16px auto">AI 不是替代人，而是让团队聚焦高价值决策<br><span class="dim" style="font-size:15px">机器做执行与预测，人做判断与创新</span></p>
+
+<div class="card card-outline mt-l" style="max-width:560px;margin:20px auto 0;border-color:var(--accent-2)"><h4 style="color:var(--accent-2);margin:0 0 6px">💡 未来趋势</h4><p class="dim" style="font-size:13px;margin:0">AI Agent 自主运营店铺 — 选品、定价、投放、客服、补货全链路多 Agent 协作，人类转为"监督者 + 策略制定者"</p></div>
+
+</div>
+
+<div class="deck-footer"><span class="dim2">总结</span><span>26 / 27</span></div>
+
+<div class="notes">总结一下：四大模块形成完整闭环——选品决定卖什么，内容决定怎么卖，供应链保证卖得好，客服保证卖得久。AI不是替代人，是把人从重复执行中解放出来，专注在策略和创新上。未来的方向是AI Agent自主运营——多个AI Agent协作管理整个店铺，人类只需要做监督和策略。</div>
+
+</section>
+
+<section class="slide center tc" data-title="Thanks">
+
+<div>
+
+<h1 class="h1 anim-fade-up" data-anim="fade-up" style="font-size:140px;line-height:1"><span class="gradient-text">Thanks</span></h1>
+
+<p class="lede" style="margin:18px auto 0">电商 AI 赋能 · 从数据驱动到智能决策</p>
+
+<div class="row mt-l" style="justify-content:center;gap:32px"><div class="dim">产品研发 · 内容创建 · 供应链 · 智能客服</div></div>
+
+<p class="dim mt-xl" style="font-size:14px">Q&A</p>
+
+</div>
+
+<div class="notes">谢谢大家。现在进入Q&A环节。有任何问题欢迎交流。</div>
+
+</section>
+
+</div>
+
+<script>
+/* html-ppt :: runtime.js
+ * Keyboard-driven deck runtime. Zero dependencies.
+ *
+ * Features:
+ *   ← → / space / PgUp PgDn / Home End  navigation
+ *   F  fullscreen
+ *   S  presenter mode (opens a NEW WINDOW with current/next slide preview + notes + timer)
+ *       The original window stays as audience view, synced via BroadcastChannel.
+ *       Slide previews use CSS transform:scale() at design resolution for pixel-perfect layout.
+ *   N  quick notes overlay (bottom drawer)
+ *   O  slide overview grid
+ *   T  cycle themes (reads data-themes on <html> or <body>)
+ *   A  cycle demo animation on current slide
+ *   URL hash #/N  deep-link to slide N (1-based)
+ *   Progress bar auto-managed
+ */
+(function () {
+  'use strict';
+
+  const ANIMS = ['fade-up','fade-down','fade-left','fade-right','rise-in','drop-in',
+    'zoom-pop','blur-in','glitch-in','typewriter','neon-glow','shimmer-sweep',
+    'gradient-flow','stagger-list','counter-up','path-draw','parallax-tilt',
+    'card-flip-3d','cube-rotate-3d','page-turn-3d','perspective-zoom',
+    'marquee-scroll','kenburns','confetti-burst','spotlight','morph-shape','ripple-reveal'];
+
+  function ready(fn){ if(document.readyState!='loading')fn(); else document.addEventListener('DOMContentLoaded',fn);}
+
+  /* ========== Parse URL for preview-only mode ==========
+   * When loaded as iframe.src = "index.html?preview=3", runtime enters a
+   * locked single-slide mode: only slide N is visible, no chrome, no keys,
+   * no hash updates. This is how the presenter window shows pixel-perfect
+   * previews — by loading the actual deck file in an iframe and telling it
+   * to display only a specific slide.
+   */
+  function getPreviewIdx() {
+    const m = /[?&]preview=(\d+)/.exec(location.search || '');
+    return m ? parseInt(m[1], 10) - 1 : -1;
+  }
+
+  ready(function () {
+    const deck = document.querySelector('.deck');
+    if (!deck) return;
+    const slides = Array.from(deck.querySelectorAll('.slide'));
+    if (!slides.length) return;
+
+    const previewOnlyIdx = getPreviewIdx();
+    const isPreviewMode = previewOnlyIdx >= 0 && previewOnlyIdx < slides.length;
+
+    /* ===== Preview-only mode: show one slide, hide everything else ===== */
+    if (isPreviewMode) {
+      function showSlide(i) {
+        slides.forEach((s, j) => {
+          const active = (j === i);
+          s.classList.toggle('is-active', active);
+          s.style.display = active ? '' : 'none';
+          if (active) {
+            s.style.opacity = '1';
+            s.style.transform = 'none';
+            s.style.pointerEvents = 'auto';
+          }
+        });
+      }
+      showSlide(previewOnlyIdx);
+      /* Hide chrome that the presenter shouldn't see in preview */
+      const hideSel = '.progress-bar, .notes-overlay, .overview, .notes, aside.notes, .speaker-notes';
+      document.querySelectorAll(hideSel).forEach(el => { el.style.display = 'none'; });
+      document.documentElement.setAttribute('data-preview', '1');
+      document.body.setAttribute('data-preview', '1');
+      /* Auto-detect theme base path for theme switching in preview mode */
+      function getPreviewThemeBase() {
+        const base = document.documentElement.getAttribute('data-theme-base');
+        if (base) return base;
+        const tl = document.getElementById('theme-link');
+        if (tl) {
+          const raw = tl.getAttribute('href') || '';
+          const ls = raw.lastIndexOf('/');
+          if (ls >= 0) return raw.substring(0, ls + 1);
+        }
+        return 'assets/themes/';
+      }
+      const previewThemeBase = getPreviewThemeBase();
+
+      /* Listen for postMessage from parent presenter window:
+       *  - preview-goto: switch visible slide WITHOUT reloading
+       *  - preview-theme: switch theme CSS link to match audience window */
+      window.addEventListener('message', function(e) {
+        if (!e.data) return;
+        if (e.data.type === 'preview-goto') {
+          const n = parseInt(e.data.idx, 10);
+          if (n >= 0 && n < slides.length) showSlide(n);
+        } else if (e.data.type === 'preview-theme' && e.data.name) {
+          let link = document.getElementById('theme-link');
+          if (!link) {
+            link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.id = 'theme-link';
+            document.head.appendChild(link);
+          }
+          link.href = previewThemeBase + e.data.name + '.css';
+          document.documentElement.setAttribute('data-theme', e.data.name);
+        }
+      });
+      /* Signal to parent that preview iframe is ready */
+      try { window.parent && window.parent.postMessage({ type: 'preview-ready' }, '*'); } catch(e) {}
+      return;
+    }
+
+    let idx = 0;
+    const total = slides.length;
+
+    /* ===== BroadcastChannel for presenter sync ===== */
+    const CHANNEL_NAME = 'html-ppt-presenter-' + location.pathname;
+    let bc;
+    try { bc = new BroadcastChannel(CHANNEL_NAME); } catch(e) { bc = null; }
+
+    // Are we running inside the presenter popup? (legacy flag, now unused)
+    const isPresenterWindow = false;
+
+    /* ===== progress bar ===== */
+    let bar = document.querySelector('.progress-bar');
+    if (!bar) {
+      bar = document.createElement('div');
+      bar.className = 'progress-bar';
+      bar.innerHTML = '<span></span>';
+      document.body.appendChild(bar);
+    }
+    const barFill = bar.querySelector('span');
+
+    /* ===== notes overlay (N key) ===== */
+    let notes = document.querySelector('.notes-overlay');
+    if (!notes) {
+      notes = document.createElement('div');
+      notes.className = 'notes-overlay';
+      document.body.appendChild(notes);
+    }
+
+    /* ===== overview grid (O key) ===== */
+    let overview = document.querySelector('.overview');
+    if (!overview) {
+      overview = document.createElement('div');
+      overview.className = 'overview';
+      slides.forEach((s, i) => {
+        const t = document.createElement('div');
+        t.className = 'thumb';
+        // Force 16:9 aspect ratio robustly
+        t.style.padding = '0 0 56.25% 0';
+        t.style.height = '0';
+        t.style.position = 'relative';
+        t.style.overflow = 'hidden';
+
+        const title = s.getAttribute('data-title') ||
+          (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1));
+        
+        // Create a container for the mini-slide
+        const mini = document.createElement('div');
+        mini.className = 'mini-slide';
+        mini.style.position = 'absolute';
+        mini.style.top = '0';
+        mini.style.left = '0';
+        mini.style.width = '1920px';
+        mini.style.height = '1080px';
+        mini.style.transformOrigin = 'top left';
+        mini.style.pointerEvents = 'none';
+        mini.style.background = 'var(--bg)';
+        
+        // Clone the slide content
+        const clone = s.cloneNode(true);
+        clone.className = 'slide is-active'; // force active styles
+        clone.style.position = 'absolute';
+        clone.style.inset = '0';
+        clone.style.transform = 'none';
+        clone.style.opacity = '1';
+        clone.style.padding = '72px 96px'; // ensure padding is kept
+        
+        mini.appendChild(clone);
+        t.appendChild(mini);
+
+        // Add the number and title overlay
+        const overlay = document.createElement('div');
+        overlay.style.position = 'absolute';
+        overlay.style.inset = '0';
+        overlay.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 40%, transparent 60%, rgba(0,0,0,0.8) 100%)';
+        overlay.style.color = '#fff';
+        overlay.style.zIndex = '10';
+        overlay.style.pointerEvents = 'none';
+        
+        const n = document.createElement('div');
+        n.className = 'n';
+        n.textContent = i + 1;
+        n.style.position = 'absolute';
+        n.style.top = '12px';
+        n.style.left = '16px';
+        n.style.fontWeight = '700';
+        n.style.fontSize = '16px';
+        n.style.color = '#fff';
+        n.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+        
+        const text = document.createElement('div');
+        text.className = 't';
+        text.textContent = title.trim().slice(0,80);
+        text.style.position = 'absolute';
+        text.style.bottom = '12px';
+        text.style.left = '16px';
+        text.style.right = '16px';
+        text.style.fontWeight = '600';
+        text.style.fontSize = '14px';
+        text.style.color = '#fff';
+        text.style.textShadow = '0 1px 4px rgba(0,0,0,0.8)';
+        
+        overlay.appendChild(n);
+        overlay.appendChild(text);
+        t.appendChild(overlay);
+
+        t.addEventListener('click', () => { go(i); toggleOverview(false); });
+        overview.appendChild(t);
+      });
+      document.body.appendChild(overview);
+    }
+
+    /* ===== navigation ===== */
+    function go(n, fromRemote){
+      n = Math.max(0, Math.min(total-1, n));
+      slides.forEach((s,i) => {
+        s.classList.toggle('is-active', i===n);
+        s.classList.toggle('is-prev', i<n);
+      });
+      idx = n;
+      barFill.style.width = ((n+1)/total*100)+'%';
+      const numEl = document.querySelector('.slide-number');
+      if (numEl) { numEl.setAttribute('data-current', n+1); numEl.setAttribute('data-total', total); }
+
+      // notes (bottom overlay)
+      const note = slides[n].querySelector('.notes, aside.notes, .speaker-notes');
+      notes.innerHTML = note ? note.innerHTML : '';
+
+      // hash
+      const hashTarget = '#/'+(n+1);
+      if (location.hash !== hashTarget && !isPresenterWindow) {
+        history.replaceState(null,'', hashTarget);
+      }
+
+      // re-trigger entry animations
+      slides[n].querySelectorAll('[data-anim]').forEach(el => {
+        const a = el.getAttribute('data-anim');
+        el.classList.remove('anim-'+a);
+        void el.offsetWidth;
+        el.classList.add('anim-'+a);
+      });
+
+      // counter-up
+      slides[n].querySelectorAll('.counter').forEach(el => {
+        const target = parseFloat(el.getAttribute('data-to')||el.textContent);
+        const dur = parseInt(el.getAttribute('data-dur')||'1200',10);
+        const start = performance.now();
+        const from = 0;
+        function tick(now){
+          const t = Math.min(1,(now-start)/dur);
+          const v = from + (target-from)*(1-Math.pow(1-t,3));
+          el.textContent = (target % 1 === 0) ? Math.round(v) : v.toFixed(1);
+          if (t<1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+
+      // Broadcast to other window (audience ↔ presenter)
+      if (!fromRemote && bc) {
+        bc.postMessage({ type: 'go', idx: n });
+      }
+    }
+
+    /* ===== listen for remote navigation / theme changes ===== */
+    if (bc) {
+      bc.onmessage = function(e) {
+        if (!e.data) return;
+        if (e.data.type === 'go' && typeof e.data.idx === 'number') {
+          go(e.data.idx, true);
+        } else if (e.data.type === 'theme' && e.data.name) {
+          /* Sync theme across windows */
+          const i = themes.indexOf(e.data.name);
+          if (i >= 0) themeIdx = i;
+          applyTheme(e.data.name);
+        }
+      };
+    }
+
+    function toggleNotes(force){ notes.classList.toggle('open', force!==undefined?force:!notes.classList.contains('open')); }
+    function toggleOverview(force){
+      const isOpen = force!==undefined ? force : !overview.classList.contains('open');
+      overview.classList.toggle('open', isOpen);
+      if (isOpen) {
+        requestAnimationFrame(() => {
+          const thumbs = overview.querySelectorAll('.thumb');
+          if (thumbs.length) {
+            const scale = thumbs[0].clientWidth / 1920;
+            overview.querySelectorAll('.mini-slide').forEach(m => {
+              m.style.transform = 'scale(' + scale + ')';
+            });
+          }
+        });
+      }
+    }
+
+    /* ========== PRESENTER MODE — Magnetic-card popup window ========== */
+    /* Opens a new window with 4 draggable, resizable cards:
+     *   CURRENT  — iframe(?preview=N)   pixel-perfect preview of current slide
+     *   NEXT     — iframe(?preview=N+1) pixel-perfect preview of next slide
+     *   SCRIPT   — large speaker notes (逐字稿)
+     *   TIMER    — elapsed timer + page counter + controls
+     * Cards remember position/size in localStorage.
+     * Two windows sync via BroadcastChannel.
+     */
+    let presenterWin = null;
+
+    function openPresenterWindow() {
+      if (presenterWin && !presenterWin.closed) {
+        presenterWin.focus();
+        return;
+      }
+
+      // Build absolute URL of THIS deck file (without hash/query)
+      const deckUrl = location.protocol + '//' + location.host + location.pathname;
+
+      // Collect slide titles + notes (HTML strings)
+      const slideMeta = slides.map((s, i) => {
+        const note = s.querySelector('.notes, aside.notes, .speaker-notes');
+        return {
+          title: s.getAttribute('data-title') ||
+            (s.querySelector('h1,h2,h3')||{}).textContent || ('Slide '+(i+1)),
+          notes: note ? note.innerHTML : ''
+        };
+      });
+
+      /* Capture current theme so presenter previews match the audience */
+      const currentTheme = root.getAttribute('data-theme') || (themes[themeIdx] || '');
+      const presenterHTML = buildPresenterHTML(deckUrl, slideMeta, total, idx, CHANNEL_NAME, currentTheme);
+
+      presenterWin = window.open('', 'html-ppt-presenter', 'width=1280,height=820,menubar=no,toolbar=no');
+      if (!presenterWin) {
+        alert('请允许弹出窗口以使用演讲者视图');
+        return;
+      }
+      presenterWin.document.open();
+      presenterWin.document.write(presenterHTML);
+      presenterWin.document.close();
+    }
+
+    function buildPresenterHTML(deckUrl, slideMeta, total, startIdx, channelName, currentTheme) {
+      const metaJSON = JSON.stringify(slideMeta);
+      const deckUrlJSON = JSON.stringify(deckUrl);
+      const channelJSON = JSON.stringify(channelName);
+      const themeJSON = JSON.stringify(currentTheme || '');
+      const storageKey = 'html-ppt-presenter:' + location.pathname;
+
+      // Build the document as a single template string for clarity
+      return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>Presenter View</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%; overflow: hidden;
+    background: #1a1d24;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(88,166,255,.04), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(188,140,255,.04), transparent 50%);
+    color: #e6edf3;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", sans-serif;
+  }
+  /* Stage: positioned area where cards live */
+  #stage { position: absolute; inset: 0; overflow: hidden; }
+
+  /* Magnetic card */
+  .pcard {
+    position: absolute;
+    background: #0d1117;
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,.45), 0 0 0 1px rgba(255,255,255,.02);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+    min-width: 180px; min-height: 100px;
+    transition: box-shadow .2s, border-color .2s;
+  }
+  .pcard.dragging { box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 2px rgba(88,166,255,.5); border-color: #58a6ff; transition: none; z-index: 9999; }
+  .pcard.resizing { box-shadow: 0 16px 48px rgba(0,0,0,.6), 0 0 0 2px rgba(63,185,80,.5); border-color: #3fb950; transition: none; z-index: 9999; }
+  .pcard:hover { border-color: rgba(88,166,255,.3); }
+
+  /* Card header (drag handle) */
+  .pcard-head {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 12px;
+    background: rgba(255,255,255,.04);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    cursor: move;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .pcard-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--dot-color, #58a6ff); flex-shrink: 0; }
+  .pcard-title {
+    font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+    font-weight: 700; color: #8b949e; flex: 1;
+  }
+  .pcard-meta { font-size: 11px; color: #6e7681; }
+
+  /* Card body */
+  .pcard-body { flex: 1; position: relative; overflow: hidden; min-height: 0; }
+
+  /* Preview cards (CURRENT/NEXT) — iframe-based pixel-perfect render */
+  .pcard-preview .pcard-body { background: #000; }
+  .pcard-preview iframe {
+    position: absolute; top: 0; left: 0;
+    width: 1920px; height: 1080px;
+    border: none;
+    transform-origin: top left;
+    pointer-events: none;
+    background: transparent;
+  }
+  .pcard-preview .preview-end {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: #484f58; font-size: 14px; letter-spacing: .12em;
+  }
+
+  /* Notes card */
+  .pcard-notes .pcard-body {
+    padding: 14px 18px;
+    overflow-y: auto;
+    font-size: 18px; line-height: 1.75;
+    color: #d0d7de;
+    font-family: "Noto Sans SC", -apple-system, sans-serif;
+  }
+  .pcard-notes .pcard-body p { margin: 0 0 .7em 0; }
+  .pcard-notes .pcard-body strong { color: #f0883e; }
+  .pcard-notes .pcard-body em { color: #58a6ff; font-style: normal; }
+  .pcard-notes .pcard-body code {
+    font-family: "SF Mono", monospace; font-size: .9em;
+    background: rgba(255,255,255,.08); padding: 1px 6px; border-radius: 4px;
+  }
+  .pcard-notes .empty { color: #484f58; font-style: italic; }
+
+  /* Timer card */
+  .pcard-timer .pcard-body {
+    display: flex; flex-direction: column; gap: 14px;
+    padding: 18px 20px; justify-content: center;
+  }
+  .timer-display {
+    font-family: "SF Mono", "JetBrains Mono", monospace;
+    font-size: 42px; font-weight: 700;
+    color: #3fb950;
+    letter-spacing: .04em;
+    line-height: 1;
+  }
+  .timer-row {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; color: #8b949e;
+  }
+  .timer-row .label { font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: #6e7681; }
+  .timer-row .val { color: #e6edf3; font-weight: 600; font-family: "SF Mono", monospace; }
+  .timer-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .timer-btn {
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .timer-btn:hover { background: rgba(88,166,255,.15); border-color: #58a6ff; }
+  .timer-btn:active { transform: translateY(1px); }
+
+  /* Resize handle */
+  .pcard-resize {
+    position: absolute; right: 0; bottom: 0;
+    width: 18px; height: 18px;
+    cursor: nwse-resize;
+    background: linear-gradient(135deg, transparent 50%, rgba(255,255,255,.25) 50%, rgba(255,255,255,.25) 60%, transparent 60%, transparent 70%, rgba(255,255,255,.25) 70%, rgba(255,255,255,.25) 80%, transparent 80%);
+    z-index: 5;
+  }
+  .pcard-resize:hover { background: linear-gradient(135deg, transparent 50%, #58a6ff 50%, #58a6ff 60%, transparent 60%, transparent 70%, #58a6ff 70%, #58a6ff 80%, transparent 80%); }
+
+  /* Bottom hint bar */
+  .hint-bar {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: rgba(0,0,0,.6);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 6px 16px;
+    font-size: 11px; color: #8b949e;
+    display: flex; gap: 18px; align-items: center;
+    z-index: 1000;
+  }
+  .hint-bar kbd {
+    background: rgba(255,255,255,.08);
+    padding: 1px 6px; border-radius: 3px;
+    font-family: "SF Mono", monospace;
+    font-size: 10px;
+    border: 1px solid rgba(255,255,255,.1);
+    color: #e6edf3;
+  }
+  .hint-bar .reset-layout {
+    margin-left: auto;
+    background: transparent; border: 1px solid rgba(255,255,255,.15);
+    color: #8b949e; padding: 3px 10px; border-radius: 4px;
+    font-size: 11px; cursor: pointer; font-family: inherit;
+  }
+  .hint-bar .reset-layout:hover { background: rgba(248,81,73,.15); border-color: #f85149; color: #f85149; }
+
+  body.is-dragging-card * { user-select: none !important; }
+  body.is-dragging-card iframe { pointer-events: none !important; }
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div class="pcard pcard-preview" id="card-cur" style="--dot-color:#58a6ff">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">CURRENT</span>
+      <span class="pcard-meta" id="cur-meta">—</span>
+    </div>
+    <div class="pcard-body"><iframe id="iframe-cur"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-preview" id="card-nxt" style="--dot-color:#bc8cff">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">NEXT</span>
+      <span class="pcard-meta" id="nxt-meta">—</span>
+    </div>
+    <div class="pcard-body"><iframe id="iframe-nxt"></iframe></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-notes" id="card-notes" style="--dot-color:#f0883e">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">SPEAKER SCRIPT · 逐字稿</span>
+    </div>
+    <div class="pcard-body" id="notes-body"></div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+
+  <div class="pcard pcard-timer" id="card-timer" style="--dot-color:#3fb950">
+    <div class="pcard-head" data-drag>
+      <span class="pcard-dot"></span>
+      <span class="pcard-title">TIMER</span>
+    </div>
+    <div class="pcard-body">
+      <div class="timer-display" id="timer-display">00:00</div>
+      <div class="timer-row">
+        <span class="label">Slide</span>
+        <span class="val" id="timer-count">1 / ${total}</span>
+      </div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="btn-prev">← Prev</button>
+        <button class="timer-btn" id="btn-next">Next →</button>
+        <button class="timer-btn" id="btn-reset">⏱ Reset</button>
+      </div>
+    </div>
+    <div class="pcard-resize" data-resize></div>
+  </div>
+</div>
+
+<div class="hint-bar">
+  <span><kbd>← →</kbd> 翻页</span>
+  <span><kbd>R</kbd> 重置计时</span>
+  <span><kbd>Esc</kbd> 关闭</span>
+  <span style="color:#6e7681">拖动卡片头部移动 · 拖动右下角调整大小</span>
+  <button class="reset-layout" id="reset-layout">重置布局</button>
+</div>
+
+<script>
+(function(){
+  var slideMeta = ${metaJSON};
+  var total = ${total};
+  var idx = ${startIdx};
+  var deckUrl = ${deckUrlJSON};
+  var STORAGE_KEY = ${JSON.stringify(storageKey)};
+  var bc;
+  try { bc = new BroadcastChannel(${channelJSON}); } catch(e) {}
+
+  var iframeCur = document.getElementById('iframe-cur');
+  var iframeNxt = document.getElementById('iframe-nxt');
+  var notesBody = document.getElementById('notes-body');
+  var curMeta = document.getElementById('cur-meta');
+  var nxtMeta = document.getElementById('nxt-meta');
+  var timerDisplay = document.getElementById('timer-display');
+  var timerCount = document.getElementById('timer-count');
+
+  /* ===== Default card layout ===== */
+  function defaultLayout() {
+    var w = window.innerWidth;
+    var h = window.innerHeight - 36; /* leave room for hint bar */
+    return {
+      'card-cur':   { x: 16,        y: 16,            w: Math.round(w*0.55) - 24, h: Math.round(h*0.62) - 16 },
+      'card-nxt':   { x: Math.round(w*0.55) + 8, y: 16, w: w - Math.round(w*0.55) - 24, h: Math.round(h*0.42) - 16 },
+      'card-notes': { x: Math.round(w*0.55) + 8, y: Math.round(h*0.42) + 8, w: w - Math.round(w*0.55) - 24, h: h - Math.round(h*0.42) - 16 },
+      'card-timer': { x: 16,        y: Math.round(h*0.62) + 8, w: Math.round(w*0.55) - 24, h: h - Math.round(h*0.62) - 16 }
+    };
+  }
+
+  /* ===== Apply / save / restore layout ===== */
+  function applyLayout(layout) {
+    Object.keys(layout).forEach(function(id){
+      var el = document.getElementById(id);
+      var l = layout[id];
+      if (el && l) {
+        el.style.left = l.x + 'px';
+        el.style.top = l.y + 'px';
+        el.style.width = l.w + 'px';
+        el.style.height = l.h + 'px';
+      }
+    });
+    rescaleAll();
+  }
+  function readLayout() {
+    try {
+      var saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    return defaultLayout();
+  }
+  function saveLayout() {
+    var layout = {};
+    ['card-cur','card-nxt','card-notes','card-timer'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (el) {
+        layout[id] = {
+          x: parseInt(el.style.left,10) || 0,
+          y: parseInt(el.style.top,10) || 0,
+          w: parseInt(el.style.width,10) || 300,
+          h: parseInt(el.style.height,10) || 200
+        };
+      }
+    });
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(layout)); } catch(e) {}
+  }
+
+  /* ===== iframe rescale to fit card body ===== */
+  function rescaleIframe(iframe) {
+    if (!iframe || iframe.style.display === 'none') return;
+    var body = iframe.parentElement;
+    var cw = body.clientWidth, ch = body.clientHeight;
+    if (!cw || !ch) return;
+    var s = Math.min(cw / 1920, ch / 1080);
+    iframe.style.transform = 'scale(' + s + ')';
+    /* Center the scaled iframe in the body */
+    var sw = 1920 * s, sh = 1080 * s;
+    iframe.style.left = Math.max(0, (cw - sw) / 2) + 'px';
+    iframe.style.top = Math.max(0, (ch - sh) / 2) + 'px';
+  }
+  function rescaleAll() {
+    rescaleIframe(iframeCur);
+    rescaleIframe(iframeNxt);
+  }
+  window.addEventListener('resize', rescaleAll);
+
+  /* ===== Drag (move card by header) ===== */
+  document.querySelectorAll('[data-drag]').forEach(function(handle){
+    handle.addEventListener('mousedown', function(e){
+      if (e.button !== 0) return;
+      var card = handle.closest('.pcard');
+      if (!card) return;
+      e.preventDefault();
+      card.classList.add('dragging');
+      document.body.classList.add('is-dragging-card');
+      var startX = e.clientX, startY = e.clientY;
+      var startL = parseInt(card.style.left,10) || 0;
+      var startT = parseInt(card.style.top,10)  || 0;
+      function onMove(ev){
+        var nx = Math.max(0, Math.min(window.innerWidth - 100, startL + ev.clientX - startX));
+        var ny = Math.max(0, Math.min(window.innerHeight - 50, startT + ev.clientY - startY));
+        card.style.left = nx + 'px';
+        card.style.top = ny + 'px';
+      }
+      function onUp(){
+        card.classList.remove('dragging');
+        document.body.classList.remove('is-dragging-card');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        saveLayout();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  /* ===== Resize (drag bottom-right corner) ===== */
+  document.querySelectorAll('[data-resize]').forEach(function(handle){
+    handle.addEventListener('mousedown', function(e){
+      if (e.button !== 0) return;
+      var card = handle.closest('.pcard');
+      if (!card) return;
+      e.preventDefault(); e.stopPropagation();
+      card.classList.add('resizing');
+      document.body.classList.add('is-dragging-card');
+      var startX = e.clientX, startY = e.clientY;
+      var startW = parseInt(card.style.width,10)  || card.offsetWidth;
+      var startH = parseInt(card.style.height,10) || card.offsetHeight;
+      function onMove(ev){
+        var nw = Math.max(180, startW + ev.clientX - startX);
+        var nh = Math.max(100, startH + ev.clientY - startY);
+        card.style.width = nw + 'px';
+        card.style.height = nh + 'px';
+        if (card.querySelector('iframe')) rescaleIframe(card.querySelector('iframe'));
+      }
+      function onUp(){
+        card.classList.remove('resizing');
+        document.body.classList.remove('is-dragging-card');
+        document.removeEventListener('mousemove', onMove);
+        document.removeEventListener('mouseup', onUp);
+        rescaleAll();
+        saveLayout();
+      }
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+  });
+
+  /* ===== Preview iframe ready tracking =====
+   * Each iframe loads the deck ONCE with ?preview=1 on init. Subsequent
+   * slide changes are sent via postMessage('preview-goto') so the iframe
+   * just toggles visibility of a different .slide — no reload, no flicker.
+   */
+  var iframeReady = { cur: false, nxt: false };
+  var currentTheme = ${themeJSON};
+  window.addEventListener('message', function(e) {
+    if (!e.data || e.data.type !== 'preview-ready') return;
+    var iframe = null;
+    if (e.source === iframeCur.contentWindow) {
+      iframeReady.cur = true;
+      iframe = iframeCur;
+      postPreviewGoto(iframeCur, idx);
+    } else if (e.source === iframeNxt.contentWindow) {
+      iframeReady.nxt = true;
+      iframe = iframeNxt;
+      postPreviewGoto(iframeNxt, idx + 1 < total ? idx + 1 : idx);
+    }
+    /* Sync current theme to the iframe */
+    if (iframe && currentTheme) {
+      try { iframe.contentWindow.postMessage({ type: 'preview-theme', name: currentTheme }, '*'); } catch(err) {}
+    }
+    if (iframe) rescaleIframe(iframe);
+  });
+
+  function postPreviewGoto(iframe, n) {
+    try {
+      iframe.contentWindow.postMessage({ type: 'preview-goto', idx: n }, '*');
+    } catch(e) {}
+  }
+
+  /* ===== Update content =====
+   * Smooth (no-reload) navigation: send postMessage to iframes instead of
+   * resetting src. Iframes stay loaded, just switch visible .slide.
+   */
+  function update(n) {
+    n = Math.max(0, Math.min(total - 1, n));
+    idx = n;
+
+    /* Current preview — postMessage (smooth) */
+    if (iframeReady.cur) postPreviewGoto(iframeCur, n);
+    curMeta.textContent = (n + 1) + '/' + total;
+
+    /* Next preview */
+    if (n + 1 < total) {
+      iframeNxt.style.display = '';
+      var endEl = document.querySelector('#card-nxt .preview-end');
+      if (endEl) endEl.remove();
+      if (iframeReady.nxt) postPreviewGoto(iframeNxt, n + 1);
+      nxtMeta.textContent = (n + 2) + '/' + total;
+    } else {
+      iframeNxt.style.display = 'none';
+      var body = document.querySelector('#card-nxt .pcard-body');
+      if (body && !body.querySelector('.preview-end')) {
+        var end = document.createElement('div');
+        end.className = 'preview-end';
+        end.textContent = '— END OF DECK —';
+        body.appendChild(end);
+      }
+      nxtMeta.textContent = 'END';
+    }
+
+    /* Notes */
+    var note = slideMeta[n].notes;
+    notesBody.innerHTML = note || '<span class="empty">（这一页还没有逐字稿）</span>';
+
+    /* Timer count */
+    timerCount.textContent = (n + 1) + ' / ' + total;
+  }
+
+  /* ===== Timer ===== */
+  var tStart = Date.now();
+  setInterval(function(){
+    var s = Math.floor((Date.now() - tStart) / 1000);
+    var mm = String(Math.floor(s/60)).padStart(2,'0');
+    var ss = String(s%60).padStart(2,'0');
+    timerDisplay.textContent = mm + ':' + ss;
+  }, 1000);
+  function resetTimer(){ tStart = Date.now(); timerDisplay.textContent = '00:00'; }
+
+  /* ===== BroadcastChannel sync ===== */
+  if (bc) {
+    bc.onmessage = function(e){
+      if (!e.data) return;
+      if (e.data.type === 'go') update(e.data.idx);
+      else if (e.data.type === 'theme' && e.data.name) {
+        currentTheme = e.data.name;
+        /* Forward theme change to preview iframes */
+        [iframeCur, iframeNxt].forEach(function(iframe){
+          try {
+            iframe.contentWindow.postMessage({ type: 'preview-theme', name: e.data.name }, '*');
+          } catch(err) {}
+        });
+      }
+    };
+  }
+  function go(n) {
+    update(n);
+    if (bc) bc.postMessage({ type: 'go', idx: idx });
+  }
+
+  /* ===== Buttons ===== */
+  document.getElementById('btn-prev').addEventListener('click', function(){ go(idx - 1); });
+  document.getElementById('btn-next').addEventListener('click', function(){ go(idx + 1); });
+  document.getElementById('btn-reset').addEventListener('click', resetTimer);
+  document.getElementById('reset-layout').addEventListener('click', function(){
+    if (confirm('恢复默认卡片布局？')) {
+      try { localStorage.removeItem(STORAGE_KEY); } catch(e){}
+      applyLayout(defaultLayout());
+    }
+  });
+
+  /* ===== Keyboard ===== */
+  document.addEventListener('keydown', function(e){
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    switch(e.key) {
+      case 'ArrowRight': case ' ': case 'PageDown': go(idx + 1); e.preventDefault(); break;
+      case 'ArrowLeft':  case 'PageUp':   go(idx - 1); e.preventDefault(); break;
+      case 'Home': go(0); break;
+      case 'End':  go(total - 1); break;
+      case 'r': case 'R': resetTimer(); break;
+      case 'Escape': window.close(); break;
+    }
+  });
+
+  /* ===== Iframe load → rescale (catches initial size) ===== */
+  iframeCur.addEventListener('load', function(){ rescaleIframe(iframeCur); });
+  iframeNxt.addEventListener('load', function(){ rescaleIframe(iframeNxt); });
+
+  /* ===== Init =====
+   * Load each iframe ONCE with the deck file. After they post
+   * 'preview-ready', all subsequent navigation is via postMessage
+   * (smooth, no reload, no flicker).
+   */
+  applyLayout(readLayout());
+  iframeCur.src = deckUrl + '?preview=' + (idx + 1);
+  if (idx + 1 < total) iframeNxt.src = deckUrl + '?preview=' + (idx + 2);
+  /* Initialize notes/timer/count without touching iframes */
+  notesBody.innerHTML = slideMeta[idx].notes || '<span class="empty">（这一页还没有逐字稿）</span>';
+  curMeta.textContent = (idx + 1) + '/' + total;
+  nxtMeta.textContent = (idx + 2) + '/' + total;
+  timerCount.textContent = (idx + 1) + ' / ' + total;
+})();
+</` + `script>
+</body></html>`;
+    }
+
+    function fullscreen(){ const el=document.documentElement;
+      if (!document.fullscreenElement) el.requestFullscreen&&el.requestFullscreen();
+      else document.exitFullscreen&&document.exitFullscreen();
+    }
+
+    // theme cycling
+    const root = document.documentElement;
+    const themesAttr = root.getAttribute('data-themes') || document.body.getAttribute('data-themes');
+    const themes = themesAttr ? themesAttr.split(',').map(s=>s.trim()).filter(Boolean) : [];
+    let themeIdx = 0;
+
+    // Auto-detect theme base path from existing <link id="theme-link">
+    let themeBase = root.getAttribute('data-theme-base');
+    if (!themeBase) {
+      const existingLink = document.getElementById('theme-link');
+      if (existingLink) {
+        // el.getAttribute('href') gives the raw relative path written in HTML
+        const rawHref = existingLink.getAttribute('href') || '';
+        const lastSlash = rawHref.lastIndexOf('/');
+        themeBase = lastSlash >= 0 ? rawHref.substring(0, lastSlash + 1) : 'assets/themes/';
+      } else {
+        themeBase = 'assets/themes/';
+      }
+    }
+
+    function applyTheme(name) {
+      let link = document.getElementById('theme-link');
+      if (!link) {
+        link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.id = 'theme-link';
+        document.head.appendChild(link);
+      }
+      link.href = themeBase + name + '.css';
+      root.setAttribute('data-theme', name);
+      const ind = document.querySelector('.theme-indicator');
+      if (ind) ind.textContent = name;
+    }
+    function cycleTheme(fromRemote){
+      if (!themes.length) return;
+      themeIdx = (themeIdx+1) % themes.length;
+      const name = themes[themeIdx];
+      applyTheme(name);
+      /* Broadcast to other window (audience ↔ presenter) */
+      if (!fromRemote && bc) bc.postMessage({ type: 'theme', name: name });
+    }
+
+    // animation cycling on current slide
+    let animIdx = 0;
+    function cycleAnim(){
+      animIdx = (animIdx+1) % ANIMS.length;
+      const a = ANIMS[animIdx];
+      const target = slides[idx].querySelector('[data-anim-target]') || slides[idx];
+      ANIMS.forEach(x => target.classList.remove('anim-'+x));
+      void target.offsetWidth;
+      target.classList.add('anim-'+a);
+      target.setAttribute('data-anim', a);
+      const ind = document.querySelector('.anim-indicator');
+      if (ind) ind.textContent = a;
+    }
+
+    document.addEventListener('keydown', function (e) {
+      if (e.metaKey||e.ctrlKey||e.altKey) return;
+      switch (e.key) {
+        case 'ArrowRight': case ' ': case 'PageDown': case 'Enter': go(idx+1); e.preventDefault(); break;
+        case 'ArrowLeft': case 'PageUp': case 'Backspace': go(idx-1); e.preventDefault(); break;
+        case 'Home': go(0); break;
+        case 'End': go(total-1); break;
+        case 'f': case 'F': fullscreen(); break;
+        case 's': case 'S': openPresenterWindow(); break;
+        case 'n': case 'N': toggleNotes(); break;
+        case 'o': case 'O': toggleOverview(); break;
+        case 't': case 'T': cycleTheme(); break;
+        case 'a': case 'A': cycleAnim(); break;
+        case 'Escape': toggleOverview(false); toggleNotes(false); break;
+      }
+    });
+
+    // hash deep-link
+    function fromHash(){
+      const m = /^#\/(\d+)/.exec(location.hash||'');
+      if (m) go(Math.max(0, parseInt(m[1],10)-1));
+    }
+    window.addEventListener('hashchange', fromHash);
+    fromHash();
+    go(idx);
+  });
+})();
+
+</script>
+
+</body></html>
+
