@@ -2346,125 +2346,100 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 
 <!-- ====== ③ AI风险评估 ====== -->
+  
+  
+  
+  
   <section class="slide" data-title="AI风险评估">
     <p class="kicker">step 03 · 风险评估</p>
     <h2 class="h2">③ AI 风险评估</h2>
 
-    <div class="grid g2 mt-l" style="gap:10px;max-width:760px;margin:0 auto;font-size:11px">
-      <div class="card" style="padding:14px 16px"><span style="color:var(--bad)">⚠️</span> <strong>数据安全</strong><br><span class="dim">敏感数据不出内网，选私有化部署</span></div>
-      <div class="card" style="padding:14px 16px"><span style="color:var(--bad)">⚠️</span> <strong>AI 幻觉</strong><br><span class="dim">关键决策必须人把关，AI 只做辅助</span></div>
-      <div class="card" style="padding:14px 16px"><span style="color:var(--bad)">⚠️</span> <strong>供应商锁定</strong><br><span class="dim">优先选开源模型或多供应商策略</span></div>
-      <div class="card" style="padding:14px 16px"><span style="color:var(--bad)">⚠️</span> <strong>人才短缺</strong><br><span class="dim">能用 AI 的人比 AI 本身更稀缺</span></div>
-      <div class="card" style="padding:14px 16px"><span style="color:var(--bad)">⚠️</span> <strong>合规风险</strong><br><span class="dim">行业监管 × 个人信息保护法</span></div>
-      <div class="card" style="padding:14px 16px"><span style="color:var(--bad)">⚠️</span> <strong>期望管理</strong><br><span class="dim">别一上来就做全流程，从小场景开始</span></div>
+    <div class="card" style="max-width:760px;margin:0 auto 14px;padding:12px 20px;font-size:12px;color:var(--text-2);background:var(--surface-2)">
+      <p style="margin:0">Cursor 本地运行，但代码补全和 Agent 功能需将代码发送到服务器处理——<strong>服务 200+ 企业客户，必须先设防线</strong>。</p>
     </div>
 
+    <div class="mt-m" style="display:flex;flex-direction:column;gap:8px;max-width:760px;margin:0 auto;font-size:12px">
+      <div class="card" style="padding:12px 16px;display:flex;gap:12px">
+        <span style="min-width:20px">🔒</span>
+        <div style="min-width:200px"><strong>代码外泄</strong><br><span class="dim">代码发送到 Cursor 服务器</span></div>
+        <span style="color:var(--accent)">核心模块关闭云端功能，只用本地 AutoComplete</span>
+      </div>
+      <div class="card" style="padding:12px 16px;display:flex;gap:12px">
+        <span style="min-width:20px">🏥</span>
+        <div style="min-width:200px"><strong>客户数据进 Prompt</strong><br><span class="dim">开发 CRM 时粘贴真实数据</span></div>
+        <span style="color:var(--accent)">开发环境只用脱敏数据，制定 Prompt 规范</span>
+      </div>
+      <div class="card" style="padding:12px 16px;display:flex;gap:12px">
+        <span style="min-width:20px">🐛</span>
+        <div style="min-width:200px"><strong>AI 生成代码不可信</strong><br><span class="dim">可能有漏洞或逻辑错误</span></div>
+        <span style="color:var(--accent)">所有 AI 产出人工 Review 后方可合并</span>
+      </div>
+      <div class="card" style="padding:12px 16px;display:flex;gap:12px">
+        <span style="min-width:20px">🔗</span>
+        <div style="min-width:200px"><strong>工具单点依赖</strong><br><span class="dim">涨价或宕机全团队停工</span></div>
+        <span style="color:var(--accent)">保留 GitHub Copilot 备选</span>
+      </div>
+    </div>
+
+    <div class="card mt-m" style="max-width:760px;margin-left:auto;margin-right:auto;padding:14px 20px;text-align:center;background:var(--grad-soft)">
+      <p style="margin:0;font-size:13px"><strong>上线前设好防线，而非出事后补救</strong>。</p>
+    </div>
 
     <aside class="notes">
-    <p>第三个决策，风险评估。六个最常见的风险：数据安全、AI 幻觉、供应商锁定、人才短缺、合规、期望管理。软件公司案例：代码生成不出内网，生产库信息绝不喂给 AI，所有产出人工 review。</p>
+    <p>第三步，风险评估。四条风险：代码外泄、客户数据进 Prompt、AI 代码不可信、工具单点依赖。每条都有应对措施。</p>
     </aside>
   </section>
 
 
 <!-- ====== ④ 如何实施到每个人的工作中 ====== -->
+  
+  
   <section class="slide" data-title="落地执行">
     <p class="kicker">step 04 · 落地执行</p>
     <h2 class="h2">④ 如何实施到每个人的工作中</h2>
 
+    <div class="card" style="max-width:760px;margin:0 auto 14px;padding:12px 20px;font-size:12px;color:var(--text-2);background:var(--surface-2)">
+      <p style="margin:0">团队 25 人（产品 5 + 研发 20），不搞全员培训、不分批试点——<strong>先跑通一个需求，再复制到全团队</strong>。</p>
+    </div>
+
     <div class="grid g2 mt-l" style="gap:14px;max-width:760px;margin:0 auto;font-size:12px">
       <div class="card card-accent" style="padding:14px 16px">
-        <p style="margin:0 0 6px;font-weight:700">👤 组织搭建</p>
-        <p style="margin:0;color:var(--text-2)"><strong>CEO 定调</strong> — AI 是战略，不是 IT 项目<br><strong>业务负责人主导</strong> — 选一个痛点场景试点<br><strong>IT 兜底</strong> — 数据安全与系统集成<br><strong>外部加速</strong> — 顾问缩短学习曲线</p>
+        <p style="margin:0 0 8px;font-weight:700">🖥️ 产品团队 5 人</p>
+        <p style="margin:0;font-size:11px;color:var(--text-2)">Cursor Agent · Vibe Coding 模式<br>从积压清单各领一个前端需求<br>目标：第一周每人出第一个原型</p>
       </div>
       <div class="card" style="padding:14px 16px">
-        <p style="margin:0 0 6px;font-weight:700">🚀 三步启动</p>
-        <p style="margin:0;color:var(--text-2)"><strong>① 选痛点</strong> — 选"不做会死"的，别选"做了挺好"的<br><strong>② 找对人</strong> — 业务负责人，不是 IT<br><strong>③ 给 AI 三天</strong> — 出原型，能跑就行，再迭代</p>
+        <p style="margin:0 0 8px;font-weight:700">⚙️ 研发团队 20 人</p>
+        <p style="margin:0;font-size:11px;color:var(--text-2)">Cursor Pro · 编码助手模式<br>日常开发启用代码补全和 Chat<br>配合产品团队做后端对接</p>
       </div>
     </div>
 
-    <div class="grid g3 mt-m" style="max-width:760px;margin:0 auto;gap:10px">
-      <div class="card" style="padding:14px;text-align:center">
-        <p class="dim2" style="margin:0">时间节省</p>
-        <div class="val" style="font-size:24px;color:var(--accent)">X%</div>
-        <p class="lbl" style="font-size:10px">关键流程耗时对比</p>
-      </div>
-      <div class="card" style="padding:14px;text-align:center">
-        <p class="dim2" style="margin:0">成本降低</p>
-        <div class="val" style="font-size:24px;color:var(--accent)">Y%</div>
-        <p class="lbl" style="font-size:10px">人力或外包费用变化</p>
-      </div>
-      <div class="card" style="padding:14px;text-align:center">
-        <p class="dim2" style="margin:0">客户满意度</p>
-        <div class="val" style="font-size:24px;color:var(--accent)">Z</div>
-        <p class="lbl" style="font-size:10px">NPS 或投诉率变化</p>
+    <div class="card mt-m" style="max-width:760px;margin:0 auto;padding:16px 20px;text-align:center;background:var(--grad-soft)">
+      <p style="margin:0 0 10px;font-weight:700;font-size:14px">三周推进节奏</p>
+      <div style="display:flex;gap:8px;justify-content:center;font-size:11px">
+        <div style="flex:1;padding:10px;background:var(--surface);border-radius:6px">
+          <strong>第 1 周</strong><br>产品 1 人 + 研发 1 人<br>工单系统出原型
+        </div>
+        <span style="align-self:center;color:var(--accent)">→</span>
+        <div style="flex:1;padding:10px;background:var(--surface);border-radius:6px">
+          <strong>第 2 周</strong><br>产品 5 人全上 + 研发 3 人配合<br>5 个积压需求并行
+        </div>
+        <span style="align-self:center;color:var(--accent)">→</span>
+        <div style="flex:1;padding:10px;background:var(--surface);border-radius:6px">
+          <strong>第 3 周</strong><br>全团队 25 人日常启用<br>产品自建前端 + 研发 AI 辅助后端
+        </div>
       </div>
     </div>
-    <p class="dim tc mt-s" style="font-size:12px">三个指标，每月看一次，三个月判断：继续投还是换方向</p>
 
+    <p class="dim tc mt-m" style="font-size:12px">不搞全员培训、不写规范文档——先做出来，再优化。</p>
 
     <aside class="notes">
-    <p>第四步，落地执行。三块：组织搭建四角色、三步启动法、三个衡量指标。</p><p>软件公司案例贯穿始终：产品经理选 Vibe Coding 切入，工单系统自建两周上线，一个月后推广到 CRM。这就是四步法跑通的样子。</p>
+    <p>第四步，落地执行。怎么把 25 个人全带进来？三周节奏。</p><p>第 1 周：只派 2 个人试水。1 个产品经理 + 1 个研发，用 Cursor 做最急的那个需求——工单系统。跑通了，证明可行。</p><p>第 2 周：产品 5 人全部上，每人领一个积压需求。同时配 3 个研发做后端支撑。8 个人并行干活。</p><p>第 3 周：经验验证了、信心有了，全团队 25 人日常启用 Cursor。</p><p>核心思路：不搞全员培训、不写规范文档、不一次铺开。先让 2 个人做出结果，其他人看到效果自然跟上。</p>
     </aside>
   </section>
 
 
 <!-- ====== 贯穿案例：AI编程 × 某软件公司 ====== -->
-  <section class="slide" data-title="软件公司贯穿案例">
-    <p class="kicker">case study · 贯穿案例</p>
-    <h2 class="h2">AI 编程如何应用到某软件公司</h2>
-
-    <div class="grid g2 mt-l" style="gap:12px;max-width:760px;margin-left:auto;margin-right:auto;font-size:12px">
-      <div class="card" style="padding:14px 18px">
-        <p style="margin:0 0 4px;font-weight:700;color:var(--accent)">🏢 公司背景</p>
-        <p style="margin:0;color:var(--text-2)">50人 SaaS 软件公司，服务 200+ 企业客户。研发团队 20 人，产品团队 5 人。</p>
-      </div>
-      <div class="card" style="padding:14px 18px">
-        <p style="margin:0 0 4px;font-weight:700;color:var(--bad)">⚠️ 核心痛点</p>
-        <p style="margin:0;color:var(--text-2)">近期研发人员不稳定，导致软件工作积压，延期至少 3 个月起。</p>
-      </div>
-      <div class="card card-accent" style="padding:14px 18px;grid-column:span 2">
-        <p style="margin:0 0 4px;font-weight:700;color:var(--accent)">💡 决策</p>
-        <p style="margin:0;color:var(--text-2)">引入 AI Coding，提高软件生产力。</p>
-      </div>
-    </div>
-
-    <div class="mt-m" style="display:flex;flex-direction:column;gap:8px;max-width:760px;margin-left:auto;margin-right:auto">
-      <div class="card card-accent" style="padding:14px 18px;display:flex;gap:14px;align-items:flex-start">
-        <div style="font-size:22px;font-weight:700;color:var(--accent);min-width:32px">①</div>
-        <div>
-          <p style="margin:0 0 2px;font-weight:700">切入点：Vibe Coding</p>
-          <p style="margin:0;font-size:12px;color:var(--text-2)">产品经理无开发背景，但最懂内部工单流转痛点 → 用 AI 生成前端原型</p>
-        </div>
-      </div>
-      <div class="card" style="padding:14px 18px;display:flex;gap:14px;align-items:flex-start">
-        <div style="font-size:22px;font-weight:700;color:var(--accent);min-width:32px">②</div>
-        <div>
-          <p style="margin:0 0 2px;font-weight:700">采购决策：自建</p>
-          <p style="margin:0;font-size:12px;color:var(--text-2)">Jira 与内部 DevOps 耦合太深 → 自建两周出原型，成本比定制低 80%</p>
-        </div>
-      </div>
-      <div class="card" style="padding:14px 18px;display:flex;gap:14px;align-items:flex-start">
-        <div style="font-size:22px;font-weight:700;color:var(--accent);min-width:32px">③</div>
-        <div>
-          <p style="margin:0 0 2px;font-weight:700">风险前置</p>
-          <p style="margin:0;font-size:12px;color:var(--text-2)">代码不出内网 · 生产信息不喂 AI · 所有产出后端 review 后合并</p>
-        </div>
-      </div>
-      <div class="card" style="padding:14px 18px;display:flex;gap:14px;align-items:flex-start">
-        <div style="font-size:22px;font-weight:700;color:var(--accent);min-width:32px">④</div>
-        <div>
-          <p style="margin:0 0 2px;font-weight:700">落地推广</p>
-          <p style="margin:0;font-size:12px;color:var(--text-2)">1个产品经理 + 1个后端 → 三天原型 → 两周上线 → 一个月推广到 CRM → 全公司采用</p>
-        </div>
-      </div>
-    </div>
-
-    <p class="dim tc mt-l" style="font-size:14px"><strong>核心经验</strong>：切入点找对人比找对技术重要 · 三天出原型比三个月写规划有效 · 从一个场景开始，跑通再复制</p>
-
-    <aside class="notes">
-    <p>最后用这个贯穿案例把四步收束。一家软件公司，从产品经理 Vibe Coding 切入，自建工单系统，风险前置，两周上线，一个月推广全公司。</p><p>三条核心经验记住：找对人、三天出原型、从一个场景开始再复制。好，第三章结束。</p>
-    </aside>
-  </section>
+  
 <!-- ====== SLIDE 31: 章节幕Ch04 ====== -->
 <section class="slide" data-title="章节幕Ch04">
 <p class="kicker">chapter 04</p>
