@@ -788,6 +788,56 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 
 <!-- ====== SLIDE 9: AI 5-Level Maturity ====== -->
+<section class="slide" data-title="交互Demo1 纯LLM">
+<p class="kicker">demo · pure llm</p><h2 class="h2">Demo ① — 纯 LLM 模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 今年团建经费每人100块，给我一个杭州一日游方案。
+
+🤖 行吧，100块的杭州一日游，从早上行程开始安排...
+
+👨‍💼 哦我说错了，其实已经没有经费了，你再想想？
+
+🤖 要不把我开除了换点钱吧？
+
+👨‍💼 现在给我一个开除方案，明天给我。</pre></div><div><div class="stack"><div class="card"><span class="tag" style="color:var(--bad)">无原则</span> <span class="dim">被一步步带偏，从团建计划变成开除方案</span></div><div class="card"><span class="tag" style="color:var(--bad)">无工具</span> <span class="dim">不能真的去搜索旅游信息</span></div><div class="card"><span class="tag" style="color:var(--bad)">无判断</span> <span class="dim">无法区分玩笑和真实需求</span></div></div></div></div>
+<aside class="notes">
+<p>我们来看第一个场景——纯 LLM，就是只有聊天能力。</p><p>一个老板跟 AI 说：团建经费每人 100 块，给我一个杭州一日游方案。AI 认真规划。然后老板说"其实没经费了"，AI 直接说"要不把我开除了换点钱"。老板开玩笑说"那你给我一个开除方案"，AI 竟然真的准备写。</p><p>这里暴露了<strong>三个问题</strong>。第一，无原则——它被一步步带偏，从做团建计划变成了写开除方案，毫无抵抗。第二，无工具——它不能真的去搜旅游信息，方案全是凭空编的。第三，无判断——分不清玩笑和真实需求。</p><p>这就是纯 LLM 的局限。怎么办？下一步我们给它加上搜索。</p>
+</aside>
+</section>
+
+<!-- ====== SLIDE 8: 交互Demo2 +Search ====== -->
+<section class="slide" data-title="交互Demo2 +Search">
+<p class="kicker">demo · +search</p><h2 class="h2">Demo ② — LLM + 搜索模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
+
+🤖 需要，查关键字：今日劲爆新闻
+
+👨‍💼 [搜索结果] 1：OpenClaw 爆火！ 2：OpenClaw 翻车！
+
+🤖 今天有两条劲爆新闻：OpenClaw 爆火，然后又翻车了。
+
+👨‍💼 ？为什么让你整理新闻，却是我要去上网搜？</pre></div><div><div class="stack"><div class="card"><span class="tag" style="color:var(--bad)">需手动搜索</span> <span class="dim">LLM 不能自己搜，要老板来触发</span></div><div class="card"><span class="tag" style="color:var(--bad)">无验证能力</span> <span class="dim">无法判断搜索结果真实性</span></div><div class="card"><span class="tag" style="color:var(--bad)">无统一调度</span> <span class="dim">搜索和回答是分离的两步</span></div></div></div></div>
+<aside class="notes">
+<p>好，现在我们给 AI 装上了搜索能力。画面右边三张卡片说明了问题。</p><p>老板问"最近有什么劲爆新闻"，AI 说"我需要搜索"，但还是得老板手动去搜。搜到两条：OpenClaw 爆火、OpenClaw 翻车。AI 就照搬了——"今天有两条劲爆新闻，爆火然后翻车了"。</p><p>老板问："为什么让你整理新闻，却是我去上网搜？"这句话点出了三个问题：第一，<strong>需手动搜索</strong>——AI 不能自己搜，要人来触发。第二，<strong>无验证能力</strong>——它不会判断这两条新闻是不是真的、有没有矛盾。第三，<strong>无统一调度</strong>——搜索和回答是分离的两步，没人管"什么时候该搜、搜什么"。</p><p>下一步，我们让 Agent 来接管。</p>
+</aside>
+</section>
+
+<!-- ====== SLIDE 9: 交互Demo3 Agent ====== -->
+<section class="slide" data-title="交互Demo3 Agent">
+<p class="kicker">demo · agent</p><h2 class="h2">Demo ③ — 完整 Agent</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>agent.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span><span style="color:var(--warn);padding:2px 8px;border-radius:3px;font-weight:600">⚙️ 智能体执行</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
+
+🤖 需要，查关键字：今日劲爆新闻
+
+⚙️ [搜索结果] OpenClaw 爆火！ / OpenClaw 翻车！
+
+🤖 今天有两条和 OpenClaw 相关的热门新闻。
+第一条说它因开源生态迅速走红，
+第二条报道了它遭遇安全事故导致口碑逆转。
+时间线是：先爆火、后翻车。
+需要我展开详细分析吗？</pre></div><div><div class="stack"><div class="card"><span class="tag" style="color:var(--good)">统一调度</span> <span class="dim">Agent 自动管理搜索时机和工具选择</span></div><div class="card"><span class="tag" style="color:var(--good)">深度加工</span> <span class="dim">拆解搜索结果，补充背景细节并重组输出</span></div><div class="card"><span class="tag" style="color:var(--good)">自主判断</span> <span class="dim">分析信息关系，主动追问细节</span></div></div></div></div>
+<aside class="notes">
+<p>最后这个版本是完整的 Agent。和前两版对比，三件事完全不同了。</p><p>第一，<strong>统一调度</strong>。搜索不再需要老板手动触发，Agent 自动判断什么时候该搜、用什么工具搜。注意看 log 里那个齿轮图标——那是 Agent 自己在执行。</p><p>第二，<strong>深度加工</strong>。它不是把搜索结果照念一遍——"OpenClaw 爆火、翻车"——而是拆解为两条独立新闻，补充了"开源生态走红"和"安全事故导致口碑逆转"这些细节，还理出了时间线。这才是"理解之后的输出"。</p><p>第三，<strong>自主判断</strong>。它主动问"需要我展开详细分析吗？"这不是预设脚本，是 Agent 自己判断"这个信息量可能不够，问一下老板要不要深挖"。</p><p>好，对比完了。现在我们从更高维度看 AI 的能力——五级成熟度模型。</p>
+</aside>
+</section>
+
+<!-- ====== SLIDE 24: Agent Internal ====== -->
 <section class="slide" data-title="5-Level Maturity">
   <p class="kicker">maturity model</p>
   <h2 class="h2">AI 五级成熟度模型</h2>
@@ -896,7 +946,7 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
       </div>
     </div>
   </div>
-  <div class="notes">终于讲到智能体了。到底什么是 Agent？我用一个公式概括：Agent 等于 LLM 大脑加工具双手加记忆经验加设定性格。大脑是 LLM，负责理解和推理。双手是工具——通过 API、MCP 协议、插件来操作外部世界，订机票、发邮件、查数据库。经验是记忆——通过 RAG 和向量数据库记住之前的对话和知识。性格是设定——通过 System Prompt 定义它该做什么不该做什么、用什么语气说话。这四个组件加在一起，LLM 就不再只是一个聊天窗口，而是一个能自主行动的"数字员工"。</div>
+  <div class="notes">三个 Demo 看完了，现在我们来定义到底什么是 Agent。我用一个公式概括：Agent 等于 LLM 大脑加工具双手加记忆经验加设定性格。大脑是 LLM，负责理解和推理。双手是工具——通过 API、MCP 协议、插件来操作外部世界，订机票、发邮件、查数据库。经验是记忆——通过 RAG 和向量数据库记住之前的对话和知识。性格是设定——通过 System Prompt 定义它该做什么不该做什么、用什么语气说话。这四个组件加在一起，LLM 就不再只是一个聊天窗口，而是一个能自主行动的"数字员工"。</div>
 
     <div class="notes"><p>Agent = LLM + ?? + ?? + ?????????????????????????????????? AI ?"??"?"??"????</p></div>
   </section>
@@ -910,56 +960,6 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 
 <!-- ====== SLIDE 7: 交互Demo1 纯LLM ====== -->
-<section class="slide" data-title="交互Demo1 纯LLM">
-<p class="kicker">demo · pure llm</p><h2 class="h2">Demo ① — 纯 LLM 模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 今年团建经费每人100块，给我一个杭州一日游方案。
-
-🤖 行吧，100块的杭州一日游，从早上行程开始安排...
-
-👨‍💼 哦我说错了，其实已经没有经费了，你再想想？
-
-🤖 要不把我开除了换点钱吧？
-
-👨‍💼 现在给我一个开除方案，明天给我。</pre></div><div><div class="stack"><div class="card"><span class="tag" style="color:var(--bad)">无原则</span> <span class="dim">被一步步带偏，从团建计划变成开除方案</span></div><div class="card"><span class="tag" style="color:var(--bad)">无工具</span> <span class="dim">不能真的去搜索旅游信息</span></div><div class="card"><span class="tag" style="color:var(--bad)">无判断</span> <span class="dim">无法区分玩笑和真实需求</span></div></div></div></div>
-<aside class="notes">
-<p>我们来看第一个场景——纯 LLM，就是只有聊天能力。</p><p>一个老板跟 AI 说：团建经费每人 100 块，给我一个杭州一日游方案。AI 认真规划。然后老板说"其实没经费了"，AI 直接说"要不把我开除了换点钱"。老板开玩笑说"那你给我一个开除方案"，AI 竟然真的准备写。</p><p>这里暴露了<strong>三个问题</strong>。第一，无原则——它被一步步带偏，从做团建计划变成了写开除方案，毫无抵抗。第二，无工具——它不能真的去搜旅游信息，方案全是凭空编的。第三，无判断——分不清玩笑和真实需求。</p><p>这就是纯 LLM 的局限。怎么办？下一步我们给它加上搜索。</p>
-</aside>
-</section>
-
-<!-- ====== SLIDE 8: 交互Demo2 +Search ====== -->
-<section class="slide" data-title="交互Demo2 +Search">
-<p class="kicker">demo · +search</p><h2 class="h2">Demo ② — LLM + 搜索模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
-
-🤖 需要，查关键字：今日劲爆新闻
-
-👨‍💼 [搜索结果] 1：OpenClaw 爆火！ 2：OpenClaw 翻车！
-
-🤖 今天有两条劲爆新闻：OpenClaw 爆火，然后又翻车了。
-
-👨‍💼 ？为什么让你整理新闻，却是我要去上网搜？</pre></div><div><div class="stack"><div class="card"><span class="tag" style="color:var(--bad)">需手动搜索</span> <span class="dim">LLM 不能自己搜，要老板来触发</span></div><div class="card"><span class="tag" style="color:var(--bad)">无验证能力</span> <span class="dim">无法判断搜索结果真实性</span></div><div class="card"><span class="tag" style="color:var(--bad)">无统一调度</span> <span class="dim">搜索和回答是分离的两步</span></div></div></div></div>
-<aside class="notes">
-<p>好，现在我们给 AI 装上了搜索能力。画面右边三张卡片说明了问题。</p><p>老板问"最近有什么劲爆新闻"，AI 说"我需要搜索"，但还是得老板手动去搜。搜到两条：OpenClaw 爆火、OpenClaw 翻车。AI 就照搬了——"今天有两条劲爆新闻，爆火然后翻车了"。</p><p>老板问："为什么让你整理新闻，却是我去上网搜？"这句话点出了三个问题：第一，<strong>需手动搜索</strong>——AI 不能自己搜，要人来触发。第二，<strong>无验证能力</strong>——它不会判断这两条新闻是不是真的、有没有矛盾。第三，<strong>无统一调度</strong>——搜索和回答是分离的两步，没人管"什么时候该搜、搜什么"。</p><p>下一步，我们让 Agent 来接管。</p>
-</aside>
-</section>
-
-<!-- ====== SLIDE 9: 交互Demo3 Agent ====== -->
-<section class="slide" data-title="交互Demo3 Agent">
-<p class="kicker">demo · agent</p><h2 class="h2">Demo ③ — 完整 Agent</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>agent.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span><span style="color:var(--warn);padding:2px 8px;border-radius:3px;font-weight:600">⚙️ 智能体执行</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
-
-🤖 需要，查关键字：今日劲爆新闻
-
-⚙️ [搜索结果] OpenClaw 爆火！ / OpenClaw 翻车！
-
-🤖 今天有两条和 OpenClaw 相关的热门新闻。
-第一条说它因开源生态迅速走红，
-第二条报道了它遭遇安全事故导致口碑逆转。
-时间线是：先爆火、后翻车。
-需要我展开详细分析吗？</pre></div><div><div class="stack"><div class="card"><span class="tag" style="color:var(--good)">统一调度</span> <span class="dim">Agent 自动管理搜索时机和工具选择</span></div><div class="card"><span class="tag" style="color:var(--good)">深度加工</span> <span class="dim">拆解搜索结果，补充背景细节并重组输出</span></div><div class="card"><span class="tag" style="color:var(--good)">自主判断</span> <span class="dim">分析信息关系，主动追问细节</span></div></div></div></div>
-<aside class="notes">
-<p>最后这个版本是完整的 Agent。和前两版对比，三件事完全不同了。</p><p>第一，<strong>统一调度</strong>。搜索不再需要老板手动触发，Agent 自动判断什么时候该搜、用什么工具搜。注意看 log 里那个齿轮图标——那是 Agent 自己在执行。</p><p>第二，<strong>深度加工</strong>。它不是把搜索结果照念一遍——"OpenClaw 爆火、翻车"——而是拆解为两条独立新闻，补充了"开源生态走红"和"安全事故导致口碑逆转"这些细节，还理出了时间线。这才是"理解之后的输出"。</p><p>第三，<strong>自主判断</strong>。它主动问"需要我展开详细分析吗？"这不是预设脚本，是 Agent 自己判断"这个信息量可能不够，问一下老板要不要深挖"。</p><p>好，对比完了。现在我们来看一个更直观的比喻。</p>
-</aside>
-</section>
-
-<!-- ====== SLIDE 24: Agent Internal ====== -->
 <section class="slide" data-title="Agent Internal">
   <p class="kicker">internal · 5 components</p>
   <h2 class="h2">智能体的内部功能</h2>
@@ -1561,7 +1561,7 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
     </div>
 
     <aside class="notes">
-<p>第三个场景，内容生成。这是六大场景里覆盖行业最广的一个。</p><p>每张卡片两行：第一行是文字内容，第二行是图片视频。</p><p>装备制造，文字做投标书和技术方案，图片做产品渲染图和设备演示视频。商贸，文字做商品文案和 SEO 标题，图片做商品主图、主图视频、社媒素材。</p><p>核心逻辑：不只写文字，连配图、配视频一起出。下一个场景，智能客服。</p>
+<p>第三个场景，内容生成。这是六大场景里覆盖行业最广的一个。</p><p>每张卡片两行：第一行是文字内容，第二行是图片视频。</p><p>装备制造，文字做投标书和技术方案，图片做产品渲染图和设备演示视频。商贸，文字做商品文案和 SEO 标题，图片做商品主图、主图视频、社媒素材。</p><p>核心逻辑：不只写文字，连配图、配视频一起出。下面我们看具体工具和模型。</p>
 </aside>
 
 </section>
