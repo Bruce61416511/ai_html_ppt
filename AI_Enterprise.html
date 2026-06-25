@@ -1,4 +1,8 @@
-<!DOCTYPE html>
+<!DOCTYPE
+
+
+
+ html>
 <html lang="zh-CN" data-themes="corporate-clean">
 <head>
 <meta charset="utf-8">
@@ -753,13 +757,140 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
     <div class="notes">这页定调：AI编程不是"帮开发者写得更快"，而是让"写代码"这件事不再成为瓶颈。关键在于想清楚需求，而非掌握语法。</div>
   </section>
 
-<!-- ====== SLIDE 13: AI编程放大能力 ====== -->
-<section class="slide" data-title="AI编程放大能力">
-<p class="kicker">category 01 · 人与AI</p><h2 class="h2">AI 编程 = 放大能力，不是替换人</h2><div class="grid g3 mt-l"><div class="card"><h4>有开发团队</h4><p class="dim">原来 5人团队 ↓<br>现在 1 资深 + AI</p><p class="dim2" style="font-size:12px">资深变架构师，AI 写执行代码</p></div><div class="card card-accent"><h4>无开发团队</h4><p class="dim">原来 等IT排期 2-4 周 ↓<br>现在 业务负责人 + AI</p><p class="dim2" style="font-size:12px">自建数据看板、审批流程</p></div><div class="card"><h4>外包场景</h4><p class="dim">原来 全外包 20-50 万 ↓<br>现在 AI 生成主体 + 外包集成</p><p class="dim2" style="font-size:12px">成本降到原来的 30%</p></div></div>
-<aside class="notes">
-<p>这页非常重要，因为它回答了在座各位最担心的问题：<strong>AI 会不会让我的团队被裁掉？</strong></p><p>答案是不会。AI 编程的本质是放大能力，不是替换人。看三种情况：</p><p>如果你有开发团队，原来5个人做的事，现在1个资深开发者带着AI就能完成。资深人员升级做架构师，AI做执行。产出翻倍，人不变。</p><p>如果你没有开发团队，这是在座多数企业的现实——以前你要等IT排期两到四周，现在业务负责人自己就能搭建数据看板、审批流程。不再等研发排期。</p><p>如果你之前是外包开发，成本可以从20-50万降到原来的百分之三十，周期从六个月缩到一个月。</p><p>中间那栏——无开发团队——是在座多数企业的现实，我用了蓝色高亮。接下来看一个真实案例。</p>
-</aside>
-</section>
+<!-- ====== SLIDE: 三层递进 ====== -->
+<section class="slide" data-title="三层递进">
+    <p class="kicker">Category 01 · 切入路径</p>
+    <h2 class="h2" style="margin-bottom:24px">你的企业从哪一层切入？</h2>
+
+    <div style="display:flex;flex-direction:column;gap:14px;max-width:800px;margin:0 auto">
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:14px">
+          <span class="tag tag-accent" style="font-size:16px;min-width:28px;text-align:center">①</span>
+          <div>
+            <h5 style="margin:0 0 4px">辅助编码 — 现有开发者提效</h5>
+            <p class="dim" style="font-size:13px;margin:0">已有开发团队 → 装 Copilot / Cursor → 代码补全 + Chat 问答<br><span style="color:var(--good)">✅ 提效 50%，当天上手，不改工作流</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:14px">
+          <span class="tag tag-accent" style="font-size:16px;min-width:28px;text-align:center">②</span>
+          <div>
+            <h5 style="margin:0 0 4px">Vibe Coding — 1 个懂业务的人就能产出软件</h5>
+            <p class="dim" style="font-size:13px;margin:0">业务负责人描述需求 + AI 生成完整应用 → 不再等研发排期<br><span style="color:var(--good)">✅ 零开发团队也能自建管理系统、数据看板、小程序</span></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div style="display:flex;align-items:center;gap:14px">
+          <span class="tag tag-accent" style="font-size:16px;min-width:28px;text-align:center">③</span>
+          <div>
+            <h5 style="margin:0 0 4px">自主开发 — AI Agent 全流程交付</h5>
+            <p class="dim" style="font-size:13px;margin:0">产品经理描述需求 → AI Agent 自主规划 + 编码 + 测试 + 部署<br><span style="color:var(--text-2)">🔮 前沿方向，2026 年快速成熟中</span></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes">三层递进让每个听众对号入座：有开发团队从①起步，没团队直接②，关注趋势看③。</div>
+  </section>
+
+<!-- ===== 3c. Vibe Coding 实战闭环 ===== -->
+  <section class="slide" data-title="Vibe Coding 实战闭环">
+    <p class="kicker">Category 01 · 实战方法</p>
+    <h2 class="h2" style="margin-bottom:20px">Vibe Coding 四步闭环</h2>
+    <p class="dim" style="margin-bottom:20px">核心逻辑：开发者不再写代码，而是描述意图、迭代反馈、把关质量</p>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin:0 auto 24px;max-width:880px;flex-wrap:wrap">
+      <div class="card" style="padding:16px 14px;text-align:center;min-width:140px;flex:1">
+        <div style="font-size:28px;margin-bottom:4px">📋</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">描述需求</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.4">自然语言说清要什么<br>"做一个会员后台，含登录<br>和数据导出"</div>
+      </div>
+      <div style="color:var(--accent);font-size:22px;font-weight:700;flex-shrink:0">→</div>
+      <div class="card" style="padding:16px 14px;text-align:center;min-width:140px;flex:1;border:2px solid var(--accent)">
+        <div style="font-size:28px;margin-bottom:4px">⚡</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px;color:var(--accent)">AI 一键生成</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.4">前后端代码 + 数据库<br>+ 单元测试 + 接口文档<br>分钟级产出</div>
+      </div>
+      <div style="color:var(--accent);font-size:22px;font-weight:700;flex-shrink:0">→</div>
+      <div class="card" style="padding:16px 14px;text-align:center;min-width:140px;flex:1">
+        <div style="font-size:28px;margin-bottom:4px">🔄</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">看结果快速迭代</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.4">打开页面看效果<br>"把登录按钮放右上角"<br>AI 立即修改</div>
+      </div>
+      <div style="color:var(--accent);font-size:22px;font-weight:700;flex-shrink:0">→</div>
+      <div class="card" style="padding:16px 14px;text-align:center;min-width:140px;flex:1">
+        <div style="font-size:28px;margin-bottom:4px">✅</div>
+        <div style="font-weight:700;font-size:14px;margin-bottom:2px">人工把关上线</div>
+        <div style="font-size:11px;color:var(--text-3);line-height:1.4">Code Review + 集成测试<br>+ 一键部署</div>
+      </div>
+    </div>
+
+    <div style="max-width:760px;margin:0 auto">
+      <div class="card" style="padding:16px 20px;text-align:center;background:var(--grad-soft)">
+        <p style="margin:0 0 6px;font-size:14px;font-weight:700">⌛ 典型项目周期对比</p>
+        <div style="display:flex;align-items:center;justify-content:center;gap:0;font-size:13px">
+          <span style="color:var(--text-3)">传统：3人 × 3个月</span>
+          <span style="margin:0 12px;color:var(--text-3)">→</span>
+          <span style="color:var(--accent);font-weight:700">Vibe Coding：1人 × 1周</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">四步闭环是Vibe Coding的核心方法论。关键技能迁移：从"写代码"变成"写Prompt + 写AGENTS.md + 做Code Review"。</div>
+  </section>
+
+
+
+<!-- ===== 3d. 不是替换人，是放大能力 ===== -->
+  <section class="slide" data-title="放大能力">
+    <p class="kicker">Category 01 · 人与AI</p>
+    <h2 class="h2" style="margin-bottom:24px">AI编程 = 放大能力，不是替换人</h2>
+
+    <div class="grid g3 mt-m" style="gap:16px;max-width:900px;margin-left:auto;margin-right:auto">
+
+      <div class="card" style="padding:22px 18px;text-align:center">
+        <div style="font-size:32px;margin-bottom:10px">👨‍💻</div>
+        <h5 style="margin:0 0 10px">有开发团队</h5>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">
+          <p style="margin:0 0 8px"><span style="color:var(--text-3)">原来</span> 5人团队</p>
+          <p style="margin:0 0 8px;font-size:20px;color:var(--accent);font-weight:700">↓</p>
+          <p style="margin:0 0 8px"><span style="color:var(--accent)">现在</span> <strong>1 资深 + AI</strong></p>
+          <p style="margin:0;font-size:11px;color:var(--text-3)">资深变架构师<br>专注设计把关，AI 写执行代码</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding:22px 18px;text-align:center;border:2px solid var(--accent);background:var(--good-bg, #ECFDF5)">
+        <div style="font-size:32px;margin-bottom:10px">🧑‍💼</div>
+        <h5 style="margin:0 0 10px;color:var(--accent)">无开发团队 ⭐</h5>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">
+          <p style="margin:0 0 8px"><span style="color:var(--text-3)">原来</span>等IT排期 2-4 周</p>
+          <p style="margin:0 0 8px;font-size:20px;color:var(--accent);font-weight:700">↓</p>
+          <p style="margin:0 0 8px"><span style="color:var(--accent)">现在</span> <strong>业务负责人 + AI</strong></p>
+          <p style="margin:0;font-size:11px;color:var(--text-3)">自建数据看板、审批流程<br>不再等研发排期</p>
+        </div>
+      </div>
+
+      <div class="card" style="padding:22px 18px;text-align:center">
+        <div style="font-size:32px;margin-bottom:10px">🤝</div>
+        <h5 style="margin:0 0 10px">外包场景</h5>
+        <div style="font-size:13px;color:var(--text-2);line-height:1.6">
+          <p style="margin:0 0 8px"><span style="color:var(--text-3)">原来</span>全外包 20-50 万</p>
+          <p style="margin:0 0 8px;font-size:20px;color:var(--accent);font-weight:700">↓</p>
+          <p style="margin:0 0 8px"><span style="color:var(--accent)">现在</span> <strong>AI 生成主体 + 外包集成</strong></p>
+          <p style="margin:0;font-size:11px;color:var(--text-3)">成本降到原来的 30%<br>周期从 6 个月缩到 1 个月</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes">关键信息：AI编程不裁人，是让现有人力产出翻倍、让非技术人员获得软件能力、让外包预算大幅缩减。中间那一栏（无开发团队）是在座多数企业的现实——重点讲。</div>
+  </section>
 
 <!-- ====== SLIDE 14: 案例小扬同学 ====== -->
 <section class="slide" data-title="案例小扬同学">
