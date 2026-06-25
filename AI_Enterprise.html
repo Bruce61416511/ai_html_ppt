@@ -358,6 +358,8 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 .pain-item { background: var(--surface-2); padding: 16px; border-radius: var(--radius); border-left: 3px solid var(--bad); }
 .pain-card { display:flex; align-items:flex-start; gap:16px; padding:20px; }
 .pain-card .emoji { font-size:28px; flex-shrink:0; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius); background:var(--surface-2); }
+.pain-card { display:flex; align-items:flex-start; gap:16px; padding:20px; }
+.pain-card .emoji { font-size:28px; flex-shrink:0; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius); background:var(--surface-2); }
 .risk-row { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
 .risk-num { font-family: var(--font-mono); font-size: 24px; font-weight: 800; color: var(--bad); min-width: 36px; }
 .step-box { display: flex; gap: 16px; }
@@ -1018,6 +1020,153 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
     </div>
 
     <div class="notes">一页讲清 RAG。不引入 Embedding、BM25、Reranker 等术语——这些留到演讲口述。核心卖点"可溯源"必须在这页砸下去。</div>
+  </section>
+
+<section class="slide" data-title="RAG 质量对比">
+    <p class="kicker">Category 02 · 质量意识</p>
+    <h2 class="h2" style="margin-bottom:20px">差的 RAG vs 好的 RAG — 差在哪？</h2>
+
+    <div class="grid g2 mt-m" style="gap:20px;max-width:860px;margin-left:auto;margin-right:auto">
+
+      <div class="card" style="padding:22px;border-left:4px solid var(--warn, #e67e22)">
+        <h4 style="margin:0 0 14px;color:var(--warn, #e67e22)">⚠️ 差的 RAG 什么样</h4>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:700">答非所问</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-3)">问了"变压器耐压标准"，回了"变压器运输规范"——检索没命中</p>
+          </div>
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:700">幻觉编造</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-3)">文档里明明没有，AI 自己编了一个答案——Prompt 没约束好</p>
+          </div>
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:700">搜不到关键信息</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-3)">扫了 50 页 PDF，最有用的那段在第 42 页——切片太大漏掉了</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="padding:22px;border-left:4px solid var(--good)">
+        <h4 style="margin:0 0 14px;color:var(--good)">✅ 好的 RAG 怎么做</h4>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:700">文档预处理 — Garbage In, Garbage Out</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-3)">扫描件必须 OCR。表格必须结构化。否则 RAG 就是个瞎子</p>
+          </div>
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:700">智能切片 — 粒度决定精度</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-3)">按语义段落切，不是按字数硬切。相邻片段保留 10% 重叠防截断</p>
+          </div>
+          <div>
+            <p style="margin:0;font-size:13px;font-weight:700">混合检索 + 严谨 Prompt</p>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--text-3)">语义 + 关键词双路召回，Prompt 约束"只根据提供的文档回答，不知道就说不知道"</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="max-width:860px;margin:20px auto 0">
+      <div class="card" style="padding:14px 20px;text-align:center;background:var(--grad-soft)">
+        <p style="margin:0;font-size:14px">
+          <strong>关键认知：</strong>RAG 不是"搭好就完"——文档质量、切片策略、检索精度、Prompt 约束，任一环节掉链子，效果就是天壤之别
+        </p>
+      </div>
+    </div>
+
+    <div class="notes">合并原 slide 10+11 的精华，但不列技术清单。左右对比让听众秒懂：差在哪、好怎么做。Embedding、BM25、Reranker、RAGAS 这些术语全部藏在 speaker notes 里。</div>
+  </section>
+
+<section class="slide" data-title="RAG 场景对号入座">
+    <p class="kicker">Category 02 · 场景落地</p>
+    <h2 class="h2" style="margin-bottom:20px">你的行业，RAG 能做什么？</h2>
+
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:820px;margin:0 auto">
+
+      <div class="card pain-card">
+        <div class="emoji">⚡</div>
+        <div>
+          <h5 style="margin:0 0 3px">装备制造 — 图纸检索 + 技术规范问答</h5>
+          <p class="dim" style="font-size:13px;margin:0">问"SFZ11-120000/220 的绝缘结构参数" → AI 秒回，带设计图页码<br><span style="color:var(--good)">以前翻图纸柜 30 分钟 → 现在 3 秒</span></p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">🏥</div>
+        <div>
+          <h5 style="margin:0 0 3px">医疗 — 医案检索 + 辅助诊断 + 配伍审查</h5>
+          <p class="dim" style="font-size:13px;margin:0">问"柴胡加龙骨牡蛎汤加减，病人心悸失眠，舌红少苔" → AI 检索相似医案 + 提示配伍禁忌<br><span style="color:var(--good)">以前凭记忆翻医书 20 分钟 → 现在秒级回答案例和禁忌</span></p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">🎓</div>
+        <div>
+          <h5 style="margin:0 0 3px">教育 — 案例库检索 + 教学资源问答</h5>
+          <p class="dim" style="font-size:13px;margin:0">问"波特五力模型在新能源汽车行业的应用案例" → AI 从案例库调出 3 个教学案例<br><span style="color:var(--good)">以前翻课件库 15 分钟 → 现在秒级定位</span></p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">🤝</div>
+        <div>
+          <h5 style="margin:0 0 3px">专业服务 — 法规知识库 + 合同审查</h5>
+          <p class="dim" style="font-size:13px;margin:0">问"民法典关于违约金调整的条款和最新司法解释" → AI 逐条列出，标出处<br><span style="color:var(--good)">以前翻法规库 1 小时 → 现在秒级回答，带原文链接</span></p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">📦</div>
+        <div>
+          <h5 style="margin:0 0 3px">商贸 / 材料建材 — 产品参数库 + 标准检索</h5>
+          <p class="dim" style="font-size:13px;margin:0">问"CBN 粒度 80/100 的适用加工材料和推荐结合剂" → AI 从技术文档中提取答案<br><span style="color:var(--good)">以前翻产品手册 10 分钟 → 现在秒回，附带检测标准编号</span></p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="notes">5 个行业场景，台下 16 家企业 40 人每人至少能对号入座一个。关键：每个场景都有"以前 XX 分钟 → 现在 3 秒"的可量化对比。</div>
+  </section>
+
+<section class="slide" data-title="DocMind演示版">
+    <p class="kicker">Category 02 · 实战demo</p>
+    <h2 class="h2">🧪 DocMind -- 企业知识库演示系统</h2>
+    <p class="dim" style="margin-bottom:14px">一个完整的企业文档上传 . 问答交互流程，RAG 技术落地实战 Demo</p>
+    <div class="grid g2 mt-m" style="gap:14px">
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">📤 文档上传</h4>
+        <p class="dim" style="font-size:12px;margin:0">支持 PDF / Word / TXT / Markdown。<br>拖拽上传，自动触发解析流水线。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">🔍 文档解析</h4>
+        <p class="dim" style="font-size:12px;margin:0">PDF 提取文本 + 表格。<br>图片 OCR 识别。保留文档结构。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">✂️ 智能切片</h4>
+        <p class="dim" style="font-size:12px;margin:0">按段落+语义边界分块。<br>每块 500-800 tokens，含上下文重叠。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">🗄️ 向量存储</h4>
+        <p class="dim" style="font-size:12px;margin:0">SQLite 存储元数据。<br>ChromaDB 向量索引，支持相似度检索。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">🔎 混合检索</h4>
+        <p class="dim" style="font-size:12px;margin:0">jieba + TF-IDF 关键词检索。<br>Embedding 语义向量检索。Top-3 片段召回。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">💬 问答生成</h4>
+        <p class="dim" style="font-size:12px;margin:0">检索结果注入 Prompt。<br>LLM 生成回答 + 引用来源标注。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">🌐 Web 界面</h4>
+        <p class="dim" style="font-size:12px;margin:0">Streamlit / Gradio 快速搭建。<br>对话式 UI，支持多轮交互。</p>
+      </div>
+      <div class="card" style="padding:14px">
+        <h4 style="margin:0 0 6px">🔒 本地运行</h4>
+        <p class="dim" style="font-size:12px;margin:0">全离线运行，无需外部 API。<br>数据安全，适合企业内网部署。</p>
+      </div>
+    </div>
+    <div class="notes">DocMind 是 RAG 技术落地实战 Demo。完整流程：文档上传 - 内容提取 - 智能切片 - SQLite 存储 - jieba+TF-IDF 检索 - 召回 Top-3 片段 - LLM 生成回答。全离线运行，无需外部 API。</div>
   </section>
 
 <!-- ====== SLIDE 17: 内容生成 ====== -->
