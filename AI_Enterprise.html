@@ -1169,13 +1169,313 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
     <div class="notes">DocMind 是 RAG 技术落地实战 Demo。完整流程：文档上传 - 内容提取 - 智能切片 - SQLite 存储 - jieba+TF-IDF 检索 - 召回 Top-3 片段 - LLM 生成回答。全离线运行，无需外部 API。</div>
   </section>
 
+<section class="slide" data-title="多模态RAG">
+    <p class="kicker">Category 02 . 多模态</p>
+    <h2 class="h2">🖼️ 图片 / 视频 的 RAG 如何制作？</h2>
+    <p class="dim" style="margin-bottom:16px">传统 RAG 只处理文字，多模态 RAG 让图片、视频也可检索和问答</p>
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:800px;margin:0 auto">
+      <div class="card pain-card">
+        <div class="emoji">📷</div>
+        <div>
+          <h5 style="margin:0 0 4px">图片 → 三种理解路径</h5>
+          <p class="dim" style="font-size:13px;margin:0">OCR（光学字符识别）：扫描件、证照等直接提取文字存储。<br>CLIP 向量嵌入：产品图、设计图生成向量，支持“以图搜图”“文字搜图”。<br>多模态 LLM：GPT-4o / Qwen-VL 深度理解图片内容，支持看图问答与自动标注。</p>
+        </div>
+      </div>
+      <div class="card pain-card">
+        <div class="emoji">🎬</div>
+        <div>
+          <h5 style="margin:0 0 4px">视频 → 抽帧（图片）+ 语音转写（文本）+ 时间戳</h5>
+          <p class="dim" style="font-size:13px;margin:0">每 2-3 秒抽一帧→走图片管线（OCR/CLIP/多模态 LLM）。<br>同时 Whisper 转写音频为文字。<br>时间戳将帧与文字绑定，检索时可精确跳转到视频对应秒数。</p>
+        </div>
+      </div>
+      <div class="card pain-card">
+        <div class="emoji">🔄</div>
+        <div>
+          <h5 style="margin:0 0 4px">依赖大模型实际流程</h5>
+          <p class="dim" style="font-size:13px;margin:0">图片/视频 → 多模态LLM理解 → 切片存储 → 用户提问 → 混合检索 → 多模态 LLM 生成回答 → 回答中引用图片/视频片段</p>
+        </div>
+      </div>
+    </div>
+    <div class="notes">多模态 RAG 扩展了传统 RAG 的能力边界。关键技术：OCR（光学字符识别）、CLIP多模态嵌入、Whisper语音转写、多模态LLM。适用场景：产品手册中的图表检索、培训视频知识库、设备故障照片诊断等。</div>
+  </section>
+
 <!-- ====== SLIDE 17: 内容生成 ====== -->
 <section class="slide" data-title="内容生成">
-<p class="kicker">category 03 · 内容生成</p><h2 class="h2">投标书、报告、文案——AI 写</h2><div class="grid g3 mt-l"><div class="card"><span class="tag tag-accent">⚙️ 装备制造</span><p class="dim mt-s">投标书、技术方案、产品手册</p><p class="dim2" style="font-size:12px">从 2 周 → 2 小时</p></div><div class="card"><span class="tag tag-accent">📎 材料建材</span><p class="dim mt-s">检测报告、配合比报告、原材料证书</p><p class="dim2" style="font-size:12px">格式规范零出错</p></div><div class="card"><span class="tag tag-accent">🤝 专业服务</span><p class="dim mt-s">分析报告、行业研究、尽职调查</p><p class="dim2" style="font-size:12px">数据整理时间归零</p></div><div class="card"><span class="tag tag-accent">🛠 智能制造</span><p class="dim mt-s">产品手册、技术文档、设计说明</p><p class="dim2" style="font-size:12px">多语言自动翻译</p></div><div class="card"><span class="tag tag-accent">📦 商贸</span><p class="dim mt-s">商品文案、详情页、SEO 标题</p><p class="dim2" style="font-size:12px">批量生成千级 SKU</p></div><div class="card"><span class="tag tag-accent">✈️ 旅游</span><p class="dim mt-s">线路文案、攻略生成、热点营销</p><p class="dim2" style="font-size:12px">实时跟踪热点更新</p></div></div>
-<aside class="notes">
-<p>第三个场景，内容生成。这是六大场景里覆盖行业最广的一个。</p><p>装备制造做投标书，从两周缩到两小时。材料建材做检测报告，格式规范零出错。专业服务做行业研究，数据整理时间归零。智能制造做产品手册，多语言自动翻译。商贸做商品文案，批量生成。旅游做攻略，实时跟热点。</p><p><strong>核心逻辑</strong>：这些文档都有固定模板和规范，AI 最擅长的就是这种“有规则的写作”。你把模板和数据给它，它自动填充并保证格式一致。</p><p>接下来第四个场景，智能客服。</p>
+    <p class="kicker">category 03 · 内容生成</p>
+    <h2 class="h2" style="margin-bottom:4px">投标书、报告、文案、图片、视频——AI 写，AI 也画</h2>
+    <p class="dim" style="margin-bottom:14px;max-width:800px">文字 + 图片 + 视频，三条线全部 AI 化</p>
+
+    <div class="grid g3" style="gap:10px">
+      <div class="card" style="padding:14px 16px">
+        <span class="tag tag-accent">⚙️ 装备制造</span>
+        <p class="dim" style="font-size:12px;margin:6px 0 4px">✏️ 投标书、技术方案、产品手册</p>
+        <p class="dim" style="font-size:12px;margin:0 0 4px">🖼️ 产品渲染图、设备演示视频</p>
+        <p class="dim2" style="font-size:11px">从 2 周 → 2 小时</p>
+      </div>
+      <div class="card" style="padding:14px 16px">
+        <span class="tag tag-accent">📎 材料建材</span>
+        <p class="dim" style="font-size:12px;margin:6px 0 4px">✏️ 检测报告、配合比报告、原材料证书</p>
+        <p class="dim" style="font-size:12px;margin:0 0 4px">🖼️ 产品实拍图、施工场景视频</p>
+        <p class="dim2" style="font-size:11px">格式规范零出错</p>
+      </div>
+      <div class="card" style="padding:14px 16px">
+        <span class="tag tag-accent">🤝 专业服务</span>
+        <p class="dim" style="font-size:12px;margin:6px 0 4px">✏️ 分析报告、行业研究、尽职调查</p>
+        <p class="dim" style="font-size:12px;margin:0 0 4px">🖼️ 数据可视化图表、演示视频、品牌视觉</p>
+        <p class="dim2" style="font-size:11px">数据整理时间归零</p>
+      </div>
+      <div class="card" style="padding:14px 16px">
+        <span class="tag tag-accent">🛠 智能制造</span>
+        <p class="dim" style="font-size:12px;margin:6px 0 4px">✏️ 产品手册、技术文档、设计说明</p>
+        <p class="dim" style="font-size:12px;margin:0 0 4px">🖼️ 产品 3D 图、产线演示视频、多语言图册</p>
+        <p class="dim2" style="font-size:11px">多语言自动翻译 + 配图</p>
+      </div>
+      <div class="card" style="padding:14px 16px">
+        <span class="tag tag-accent">📦 商贸</span>
+        <p class="dim" style="font-size:12px;margin:6px 0 4px">✏️ 商品文案、详情页、SEO 标题</p>
+        <p class="dim" style="font-size:12px;margin:0 0 4px">🖼️ 商品主图、主图视频、社媒素材</p>
+        <p class="dim2" style="font-size:11px">批量生成千级 SKU</p>
+      </div>
+      <div class="card" style="padding:14px 16px">
+        <span class="tag tag-accent">✈️ 旅游</span>
+        <p class="dim" style="font-size:12px;margin:6px 0 4px">✏️ 线路文案、攻略生成、热点营销</p>
+        <p class="dim" style="font-size:12px;margin:0 0 4px">🖼️ 景点宣传图、短视频、旅拍素材</p>
+        <p class="dim2" style="font-size:11px">实时跟踪热点更新</p>
+      </div>
+    </div>
+
+    <aside class="notes">
+<p>第三个场景，内容生成。这是六大场景里覆盖行业最广的一个。</p><p>每张卡片两行：第一行是文字内容，第二行是图片视频。</p><p>装备制造，文字做投标书和技术方案，图片做产品渲染图和设备演示视频。商贸，文字做商品文案和 SEO 标题，图片做商品主图、主图视频、社媒素材。</p><p>核心逻辑：不只写文字，连配图、配视频一起出。下一个场景，智能客服。</p>
 </aside>
+
 </section>
+
+<section class="slide" data-title="文字内容生成·模板驱动">
+    <p class="kicker">Category 04 · 文字内容</p>
+    <h2 class="h2">📝 检索模板 + 输入参数 + LLM</h2>
+    <p class="dim" style="margin-bottom:20px">UI收集参数，RAG检索模板，LLM融合两者按提示词生成专业文档</p>
+    
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin:20px 0 24px;flex-wrap:wrap">
+      <div style="background:var(--surface);border:2px solid var(--accent-2);border-radius:12px;padding:16px 20px;text-align:center;min-width:120px">
+        <div style="font-size:28px;margin-bottom:4px">✏️</div>
+        <div style="font-weight:700;color:var(--accent-2);font-size:13px">UI 参数输入</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-3)">→</div>
+      <div style="background:var(--surface);border:2px solid var(--accent);border-radius:12px;padding:16px 20px;text-align:center;min-width:120px">
+        <div style="font-size:28px;margin-bottom:4px">📋</div>
+        <div style="font-weight:700;color:var(--accent);font-size:13px">RAG 模板检索</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-3)">→</div>
+      <div style="background:var(--surface);border:2px solid var(--good);border-radius:12px;padding:16px 20px;text-align:center;min-width:120px">
+        <div style="font-size:28px;margin-bottom:4px">🤖</div>
+        <div style="font-weight:700;color:var(--good);font-size:13px">LLM 融合生成</div>
+      </div>
+      <div style="font-size:20px;color:var(--text-3)">→</div>
+      <div style="background:var(--good-bg);border:2px solid var(--good);border-radius:12px;padding:16px 20px;text-align:center;min-width:120px">
+        <div style="font-size:28px;margin-bottom:4px">📄</div>
+        <div style="font-weight:700;color:var(--good);font-size:13px">提示词输出</div>
+      </div>
+    </div>
+
+    <div style="max-width:800px;margin:0 auto">
+      <div class="grid g2" style="gap:10px;margin-bottom:10px">
+        <div class="card pain-card">
+          <div class="emoji">📦</div>
+          <div>
+            <h5 style="margin:0 0 4px">典型场景</h5>
+            <p class="dim" style="font-size:13px;margin:0">投标书：UI输入项目参数 → RAG检索投标书模板 → LLM生成完整标书<br>检测报告：UI填写检测数据 → RAG匹配报告模板 → LLM自动生成<br>电商文案：UI提供商品信息 → RAG找到品类模板 → LLM多平台适配输出</p>
+          </div>
+        </div>
+        <div class="card pain-card">
+          <div class="emoji">📌</div>
+          <div>
+            <h5 style="margin:0 0 4px">关键要点</h5>
+            <p class="dim" style="font-size:13px;margin:0">① UI收集用户关键参数，触发流程。<br>② RAG从模板库中检索最匹配的模板。<br>③ LLM融合“RAG模板 + UI参数”按提示词生成文档，不胡编乱造。</p>
+          </div>
+        </div>
+      </div>
+      <div class="card pain-card">
+        <div class="emoji">📧</div>
+        <div>
+          <h5 style="margin:0 0 4px">实例：开发信智能生成</h5>
+          <p class="dim" style="font-size:13px;margin:0">UI输入客户名称、公司、产品、语言 → RAG检索企业模板 → LLM生成外贸开发信。<br>支持中、英、西、法、阿、俄 6 种语言，企业背景自动套用。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="notes">模板驱动的文字内容生成流程：UI参数输入 → RAG检索模板 → LLM融合生成 → 提示词控制输出。</div>
+  </section>
+
+<section class="slide" data-title="Dreamina 即梦">
+    <p class="kicker">Category 04</p>
+    <h2 class="h2">Dreamina（即梦）</h2>
+    <a href="https://www.dreamina.com/" target="_blank" class="pill-tag" style="margin-left:12px;text-decoration:none;">dreamina.com &#x2197;</a>
+    <p class="dim" style="margin-bottom:18px;">原创素材生成 — 出原图 / 原视频，支持 1:1 · 3:4 · 4:3 · 9:16 · 16:9 等比例，支持 2K / 4K</p>
+    <div class="grid g3" style="gap:14px;">
+      <div class="card" style="padding:20px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F5BC;</div>
+        <h5>图片生成</h5>
+        <p class="dim2" style="font-size:11px;">文生图 / 图生图</p>
+      </div>
+      <div class="card" style="padding:20px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F3AC;</div>
+        <h5>视频生成</h5>
+        <p class="dim2" style="font-size:11px;">文生视频 / 图生视频</p>
+      </div>
+      <div class="card" style="padding:20px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F3A8;</div>
+        <h5>智能画布</h5>
+        <p class="dim2" style="font-size:11px;">扩图 · 消除 · 局部重绘</p>
+      </div>
+    </div>
+    <div style="display:flex;gap:14px;margin-top:14px;">
+      <div class="card" style="flex:1;padding:20px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F9D1;</div>
+        <h5>数字人</h5>
+        <p class="dim2" style="font-size:11px;">虚拟形象 + 口播驱动</p>
+      </div>
+      <div class="card" style="flex:1;padding:20px;text-align:center;">
+        <div style="font-size:28px;margin-bottom:6px;">&#x1F399;</div>
+        <h5>配音生成</h5>
+        <p class="dim2" style="font-size:11px;">TTS 文字转语音 · 多音色</p>
+      </div>
+    </div>
+    <div class="notes">即梦是字节系的产品，中文理解好，特别适合国内电商。六个核心功能：图片生成、视频生成、智能画布、数字人、模特换装、云端协作。以前拍一套商品图要几天，现在几分钟。</div>
+  </section>
+
+<section class="slide" data-title="Canva 可画">
+    <p class="kicker">Category 04</p>
+    <h2 class="h2">Canva（可画）</h2>
+    <a href="https://www.canva.cn/" target="_blank" class="pill-tag" style="margin-left:12px;text-decoration:none;">canva.cn &#x2197;</a>
+    <p class="dim" style="margin-bottom:18px;">一站式电商视觉内容设计 — 覆盖小红书 · 微信 · B站 · 抖音等全平台模板</p>
+    <div class="grid g3" style="gap:14px;margin-bottom:4px;">
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F4CB;</div>
+        <h5>海量模板</h5>
+        <p class="dim2" style="font-size:11px;">海报 · 详情页 · Banner · 社媒</p>
+      </div>
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F3A8;</div>
+        <h5>拖拽式编辑</h5>
+        <p class="dim2" style="font-size:11px;">图 + 文案 + Logo 拼成成品图</p>
+      </div>
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F3F7;</div>
+        <h5>品牌套件</h5>
+        <p class="dim2" style="font-size:11px;">Logo + 色板 + 字体一键套用</p>
+      </div>
+    </div>
+    <div class="grid g3" style="gap:14px;">
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x2702;</div>
+        <h5>一键抠图</h5>
+        <p class="dim2" style="font-size:11px;">AI 去背景，替代 PS 钢笔工具</p>
+      </div>
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F4E6;</div>
+        <h5>批量创作</h5>
+        <p class="dim2" style="font-size:11px;">CSV 导入数据，批量生成变体</p>
+      </div>
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F91D;</div>
+        <h5>团队协作</h5>
+        <p class="dim2" style="font-size:11px;">多人实时编辑，评论审批</p>
+      </div>
+    </div>
+    <div class="notes">Canva 替代的是 PS 80% 的电商日常操作：模板排版、拖拽式编辑、一键抠图、品牌套件。运营自己就能出图，不用等设计师。</div>
+  </section>
+
+<section class="slide" data-title="Kuaizi 筷子科技">
+    <p class="kicker">Category 04</p>
+    <h2 class="h2">Kuaizi（筷子科技）</h2>
+    <a href="https://kuaizi.cn/" target="_blank" class="pill-tag" style="margin-left:12px;text-decoration:none;">kuaizi.cn &#x2197;</a>
+    <p class="dim" style="margin-bottom:18px;">创意生产 + 一键投放，打通内容到投放全链路</p>
+    <p class="dim2" style="font-size:11px;margin-bottom:8px;">&#x1F3AC; 内容生产</p>
+    <div class="grid g3" style="gap:14px;margin-bottom:12px;">
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F500;</div>
+        <h5>程序化创意</h5>
+        <p class="dim2" style="font-size:11px;">上传素材+文案，AI 裂变数百条视频变体</p>
+      </div>
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x2702;</div>
+        <h5>智能混剪</h5>
+        <p class="dim2" style="font-size:11px;">多素材自动组合最优方案，配乐卡点</p>
+      </div>
+      <div class="card" style="padding:16px;text-align:center;">
+        <div style="font-size:26px;margin-bottom:4px;">&#x1F399;</div>
+        <h5>AI 配音+字幕</h5>
+        <p class="dim2" style="font-size:11px;">真人级 TTS 多音色 + 自动字幕</p>
+      </div>
+    </div>
+    <div style="background:var(--grad-soft);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:4px;">
+      <p class="dim2" style="font-size:11px;margin-bottom:6px;">&#x1F680; 投放 &amp; 分发</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <span class="pill-tag" style="background:#FFF7ED;color:#EA580C;font-size:13px;">巨量引擎（抖音）</span>
+        <span class="pill-tag" style="background:#FEF2F2;color:#DC2626;font-size:13px;">磁力引擎（快手）</span>
+        <span class="pill-tag" style="background:#EFF6FF;color:#2563EB;font-size:13px;">腾讯广告</span>
+        <span class="pill-tag" style="background:#F0FDF4;color:#16A34A;font-size:13px;">TikTok</span>
+        <span class="pill-tag" style="background:#F5F3FF;color:#7C3AED;font-size:13px;">视频号</span>
+      </div>
+    </div>
+    <div class="notes">筷子科技最大的亮点：生产完直接一键投到巨量引擎、磁力引擎、腾讯广告、TikTok、视频号。数据跑出来再回传优化，形成闭环。一个剪辑师一天做 3 条，AI 一小时出 100 条投 5 个平台。</div>
+  </section>
+
+<section class="slide" data-title="内容模型">
+    <p class="kicker">Category 04 · 内容模型</p>
+    <h2 class="h2">想自己搓内容 Agent？先认识这些模型</h2>
+    <p class="dim" style="margin-bottom:14px;">Dreamina / Canva / Kuaizi 是手动挡，底层的"引擎"长这样</p>
+    <div class="grid g2" style="gap:14px;margin-bottom:4px;">
+      <div class="card" style="padding:16px;">
+        <p class="dim2" style="font-size:10px;color:var(--accent-2);margin-bottom:4px;">&#x1F5BC;&#xFE0F; 图片生成</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill-tag" style="font-size:10px;">Stable Diffusion</span>
+          <span class="pill-tag" style="font-size:10px;">Flux Dev</span>
+          <span class="pill-tag" style="font-size:10px;">Midjourney</span>
+          <span class="pill-tag" style="font-size:10px;">DALL&#xB7;E 3</span>
+          <span class="pill-tag" style="font-size:10px;">通义万相</span>
+        </div>
+      </div>
+      <div class="card" style="padding:16px;">
+        <p class="dim2" style="font-size:10px;color:var(--accent-2);margin-bottom:4px;">&#x1F3AC; 视频生成</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill-tag" style="font-size:10px;">可灵 Kling</span>
+          <span class="pill-tag" style="font-size:10px;">Runway Gen-3</span>
+          <span class="pill-tag" style="font-size:10px;">Sora</span>
+          <span class="pill-tag" style="font-size:10px;">Pika</span>
+          <span class="pill-tag" style="font-size:10px;">CogVideoX</span>
+        </div>
+      </div>
+    </div>
+    <div class="grid g2" style="gap:14px;margin-bottom:4px;">
+      <div class="card" style="padding:16px;">
+        <p class="dim2" style="font-size:10px;color:var(--accent-2);margin-bottom:4px;">&#x1F3A8; 控制 &amp; 工作流</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill-tag" style="font-size:10px;">ComfyUI</span>
+          <span class="pill-tag" style="font-size:10px;">LoRA</span>
+          <span class="pill-tag" style="font-size:10px;">ControlNet</span>
+          <span class="pill-tag" style="font-size:10px;">IP-Adapter</span>
+        </div>
+      </div>
+      <div class="card" style="padding:16px;">
+        <p class="dim2" style="font-size:10px;color:var(--accent-2);margin-bottom:4px;">&#x1F5E3;&#xFE0F; 语音 &amp; 播报</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <span class="pill-tag" style="font-size:10px;">CosyVoice</span>
+          <span class="pill-tag" style="font-size:10px;">Fish Audio</span>
+          <span class="pill-tag" style="font-size:10px;">GPT-SoVITS</span>
+          <span class="pill-tag" style="font-size:10px;">Edge TTS</span>
+        </div>
+      </div>
+    </div>
+    <div class="card" style="padding:16px;background:var(--grad-soft);margin-top:4px;">
+      <p class="dim2" style="font-size:11px;margin-bottom:4px;">&#x1F4A1; 这些模型能做什么</p>
+      <p class="dim" style="font-size:12px;">
+        <strong>图片</strong>：商品图 / 模特 / 场景批量生成 &#xB7; <strong>视频</strong>：口播 / 混剪素材 / 动态展示 &#xB7; 
+        <strong>语音</strong>：配音 / 数字人播报 &#xB7; <strong>控制</strong>：换脸 / 风格迁移 / 精细控制出图
+      </p>
+    </div>
+    <div class="notes">如果你不用 Dreamina / Canva / Kuaizi 这些成品工具，想自己手搓内容 Agent，就得了解这些底层模型。图片、视频、语音、控制——四个维度各有一批主流模型可选。</div>
+  </section>
 
 <!-- ====== SLIDE 18: 智能客服 ====== -->
 <section class="slide" data-title="智能客服">
