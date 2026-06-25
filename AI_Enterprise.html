@@ -356,6 +356,8 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 .decision-col h3 { font-size: 20px; margin-bottom: 12px; }
 .pain-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
 .pain-item { background: var(--surface-2); padding: 16px; border-radius: var(--radius); border-left: 3px solid var(--bad); }
+.pain-card { display:flex; align-items:flex-start; gap:16px; padding:20px; }
+.pain-card .emoji { font-size:28px; flex-shrink:0; width:48px; height:48px; display:flex; align-items:center; justify-content:center; border-radius:var(--radius); background:var(--surface-2); }
 .risk-row { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-bottom: 1px solid var(--border); }
 .risk-num { font-family: var(--font-mono); font-size: 24px; font-weight: 800; color: var(--bad); min-width: 36px; }
 .step-box { display: flex; gap: 16px; }
@@ -902,19 +904,121 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 <!-- ====== SLIDE 15: 知识检索痛点 ====== -->
 <section class="slide" data-title="知识检索痛点">
-<p class="kicker">category 02 · 知识检索</p><h2 class="h2">你的企业知识在哪里？</h2><div class="pain-grid mt-l"><div class="pain-item"><b>⚙️ 装备制造</b><p class="dim">找一张变压器设计图：<strong>30 分钟</strong>，还不一定是最新版本</p></div><div class="pain-item"><b>🏥 医疗</b><p class="dim">医生凭记忆回想相似病例，可能遗漏关键症状</p></div><div class="pain-item"><b>🤝 专业服务</b><p class="dim">咨询师翻法规库查条款：<strong>1 小时</strong></p></div><div class="pain-item"><b>✈️ 旅游/商贸</b><p class="dim">客服翻手册回答问题，客户等<strong>3分钟就挂了</strong></p></div></div><p class="lede mt-l tc">共同的困境：知识在人脑和文件里 → 查找靠记忆 → 传承靠口述 → 效率靠加班</p>
-<aside class="notes">
-<p>接下来第二个场景，知识检索。这页要让大家坐直——每个人都能对号入座一个场景。</p><p>装备制造，工程师找一张设计图要半小时，而且不确定是不是最新版本。医疗，医生凭记忆回想相似病例，依赖个人经验。专业服务，咨询师查法规一个小时过去了。旅游商贸，客服翻手册回答，客户等三分钟就挂了。</p><p><strong>四个行业，一个共同的痛点</strong>：知识锁在人脑和文件里，查找靠记忆，传承靠口述，效率靠加班。</p><p>不是为了讲技术，是为了让你先感到痛，再听解决方案。接下来看 RAG 怎么解。</p>
-</aside>
-</section>
+    <p class="kicker">Category 02 · 知识检索</p>
+    <h2 class="h2" style="margin-bottom:20px">你的企业知识在哪里？</h2>
+    <p class="dim" style="margin-bottom:20px;max-width:760px">企业最值钱的资产——知识——锁在 PDF、Word、人脑记忆里，用的时候永远找不到</p>
+
+    <div class="grid g2 mt-m" style="gap:12px;max-width:860px;margin-left:auto;margin-right:auto">
+
+      <div class="card pain-card">
+        <div class="emoji">⚡</div>
+        <div>
+          <h5 style="margin:0 0 4px">装备制造 — 找个图纸要多久？</h5>
+          <p class="dim" style="font-size:13px;margin:0">工程师翻图纸柜找变压器设计图 → <strong>30 分钟</strong>，还不一定找到最新版本<br>国标、行标、企业规范分散在几十个 PDF 里，查一次就是半天</p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">🏥</div>
+        <div>
+          <h5 style="margin:0 0 4px">医疗 — 医案在脑子里，不在系统里</h5>
+          <p class="dim" style="font-size:13px;margin:0">医生凭记忆回想相似病例 → 靠经验，可能遗漏关键症状<br>药典配伍禁忌"十八反""十九畏"靠人脑记，总有疏漏</p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">🤝</div>
+        <div>
+          <h5 style="margin:0 0 4px">专业服务 — 法规和合同翻到手软</h5>
+          <p class="dim" style="font-size:13px;margin:0">咨询师翻法规库查条款 → <strong>1 小时</strong>过去了<br>合同审查逐条比对民法典，漏一条就是风险</p>
+        </div>
+      </div>
+
+      <div class="card pain-card">
+        <div class="emoji">✈️</div>
+        <div>
+          <h5 style="margin:0 0 4px">旅游/商贸 — 客服翻手册，客户等不了</h5>
+          <p class="dim" style="font-size:13px;margin:0">客服翻手册回答签证/产品问题 → 客户等 <strong>3 分钟</strong>挂了<br>新产品培训完一周就忘，重复问重复查</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="max-width:760px;margin:16px auto 0;text-align:center">
+      <p style="font-size:14px;color:var(--accent);font-weight:700;margin:0">
+        共同的困境：知识在人脑和文件里 → 查找靠记忆 → 传承靠口述 → 效率靠加班
+      </p>
+    </div>
+
+    <div class="notes">这一页要让听众坐直——每个人都能对号入座一个场景。不是为了讲技术，是为了让听众先感到"痛"，再听解决方案。</div>
+  </section>
 
 <!-- ====== SLIDE 16: RAG简介 ====== -->
 <section class="slide" data-title="RAG简介">
-<p class="kicker">category 02 · RAG</p><h2 class="h2">RAG — 让 AI 读你的文档，用你的知识回答</h2><div class="flow-row mt-l"><div class="flow-step">📄 你的文档<br><span class="dim2" style="font-size:11px">PDF/Word/网页</span></div><div class="flow-arrow">→</div><div class="flow-step">✂️ 智能切片<br><span class="dim2" style="font-size:11px">拆成小段</span></div><div class="flow-arrow">→</div><div class="flow-step">🗄️ 存起来<br><span class="dim2" style="font-size:11px">向量索引</span></div><div class="flow-arrow">→</div><div class="flow-step">💬 用户提问<br><span class="dim2" style="font-size:11px">自然语言</span></div><div class="flow-arrow">→</div><div class="flow-step">🔍 搜相关片段<br><span class="dim2" style="font-size:11px">语义匹配</span></div><div class="flow-arrow">→</div><div class="flow-step card-accent">🧠 LLM 生成回答<br><span class="dim2" style="font-size:11px">基于原文</span></div><div class="flow-arrow">→</div><div class="flow-step">📌 带来源的回答<br><span class="dim2" style="font-size:11px">可溯源到原文</span></div></div><p class="lede mt-l tc">❗ 不是让 AI 背你的文档。每次提问时临时去翻，找到最相关的片段。</p>
-<aside class="notes">
-<p>解决方案叫 RAG。别担心这个名词，我用人话解释。</p><p>RAG 做三件事：第一，你把公司的所有文档——PDF、Word、网页——丢给它，它自动拆成小段存好。第二，你提问时，它去这些文档里找最相关的片段。第三，它用找到的原文内容生成回答，并且告诉你答案来自哪个文档的哪一页。</p><p>最关键的特点：<strong>可溯源</strong>。每个回答都能指回原文第几页。不像 ChatGPT 那样“感觉说得对但不知道是不是真的”。</p><p>好，接下来看第三个场景，内容生成。</p>
-</aside>
-</section>
+    <p class="kicker">Category 02 · 核心概念</p>
+    <h2 class="h2" style="margin-bottom:20px">RAG — 让 AI 读你的文档，用你的知识回答</h2>
+
+    <div style="max-width:800px;margin:0 auto 24px">
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:24px">
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;background:var(--surface-2)">
+          <div style="font-size:24px;margin-bottom:4px">📄</div>
+          <div style="font-weight:700;font-size:13px">你的文档</div>
+          <div style="font-size:10px;color:var(--text-3)">PDF/Word/网页</div>
+        </div>
+        <div style="color:var(--accent);font-size:20px;font-weight:700">→</div>
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;background:var(--surface-2)">
+          <div style="font-size:24px;margin-bottom:4px">✂️</div>
+          <div style="font-weight:700;font-size:13px">智能切片</div>
+          <div style="font-size:10px;color:var(--text-3)">拆成小片段</div>
+        </div>
+        <div style="color:var(--accent);font-size:20px;font-weight:700">→</div>
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;background:var(--surface-2)">
+          <div style="font-size:24px;margin-bottom:4px">🗄️</div>
+          <div style="font-weight:700;font-size:13px">存起来</div>
+          <div style="font-size:10px;color:var(--text-3)">向量索引</div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;border:2px solid var(--accent)">
+          <div style="font-size:24px;margin-bottom:4px">💬</div>
+          <div style="font-weight:700;font-size:13px;color:var(--accent)">用户提问</div>
+          <div style="font-size:10px;color:var(--text-3)">自然语言</div>
+        </div>
+        <div style="color:var(--accent);font-size:20px;font-weight:700">→</div>
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;border:2px solid var(--accent)">
+          <div style="font-size:24px;margin-bottom:4px">🔍</div>
+          <div style="font-weight:700;font-size:13px;color:var(--accent)">搜相关片段</div>
+          <div style="font-size:10px;color:var(--text-3)">语义匹配</div>
+        </div>
+        <div style="color:var(--accent);font-size:20px;font-weight:700">→</div>
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;border:2px solid var(--accent)">
+          <div style="font-size:24px;margin-bottom:4px">🧠</div>
+          <div style="font-weight:700;font-size:13px;color:var(--accent)">LLM 生成回答</div>
+          <div style="font-size:10px;color:var(--text-3)">基于原文</div>
+        </div>
+        <div style="color:var(--accent);font-size:20px;font-weight:700">→</div>
+        <div class="card" style="padding:14px 18px;text-align:center;min-width:100px;border:2px solid var(--accent);background:var(--good-bg, #ECFDF5)">
+          <div style="font-size:24px;margin-bottom:4px">📌</div>
+          <div style="font-weight:700;font-size:13px;color:var(--good)">带来源的回答</div>
+          <div style="font-size:10px;color:var(--text-3)">可溯源到原文</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid g2" style="gap:12px;max-width:800px;margin:0 auto">
+      <div class="card" style="padding:16px 20px;text-align:center">
+        <p style="margin:0;font-size:14px;font-weight:700">❌ 不是让 AI 背你的文档</p>
+        <p style="margin:4px 0 0;font-size:12px;color:var(--text-3)">AI 不会"记住"全部内容，而是每次提问时临时去翻</p>
+      </div>
+      <div class="card" style="padding:16px 20px;text-align:center;background:var(--good-bg, #ECFDF5);border:1px solid var(--good)">
+        <p style="margin:0;font-size:14px;font-weight:700;color:var(--good)">✅ 可溯源是 RAG 的独门武器</p>
+        <p style="margin:4px 0 0;font-size:12px;color:var(--text-3)">每个回答都能指回原文第几页——不像 ChatGPT 那样"感觉说得对但不知道哪来的"</p>
+      </div>
+    </div>
+
+    <div class="notes">一页讲清 RAG。不引入 Embedding、BM25、Reranker 等术语——这些留到演讲口述。核心卖点"可溯源"必须在这页砸下去。</div>
+  </section>
 
 <!-- ====== SLIDE 17: 内容生成 ====== -->
 <section class="slide" data-title="内容生成">
