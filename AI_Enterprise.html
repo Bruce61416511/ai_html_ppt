@@ -336,13 +336,13 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 .tag { display: inline-block; padding: 3px 10px; border-radius: 4px; font-size: 12px; font-weight: 600; }
 .tag-accent { background: #eef2ff; color: #1d4ed8; }
 .card-accent { border-left: 4px solid var(--accent-2); background: var(--grad-soft); }
-.terminal { background: #1a1a2e; color: #00ff88; border-radius: var(--radius); padding: 0; overflow: hidden; font-family: var(--font-mono); font-size: 14px; line-height: 1.8; max-height: 380px; }
-.terminal .bar { display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: #2d2d44; }
-.terminal .bar .dot { width: 10px; height: 10px; border-radius: 50%; background: #ff5f57; }
-.terminal .bar .dot:nth-child(2) { background: #febc2e; }
-.terminal .bar .dot:nth-child(3) { background: #28c840; }
-.terminal .bar span:last-child { margin-left: 8px; color: #aaa; }
-.terminal pre { padding: 16px 24px; margin: 0; white-space: pre-wrap; }
+.terminal { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 0; overflow: hidden; font-family: var(--font-sans); font-size: 13px; line-height: 1.8; max-height: 380px; }
+.terminal .bar { display: flex; align-items: center; gap: 6px; padding: 10px 16px; background: var(--accent-2); }
+.terminal .bar .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.4); }
+.terminal .bar .dot:nth-child(2) { background: rgba(255,255,255,.4); }
+.terminal .bar .dot:nth-child(3) { background: rgba(255,255,255,.4); }
+.terminal .bar span:last-child { margin-left: 8px; color: rgba(255,255,255,.8); font-weight: 500; }
+.terminal pre { padding: 16px 20px; margin: 0; white-space: pre-wrap; color: var(--text-1); }
 .mt-s { margin-top: 12px; } .mt-m { margin-top: 20px; } .mt-l { margin-top: 32px; }
 .tc { text-align: center; }
 .accent { color: var(--accent-2); font-weight: 700; }
@@ -376,6 +376,8 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 .data-table td { padding: 8px 14px; border-bottom: 1px solid var(--border); }
 .data-table tr:nth-child(even) td { background: var(--bg-soft); }
 
+
+.pill-tag { display: inline-block; padding: 2px 8px; border-radius: 12px; font-size: 11px; font-weight: 500; }
 </style>
 </head>
 <body>
@@ -605,7 +607,7 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 <!-- ====== SLIDE 7: 交互Demo1 纯LLM ====== -->
 <section class="slide" data-title="交互Demo1 纯LLM">
-<p class="kicker">demo · pure llm</p><h2 class="h2">Demo ① — 纯 LLM 模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.2)"><span style="background:rgba(59,130,246,.3);color:#93c5fd;padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="background:rgba(16,185,129,.3);color:#6ee7b7;padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 今年团建经费每人100块，给我一个杭州一日游方案。
+<p class="kicker">demo · pure llm</p><h2 class="h2">Demo ① — 纯 LLM 模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 今年团建经费每人100块，给我一个杭州一日游方案。
 
 🤖 行吧，100块的杭州一日游，从早上行程开始安排...
 
@@ -621,7 +623,7 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 <!-- ====== SLIDE 8: 交互Demo2 +Search ====== -->
 <section class="slide" data-title="交互Demo2 +Search">
-<p class="kicker">demo · +search</p><h2 class="h2">Demo ② — LLM + 搜索模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.2)"><span style="background:rgba(59,130,246,.3);color:#93c5fd;padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="background:rgba(16,185,129,.3);color:#6ee7b7;padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
+<p class="kicker">demo · +search</p><h2 class="h2">Demo ② — LLM + 搜索模式</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>chat.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
 
 🤖 需要，查关键字：今日劲爆新闻
 
@@ -637,7 +639,7 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 
 <!-- ====== SLIDE 9: 交互Demo3 Agent ====== -->
 <section class="slide" data-title="交互Demo3 Agent">
-<p class="kicker">demo · agent</p><h2 class="h2">Demo ③ — 完整 Agent</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>agent.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid rgba(255,255,255,.2)"><span style="background:rgba(59,130,246,.3);color:#93c5fd;padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="background:rgba(16,185,129,.3);color:#6ee7b7;padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span><span style="background:rgba(245,158,11,.3);color:#fcd34d;padding:2px 8px;border-radius:3px;font-weight:600">⚙️ 智能体执行</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
+<p class="kicker">demo · agent</p><h2 class="h2">Demo ③ — 完整 Agent</h2><div class="grid g2 mt-l" style="align-items:start;gap:40px"><div class="terminal"><div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span>agent.log</span></div><div style="padding:8px 24px 4px;display:flex;gap:10px;font-size:11px;border-bottom:1px solid var(--border)"><span style="color:var(--accent-2);padding:2px 8px;border-radius:3px;font-weight:600">👨‍💼 老板指令</span><span style="color:var(--text-2);padding:2px 8px;border-radius:3px;font-weight:600">🤖 大模型回复</span><span style="color:var(--warn);padding:2px 8px;border-radius:3px;font-weight:600">⚙️ 智能体执行</span></div><pre>👨‍💼 给我整理下最近比较劲爆的新闻。
 
 🤖 需要，查关键字：今日劲爆新闻
 
@@ -698,13 +700,58 @@ h1.title,h2.title,.h1,.h2{font-weight:700;color:var(--accent)}
 </aside>
 </section>
 
-<!-- ====== SLIDE 12: AI编程范式转移 ====== -->
-<section class="slide" data-title="AI编程范式转移">
-<p class="kicker">category 01 · AI编程</p><h2 class="h2">从“写代码”到“描述意图”</h2><div class="grid g2 mt-l" style="gap:32px"><div><p class="kicker" style="font-size:11px">传统编程</p><p class="dim">需求文档 → UI设计 → 前后端开发 → 联调测试 → 部署上线</p><p class="dim2" style="font-size:12px">人力驱动 · 逐行编码 · 8-12 周</p></div><div><p class="kicker" style="font-size:11px;color:var(--good)">AI 编程</p><p style="font-weight:600">描述意图 → AI 生成 → 人工迭代 → 上线</p><p class="dim2" style="font-size:12px;color:var(--good)">意图驱动 · AI 执行 · 1 周</p></div></div><p class="lede mt-l">瓶颈转移：过去卡在“会不会写代码”，现在卡在“能不能想清楚要什么”</p>
-<aside class="notes">
-<p>第一个场景，AI 编程。</p><p>传统开发一个功能，要经过需求、设计、前后端、测试、部署，八到十二周。现在你用自然语言描述你要什么，AI 生成代码，你看效果迭代，一周上线。</p><p>但这里有一个非常重要的瓶颈转移。过去项目卡在<strong>“会不会写代码”</strong>，现在卡在<strong>“能不能想清楚要什么”</strong>。你得能把业务需求说清楚，AI 才能帮你做出来。这对各位老总来说反而是优势——你比程序员更懂业务。</p>
-</aside>
-</section>
+<!-- ===== 3a. 编程的范式转移 ===== -->
+  <section class="slide" data-title="编程的范式转移">
+    <p class="kicker">Category 01 · AI编程</p>
+    <h2 class="h2" style="margin-bottom:24px">编程的范式转移 — 从"写代码"到"描述意图"</h2>
+
+    <div style="display:flex;align-items:stretch;gap:20px;max-width:860px;margin:0 auto 28px">
+      <div class="card" style="flex:1;padding:24px;text-align:center;background:var(--surface-2)">
+        <div style="font-size:32px;margin-bottom:10px">⌨️</div>
+        <h4 style="margin:0 0 12px;color:var(--text-3)">传统编程</h4>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px">
+          <span class="pill-tag" style="font-size:11px;background:var(--surface);color:var(--text-3)">需求文档</span>
+          <span style="color:var(--text-3);align-self:center">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--surface);color:var(--text-3)">UI设计</span>
+          <span style="color:var(--text-3);align-self:center">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--surface);color:var(--text-3)">前后端开发</span>
+          <span style="color:var(--text-3);align-self:center">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--surface);color:var(--text-3)">联调测试</span>
+          <span style="color:var(--text-3);align-self:center">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--surface);color:var(--text-3)">部署上线</span>
+        </div>
+        <p style="margin:0;font-size:13px;color:var(--text-3)">人力驱动 · 逐行编码 · <strong>8-12 周</strong></p>
+      </div>
+
+      <div style="display:flex;align-items:center;font-size:28px;color:var(--accent);font-weight:800;flex-shrink:0">→</div>
+
+      <div class="card" style="flex:1;padding:24px;text-align:center;border:2px solid var(--accent);background:var(--good-bg, #ECFDF5)">
+        <div style="font-size:32px;margin-bottom:10px">🤖</div>
+        <h4 style="margin:0 0 12px;color:var(--accent)">AI 编程</h4>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:14px">
+          <span class="pill-tag" style="font-size:11px;background:var(--accent);color:#fff">描述意图</span>
+          <span style="color:var(--accent);align-self:center;font-weight:700">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--accent);color:#fff">AI 生成</span>
+          <span style="color:var(--accent);align-self:center;font-weight:700">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--accent);color:#fff">人工迭代</span>
+          <span style="color:var(--accent);align-self:center;font-weight:700">→</span>
+          <span class="pill-tag" style="font-size:11px;background:var(--accent);color:#fff">上线</span>
+        </div>
+        <p style="margin:0;font-size:13px;color:var(--accent)">意图驱动 · AI 执行 · <strong>1 周</strong></p>
+      </div>
+    </div>
+
+    <div class="card" style="max-width:860px;margin:0 auto;padding:16px 24px;text-align:center;background:var(--grad-soft)">
+      <p style="margin:0;font-size:14px">
+        <strong style="color:var(--accent)">瓶颈转移：</strong>
+        过去卡在"会不会写代码"，<strong>现在卡在"能不能想清楚要什么"</strong>
+        &nbsp;·&nbsp;
+        小扬同学：<strong>0 人开发团队，数周从概念到 SaaS 产品</strong>
+      </p>
+    </div>
+
+    <div class="notes">这页定调：AI编程不是"帮开发者写得更快"，而是让"写代码"这件事不再成为瓶颈。关键在于想清楚需求，而非掌握语法。</div>
+  </section>
 
 <!-- ====== SLIDE 13: AI编程放大能力 ====== -->
 <section class="slide" data-title="AI编程放大能力">
