@@ -1,0 +1,542 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RAG 底层全解析</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+:root{--bg:#fafbfc;--bg-soft:#f0f2f5;--surface:#fff;--surface-2:#f4f5f7;--border:rgba(0,20,40,.08);--border-strong:rgba(0,20,40,.16);--text-1:#0d1b2a;--text-2:#3a4a5c;--text-3:#6b7d8e;--accent:#1a5fdc;--accent-2:#3b82f6;--accent-3:#f59e0b;--good:#059669;--warn:#d97706;--bad:#dc2626;--grad:linear-gradient(135deg,#1a5fdc,#3b82f6 55%,#6366f1);--grad-soft:linear-gradient(135deg,#eff6ff,#f0f9ff 55%,#eef2ff);--radius:14px;--radius-sm:10px;--shadow:0 4px 16px rgba(0,20,40,.06),0 1px 4px rgba(0,20,40,.03);--font-sans:'Inter','Noto Sans SC',sans-serif;--font-mono:'JetBrains Mono',monospace;--font-display:var(--font-sans);--letter-tight:-.02em;--letter-normal:-.01em;--ease:cubic-bezier(.4,0,.2,1)}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:var(--text-1);font-family:var(--font-sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased;letter-spacing:var(--letter-normal)}
+.deck{position:relative;width:100vw;height:100vh;overflow:hidden;background:var(--bg)}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:56px 80px;overflow:hidden;opacity:0;pointer-events:none;transition:opacity .5s var(--ease),transform .5s var(--ease);transform:translateX(30px)}
+.slide.is-active{opacity:1;pointer-events:auto;transform:translateX(0);z-index:2}
+.slide.is-prev{transform:translateX(-30px)}
+.kicker{font-size:12px;font-weight:600;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin:0}
+h1.title,.h1{font-family:var(--font-display);font-size:52px;line-height:1.08;font-weight:800;letter-spacing:var(--letter-tight);margin:0 0 14px}
+h2.title,.h2{font-family:var(--font-display);font-size:32px;line-height:1.12;font-weight:700;letter-spacing:var(--letter-tight);margin:0 0 10px}
+h3,.h3{font-size:20px;line-height:1.25;font-weight:600;margin:0 0 6px}
+h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
+.lede{font-size:15px;line-height:1.55;color:var(--text-2);font-weight:400;max-width:60ch}
+.dim{color:var(--text-2)}.dim2{color:var(--text-3)}
+.mono{font-family:var(--font-mono);font-size:.9em}
+.gradient-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+.row{display:flex;gap:20px;align-items:flex-start}.fill{flex:1}
+.grid{display:grid;gap:16px}.g2{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr 1fr}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px;box-shadow:var(--shadow)}
+.card-accent{border-top:3px solid var(--accent)}.card-good{border-top:3px solid var(--good)}.card-warn{border-top:3px solid var(--warn)}.card-soft{background:var(--surface-2)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:10px;font-weight:500;background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.pill-accent{background:#eff6ff;color:var(--accent);border-color:#bfdbfe}
+.divider{height:1px;background:var(--border);width:100%}
+.deck-footer{position:absolute;bottom:18px;left:36px;right:36px;display:flex;justify-content:space-between;font-size:10px;color:var(--text-3);z-index:10;pointer-events:none}
+.slide-number::before{content:attr(data-current)}.slide-number::after{content:" / " attr(data-total)}
+.notes{display:none!important}
+.pipe-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.pipe-n{padding:7px 14px;border-radius:var(--radius-sm);font-size:11px;font-weight:600;letter-spacing:.02em;white-space:nowrap}
+.pipe-in{background:var(--surface-2);color:var(--text-2);border:1px solid var(--border)}
+.pipe-proc{background:var(--accent);color:#fff}
+.pipe-out{background:var(--good);color:#fff}
+.pipe-arr{color:var(--text-3);font-size:14px;font-weight:700;flex-shrink:0}
+.tb{width:100%;border-collapse:collapse;font-size:11px;line-height:1.45}
+.tb th{text-align:left;padding:7px 10px;background:var(--surface-2);font-weight:600;color:var(--text-2);font-size:10px;letter-spacing:.06em;text-transform:uppercase;border-bottom:2px solid var(--border)}
+.tb td{padding:6px 10px;border-bottom:1px solid var(--border);color:var(--text-2);font-size:11px}
+.tb .mono{font-size:10px}
+.tag{display:inline-block;padding:3px 10px;border-radius:5px;font-size:10px;font-weight:600}
+.tag-blue{background:#eff6ff;color:var(--accent)}
+.tag-green{background:#ecfdf5;color:var(--good)}
+.tag-amber{background:#fffbeb;color:var(--warn)}
+.tag-slate{background:var(--surface-2);color:var(--text-2)}
+.callout{padding:10px 16px;border-radius:var(--radius-sm);font-size:12px;font-weight:600;text-align:center}
+.callout-accent{background:var(--grad-soft);color:var(--text-1)}
+.flow-box{background:var(--surface-2);border:1px dashed var(--border-strong);border-radius:var(--radius);padding:14px 18px;font-size:12px;line-height:1.6}
+.section-label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--text-3);margin-bottom:5px}
+.num-stat{font-size:40px;font-weight:900;line-height:1;color:var(--accent);margin-bottom:2px}
+</style></head><body>
+<div class="deck">
+<section class="slide is-active center" data-title="封面" style="text-align:center;display:flex;align-items:center;justify-content:center">
+<div><p class="kicker">RAG 底层原理系列</p>
+<h1 class="h1">RAG 底层<span class="gradient-text">全解析</span></h1>
+<p class="lede" style="margin:10px auto;max-width:520px">从归一哲学到工程落地——所有文件如何变成文本、以什么工具解析、按什么策略切片</p>
+<div style="margin-top:20px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+<span class="tag tag-blue">万物归一</span><span class="tag tag-green">解析工具链</span><span class="tag tag-amber">切片策略</span><span class="tag tag-slate">工程落地</span>
+</div></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="1" data-total="23"></span></div>
+</section>
+<section class="slide center" data-title="Part1" style="text-align:center;display:flex;align-items:center;justify-content:center">
+<div>
+<p class="kicker">Part 1 . Ingestion</p>
+<h1 class="h1" style="font-size:48px">文档 <span class="pipe-arr" style="font-size:28px">→</span> 文本 <span class="pipe-arr" style="font-size:28px">→</span> <span class="gradient-text">向量数据库</span></h1>
+
+<div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+<span class="tag tag-blue">文件解析</span><span class="pipe-arr" style="font-size:16px">→</span>
+<span class="tag tag-green">统一清洗</span><span class="pipe-arr" style="font-size:16px">→</span>
+<span class="tag tag-amber">智能切片</span><span class="pipe-arr" style="font-size:16px">→</span>
+<span class="tag tag-slate">向量入库</span>
+</div></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="2" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="万物归一">
+<p class="kicker">核心哲学</p>
+<h2 class="h2">万物归一：所有文件，最终皆为<span class="gradient-text">文本</span></h2>
+<p class="dim" style="font-size:13px;margin:2px 0 14px;max-width:640px">没有任何公司直接把图片、视频二进制丢进向量库检索——无法匹配语义。所有格式必须归一为文本 + 元数据。</p>
+
+<div class="grid g3" style="gap:12px">
+<div class="card card-accent" style="padding:14px 18px"><h4>PDF 提取/OCR 文本</h4><p class="dim2" style="font-size:11px;margin:0">单栏/多栏/扫描/混合，智能切换解析</p></div>
+<div class="card card-soft" style="padding:14px 18px"><h4>Office 提取段落 文本</h4><p class="dim2" style="font-size:11px;margin:0">Word/PPT/Excel，结构化转自然语言</p></div>
+<div class="card card-soft" style="padding:14px 18px"><h4>图片 OCR/VL 文本</h4><p class="dim2" style="font-size:11px;margin:0">文字走OCR，画面走视觉模型描述</p></div>
+<div class="card card-soft" style="padding:14px 18px"><h4>视频 ASR字幕 文本</h4><p class="dim2" style="font-size:11px;margin:0">抽音轨+抽关键帧，合并长文本+时间戳</p></div>
+<div class="card card-soft" style="padding:14px 18px"><h4>音频 Whisper 文本</h4><p class="dim2" style="font-size:11px;margin:0">语音转文字，清洗语气词、静音片段</p></div>
+<div class="card card-soft" style="padding:14px 18px"><h4>配置 扁平化 文本</h4><p class="dim2" style="font-size:11px;margin:0">JSON/YAML 禁止原生入库，转语义文本</p></div>
+</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="3" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="工具栈与工程差异">
+<p class="kicker">工具栈</p>
+<h2 class="h2">底层工具 100% 统一，差异在<span class="gradient-text">工程封装</span></h2>
+<div class="grid g2" style="gap:18px;margin-bottom:14px">
+<div><div class="section-label">统一工具池（全球通用）</div>
+<div class="card" style="padding:12px 16px">
+<table class="tb">
+<tr><th>类型</th><th>工具</th></tr>
+<tr><td>PDF</td><td><span class="mono">PyMuPDF / PDFPlumber</span></td></tr>
+<tr><td>OCR</td><td><span class="mono">PaddleOCR</span></td></tr>
+<tr><td>Office</td><td><span class="mono">python-docx / openpyxl / python-pptx</span></td></tr>
+<tr><td>结构化</td><td><span class="mono">pyyaml / json</span></td></tr>
+<tr><td>音视频</td><td><span class="mono">Whisper / FunASR</span></td></tr>
+<tr><td>视觉</td><td><span class="mono">Qwen-VL / GPT-4V / BLIP</span></td></tr>
+<tr><td>向量库</td><td><span class="mono">Milvus / Qdrant / Chroma</span></td></tr>
+<tr><td>切片</td><td><span class="mono">LangChain / LlamaIndex</span></td></tr>
+</table></div>
+<p class="dim2" style="font-size:10px;margin-top:4px">所有公司文件类型一样，解析工具库全球通用</p>
+</div>
+<div><div class="section-label">工程封装四大差异</div>
+<div class="card card-good" style="padding:14px 18px">
+<div style="display:flex;flex-direction:column;gap:10px">
+<div><h4>智能分支判断</h4><p class="dim2" style="font-size:11px;margin:0">后缀 + 文件魔数 + 空页检测 - 智能切换 OCR / 原生解析</p></div>
+<div><h4>清洗规则</h4><p class="dim2" style="font-size:11px;margin:0">去页眉页脚、乱码、水印、空行；不清洗 = 效果垃圾</p></div>
+<div><h4>结构化 -> 自然语言</h4><p class="dim2" style="font-size:11px;margin:0">JSON/表格扁平化 + 补全维度表头，禁止原生符号入库</p></div>
+<div><h4>Metadata 体系</h4><p class="dim2" style="font-size:11px;margin:0">全维度溯源：文件名、页码、文件类型、解析方式、时间戳</p></div>
+</div></div></div></div>
+<div class="callout callout-accent">统一上传 -> 类型识别 -> 分支解析(原生/OCR智能切换) -> 统一清洗 -> 统一切片 -> 统一Metadata -> 向量库</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="4" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="企业级平台">
+<p class="kicker">生态选型</p>
+<h2 class="h2">企业级 RAG 平台：四大主流方案</h2>
+<div class="grid g2" style="gap:16px">
+<div class="card card-accent" style="padding:18px 22px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<div style="background:var(--accent);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">D</div>
+<div><h4 style="margin:0">Dify</h4><span class="mono dim2" style="font-size:10px">140k+</span></div></div>
+<p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">国内最强开源 RAG 平台，自带万能文件解析、OCR、切片、重排、溯源、知识库管理、前端页面、API。政企、创业公司直接部署当成品系统。</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-blue">一站式</span><span class="tag tag-green">政企首选</span><span class="tag tag-slate">自动OCR兜底</span></div>
+</div>
+<div class="card card-warn" style="padding:18px 22px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<div style="background:var(--warn);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">R</div>
+<div><h4 style="margin:0">RAGFlow</h4><span class="mono dim2" style="font-size:10px">30k+</span></div></div>
+<p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">深度文档解析天花板。PDF 多栏布局、表格还原、扫描 OCR、复杂排版行业最强。字节、腾讯很多团队参考其解析逻辑。</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-amber">文档解析最强</span><span class="tag tag-slate">多栏PDF</span><span class="tag tag-slate">表格还原</span></div>
+</div>
+<div class="card card-good" style="padding:18px 22px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<div style="background:var(--good);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">LI</div>
+<div><h4 style="margin:0">LlamaIndex</h4><span class="mono dim2" style="font-size:10px">40k+</span></div></div>
+<p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">数据 RAG 天花板。结构化文件、Excel、JSON、数据库检索最强。切片、上下文关联、元数据体系最完善。企业结构化知识库首选。</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-green">数据结构化最强</span><span class="tag tag-slate">元数据体系</span></div>
+</div>
+<div class="card" style="padding:18px 22px">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<div style="background:var(--text-1);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">LC</div>
+<div><h4 style="margin:0">LangChain</h4><span class="mono dim2" style="font-size:10px">98k+</span></div></div>
+<p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">生态最全、组件最多。所有解析器、向量库、LLM 全部集成。但原生切片粗糙，需自己优化。适合复杂工作流、Agent+RAG。</p>
+<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-slate">生态最全</span><span class="tag tag-slate">Agent+RAG</span><span style="color:var(--warn);font-size:10px">需自行优化切片</span></div>
+</div></div>
+<div class="callout callout-accent" style="margin-top:14px">选型建议：一键成品 <strong>Dify</strong> | 文档解析精度 <strong>RAGFlow</strong> | 结构化数据 <strong>LlamaIndex</strong> | 复杂工作流 <strong>LangChain</strong></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="5" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="通用规则">
+<p class="kicker">标准化</p>
+<h2 class="h2">通用全局标准：清洗规则 + 切片参数</h2>
+<div class="grid g2" style="gap:18px;margin-bottom:14px">
+<div class="card card-accent" style="padding:16px 20px">
+<h3 style="font-size:17px;margin-bottom:10px">前置清洗规则</h3>
+<div style="display:flex;flex-direction:column;gap:6px;font-size:12px;line-height:1.55">
+<div>统一编码为 <span class="mono">UTF-8</span></div>
+<div>清除页眉、页脚、页码、水印</div>
+<div>清除空行、特殊乱码符号、重复分隔符</div>
+<div style="color:var(--warn);font-weight:600">结构化数据禁止原生格式入库</div>
+<div style="color:var(--warn);font-weight:600">必须转自然语言 + 维度元数据</div>
+<div style="color:var(--accent)">所有切片强制携带：文件名 / 页码 / 文件类型 / 解析方式</div>
+</div></div>
+<div class="card card-good" style="padding:16px 20px">
+<h3 style="font-size:17px;margin-bottom:10px">切片参数（行业最优）</h3>
+<div style="display:flex;flex-direction:column;gap:12px">
+<div><div class="tag tag-blue" style="margin-bottom:3px">标准文本</div>
+<p style="margin:0;font-size:14px;font-weight:700">chunk_size=600~800, overlap=10%~15%</p></div>
+<div><div class="tag tag-amber" style="margin-bottom:3px">OCR/ASR 噪声文本</div>
+<p style="margin:0;font-size:14px;font-weight:700">chunk_size=800, overlap=<strong>20%</strong></p>
+<p class="dim2" style="margin:0;font-size:10px">噪声数据加大重叠率，杜绝语义断裂</p></div>
+<div><div class="tag tag-green" style="margin-bottom:3px">结构化数据</div>
+<p style="margin:0;font-size:14px;font-weight:700">chunk_size=500~600, overlap=10%</p></div>
+<div><div class="tag tag-slate" style="margin-bottom:3px">PPT/单页短内容</div>
+<p style="margin:0;font-size:14px;font-weight:700">优先按页切片，不强行拆分</p></div>
+</div></div></div>
+<div class="callout callout-accent">铁律：噪声数据加大重叠率；结构化数据不存原生符号，必须转自然语言</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="6" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="纯文本结构化">
+<p class="kicker">文件对照表</p>
+<h2 class="h2">纯文本 &amp; 结构化文件：解析工具 + 切片策略</h2>
+<div class="card" style="padding:10px 14px">
+<table class="tb">
+<tr><th style="width:8%">类型</th><th style="width:22%">工具</th><th style="width:38%">切片策略</th><th style="width:32%">避坑</th></tr>
+<tr><td><span class="mono">.txt</span></td><td><span class="mono">Python read + chardet</span></td><td>固定块切片，600大小、15%重叠</td><td>统一UTF-8，清理空行、重复分隔符</td></tr>
+<tr><td><span class="mono">.md</span></td><td><span class="mono">UnstructuredLoader / LlamaIndex</span></td><td>标题上下文分层切片，不跨一级标题切割；代码块单独标记</td><td>过滤超长无效代码块</td></tr>
+<tr><td><span class="mono">.csv / .tsv</span></td><td><span class="mono">Pandas / CSVLoader</span></td><td>按业务行聚合，拼接表头为上下文，转自然语言切片</td><td>补全合并单元格表头</td></tr>
+<tr><td><span class="mono">.json / .jsonl</span></td><td><span class="mono">JsonLoader / 递归解析</span></td><td>按最小业务实体切片，携带上级维度路径元数据</td><td>3级以上嵌套必须扁平化</td></tr>
+<tr><td><span class="mono">.yaml / .yml</span></td><td><span class="mono">pyyaml</span></td><td>按配置模块切片，携带层级路径，500大小、10%重叠</td><td>避免缩进符号干扰语义</td></tr>
+<tr><td><span class="mono">.xml / .ini</span></td><td><span class="mono">xml.etree / configparser</span></td><td>按节点/分区聚合切片，绑定节点属性元数据</td><td>过滤无效标签、注释</td></tr>
+</table></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="7" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="PDF全场景">
+<p class="kicker">核心高频</p>
+<h2 class="h2">PDF 全场景四分法：工具 + 切片 + 避坑</h2>
+<div class="card" style="padding:10px 14px">
+<table class="tb">
+<tr><th style="width:12%">PDF 类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:30%">避坑</th></tr>
+<tr><td><strong>单栏可复制</strong></td><td><span class="mono">PyMuPDF(fitz) / PDFPlumber</span></td><td>语义段落切片，600~1000大小、15%重叠，绑定页码</td><td>提前清洗重复页眉页脚</td></tr>
+<tr><td><strong>多栏/期刊</strong></td><td><span class="mono">PDFPlumber</span> 布局坐标解析</td><td>先按阅读顺序重构文本，再段落切片</td><td>禁止直接按页面顺序读取，防止左右栏语义错乱</td></tr>
+<tr><td><strong>扫描图片PDF</strong></td><td><span class="mono">pdf2image + PaddleOCR</span></td><td>整页文本拼接清洗后切片，800大小、20%重叠</td><td>开启角度矫正，模糊页切换云端OCR</td></tr>
+<tr><td><strong>混合PDF</strong><br><span class="dim2">(图文混杂)</span></td><td><span class="mono">PyMuPDF</span>优先解析<br>空页自动走OCR</td><td>合并原生+OCR文字，统一清洗后语义切片</td><td>避免纯文字页走OCR，减少误差与算力</td></tr>
+</table></div>
+<div class="callout callout-accent" style="margin-top:12px">铁律：能原生解析绝不OCR，OCR只兜底空白页面——节省算力、提升准确率</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="8" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="Office文档">
+<p class="kicker">文件对照表</p>
+<h2 class="h2">Office 文档：工具 + 切片 + 避坑</h2>
+<div class="card" style="padding:10px 14px">
+<table class="tb">
+<tr><th style="width:10%">类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:32%">避坑</th></tr>
+<tr><td><span class="mono">.docx</span></td><td><span class="mono">python-docx / UnstructuredLoader</span></td><td>标题绑定段落切片，600大小、15%重叠</td><td>侧边批注、浮动备注存入元数据，不混入正文</td></tr>
+<tr><td><span class="mono">.xlsx</span></td><td><span class="mono">openpyxl + Pandas</span></td><td>按工作表聚合，补全多级表头，行数据转自然语言</td><td>修复合并单元格维度丢失</td></tr>
+<tr><td><span class="mono">.pptx</span></td><td><span class="mono">python-pptx</span></td><td>单页独立切片，不拆分单页内容，绑定页码</td><td>清洗页脚、无效备注，去除重复模板文字</td></tr>
+<tr><td><span class="mono">.doc</span>(老版)</td><td><span class="mono">antiword / pywin32</span></td><td>解析后统一语义切片，600大小、15%重叠</td><td>避免直接读取导致乱码、格式丢失</td></tr>
+<tr><td><span class="mono">.wps/.et/.dps</span></td><td><span class="mono">unstructured</span>+适配解析</td><td>适配对应文档类型切片，规则同Office标准</td><td>过滤WPS专属冗余格式代码</td></tr>
+</table></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="9" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="图片归一">
+<p class="kicker">图片归一</p>
+<h2 class="h2">图片（jpg/png/tiff）分两路，全部归一为文本</h2>
+<p class="dim" style="font-size:12px;margin:2px 0 14px">向量库永远不存图片二进制，只存图片对应的语义文本</p>
+<div class="grid g2" style="gap:18px">
+<div class="card card-accent" style="padding:20px 22px">
+<div class="tag tag-blue" style="margin-bottom:10px">情况 A：图片里是文字</div>
+<h3 style="font-size:18px">合同 / 截图 / 证件 / 发票</h3>
+<div class="pipe-row" style="flex-wrap:wrap;margin:10px 0">
+<span class="pipe-n pipe-proc">PaddleOCR</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">纯文本</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">切片</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out">入库</span>
+</div>
+<p class="dim2" style="font-size:11px;margin:0">入库：文本 + 图片路径元数据</p>
+</div>
+<div class="card card-warn" style="padding:20px 22px">
+<div class="tag tag-amber" style="margin-bottom:10px">情况 B：图片里是画面</div>
+<h3 style="font-size:18px">流程图 / 架构图 / 照片 / 图表</h3>
+<div class="pipe-row" style="flex-wrap:wrap;margin:10px 0">
+<span class="pipe-n pipe-proc">VL 视觉模型</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">AI 生成描述</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">切片</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out">入库</span>
+</div>
+<p class="dim2" style="font-size:11px;margin:0">企业标准：Qwen-VL / GPT-4V / BLIP</p>
+<div style="background:var(--surface-2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:10px;color:var(--text-2);line-height:1.5">
+示例输出：「该图片为系统架构图，包含用户层、网关层、RAG 解析层、向量数据库层…」</div>
+</div></div>
+<div class="callout callout-accent" style="margin-top:14px">图片 -> OCR 文本 / VL 描述 -> 切片 -> 入库 | 向量库<strong>永不存图片二进制</strong>，只存语义文本</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="10" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="视频归一">
+<p class="kicker">视频归一</p>
+<h2 class="h2">视频（mp4/mov）企业标准流水线</h2>
+<p class="dim" style="font-size:12px;margin:2px 0 12px">视频是超级混合文件，两条轨道并行处理，最终合并为长文本</p>
+<div class="grid g2" style="gap:16px;margin-bottom:14px">
+<div class="card card-accent" style="padding:18px 22px"><h4>音频轨道</h4>
+<div class="pipe-row" style="flex-wrap:wrap;margin-top:6px">
+<span class="pipe-n pipe-in">抽音轨</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc">Whisper / FunASR</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">字幕文本</span></div></div>
+<div class="card card-warn" style="padding:18px 22px"><h4>画面轨道</h4>
+<div class="pipe-row" style="flex-wrap:wrap;margin-top:6px">
+<span class="pipe-n pipe-in">抽关键帧(每5~10s)</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc">VL 视觉模型</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">画面描述文本</span></div></div>
+</div>
+<div class="flow-box" style="margin-bottom:10px"><div class="pipe-row" style="justify-content:center">
+<span class="pipe-n pipe-proc">合并</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in">字幕文本 + 画面描述</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc">统一清洗</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc">按时间窗口切片</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out">入库</span>
+</div></div>
+<div class="callout callout-accent">最终结果：视频 = 合并后的<strong>长文本</strong> + 时间戳元数据</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="11" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="多媒体网页电子书">
+<p class="kicker">文件对照表</p>
+<h2 class="h2">多媒体 &amp; 网页电子书：工具 + 切片 + 避坑</h2>
+<div class="card" style="padding:10px 14px">
+<table class="tb">
+<tr><th style="width:12%">类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:30%">避坑</th></tr>
+<tr><td><strong>图片</strong><br><span class="dim2">jpg/png/tiff</span></td><td><span class="mono">PaddleOCR / 云OCR</span></td><td>全图文本清洗后切片，500大小、15%重叠</td><td>矫正倾斜、过滤反光模糊，清理OCR乱换行</td></tr>
+<tr><td><strong>音频</strong><br><span class="dim2">mp3/wav</span></td><td><span class="mono">Whisper / FunASR</span></td><td>30~60s时间窗口聚合切片，携带时间戳元数据</td><td>清洗口头语气词、重复口头禅、静音片段</td></tr>
+<tr><td><strong>视频</strong><br><span class="dim2">mp4</span></td><td><span class="mono">抽音频+Whisper ASR</span></td><td>按时间轴分段切片，绑定视频时间节点</td><td>过滤无效黑屏、静音片段，减少冗余</td></tr>
+<tr><td><span class="mono">.html</span> 网页</td><td><span class="mono">Trafilatura / BeautifulSoup</span></td><td>提取正文后语义切片，700大小、15%重叠</td><td>过滤导航栏、广告、侧边栏、页头页尾</td></tr>
+<tr><td><span class="mono">.epub / .mobi</span></td><td><span class="mono">ebooklib / Calibre</span></td><td>按章节整体切片，携带章节名元数据</td><td>禁止跨章节切割，目录存入元数据</td></tr>
+<tr><td><span class="mono">.azw3</span> Kindle</td><td><span class="mono">Calibre</span>转epub后解析</td><td>同epub章节切片规则，保留目录层级</td><td>必须格式转换后再入库</td></tr>
+<tr><td><span class="mono">.srt / .lrc</span></td><td>自定义字幕解析器</td><td>按时间区间聚合切片，携带时间戳元数据</td><td>过滤序号、纯时间轴无效字符</td></tr>
+</table></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="12" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="铁律收尾">
+<p class="kicker">总结</p>
+<h2 class="h2">RAG 解析核心<span class="gradient-text">五条铁律</span></h2>
+<div class="grid g3" style="gap:14px;margin-bottom:14px">
+<div class="card card-accent" style="padding:18px 20px;text-align:center"><div class="num-stat">01</div><h4>能原生绝不OCR</h4><p class="dim2" style="font-size:11px;margin:0">OCR只兜底空白页面，节省算力、提升准确率</p></div>
+<div class="card card-accent" style="padding:18px 20px;text-align:center"><div class="num-stat">02</div><h4>还原语义不粗暴切割</h4><p class="dim2" style="font-size:11px;margin:0">排版、表格、嵌套结构优先还原语义</p></div>
+<div class="card card-accent" style="padding:18px 20px;text-align:center"><div class="num-stat">03</div><h4>结构化转自然语言</h4><p class="dim2" style="font-size:11px;margin:0">不存原生符号，必须转自然语言+维度元数据</p></div>
+<div class="card card-accent" style="padding:18px 20px;text-align:center"><div class="num-stat">04</div><h4>噪声数据加大重叠</h4><p class="dim2" style="font-size:11px;margin:0">OCR/语音转写噪声文本，加大重叠率杜绝语义断裂</p></div>
+<div class="card card-accent" style="padding:18px 20px;text-align:center"><div class="num-stat">05</div><h4>全维度Metadata</h4><p class="dim2" style="font-size:11px;margin:0">文件名、页码、文件类型、解析方式、时间戳</p></div>
+<div class="card card-soft" style="padding:18px 20px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center">
+<div style="font-size:24px;margin-bottom:4px">归一</div><h4 style="margin:0">万物归于文本</h4><p class="dim2" style="font-size:11px;margin:2px 0 0">所有格式归一为文本+元数据<br>没有任何特殊格式可以直接入库</p></div>
+</div>
+<div class="callout callout-accent">所有文件必须经历：PDF->提取/OCR->文本 | Word/PPT->提取段落->文本 | Excel->转自然语言->文本 | 图片->OCR/VL->文本 | 音视频->ASR->文本 | JSON/YAML->扁平化语义文本</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="13" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="向量库存储模型">
+<p class="kicker">存储模型</p>
+<h2 class="h2">向量库里的<span class="gradient-text">三件套</span></h2>
+<p class="dim" style="font-size:12px;margin:2px 0 12px">向量是坐标，用来找；文本是内容，用来看；元数据是标签，用来筛和溯源</p>
+
+<div class="grid g3" style="gap:14px;margin-bottom:14px">
+<div class="card card-accent" style="padding:16px 18px;text-align:center">
+<div style="font-size:28px;margin-bottom:6px">&#x1F4CD;</div>
+<h4>向量 Vector</h4>
+<p class="dim2" style="font-size:11px;margin:0;line-height:1.5">根据文本Chunk，调用Embedding API生成向量语义坐标<br><br>相似文字距离近，不同文字距离远<br><span style="font-size:10px;color:var(--text-3)">“今天天气真好” → [-0.712, 0.334, …]</span></p>
+<span class="tag tag-blue" style="margin-top:6px">检索引擎用</span>
+</div>
+<div class="card card-good" style="padding:16px 18px;text-align:center">
+<div style="font-size:28px;margin-bottom:6px">&#x1F4C4;</div>
+<h4>文本 Chunk Text</h4>
+<p class="dim2" style="font-size:11px;margin:0;line-height:1.5">检索命中后<br>返回给 LLM 的原始文字<br>拼进 Prompt 回答问题</p>
+<span class="tag tag-green" style="margin-top:6px">LLM 用</span>
+</div>
+<div class="card card-warn" style="padding:16px 18px;text-align:center">
+<div style="font-size:28px;margin-bottom:6px">&#x1F3F7;</div>
+<h4>元数据 Metadata</h4>
+<p class="dim2" style="font-size:11px;margin:0;line-height:1.5">文件名、页码、来源<br>解析方式、时间戳<br>用于过滤和溯源</p>
+<span class="tag tag-amber" style="margin-top:6px">业务系统用</span>
+</div>
+</div>
+
+<div class="card" style="padding:14px 20px;font-size:11px;line-height:1.6">
+<div class="section-label" style="margin-bottom:8px">一条完整的向量库记录</div>
+<pre style="background:var(--surface-2);border-radius:8px;padding:14px 18px;margin:0;font-family:var(--font-mono);font-size:10px;line-height:1.7;overflow-x:auto;color:var(--text-2)">{
+  "id": "chunk_0042",
+  "vector": [0.023, -0.451, 0.872, ..., -0.103],  <span style="color:var(--accent)">// 3072维，检索引擎用</span>
+  "text": "变压器耐压标准为 35kV，持续时间 1 分钟...",  <span style="color:var(--good)">// 原始文本，LLM用</span>
+  "metadata": {
+    "file": "电气规范_v3.pdf",       <span style="color:var(--warn)">// 元数据：溯源+过滤</span>
+    "page": 12,
+    "parse_type": "pdf-native",
+    "created_at": "2026-06-28"
+  }
+}</pre>
+</div>
+
+<div class="callout callout-accent" style="margin-top:12px">向量 + 文本 + 元数据：三者缺一不可，三样一起写入向量数据库。</div>
+
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="14" data-total="23"></span></div>
+</section>
+<section class="slide center" data-title="Part2" style="text-align:center;display:flex;align-items:center;justify-content:center">
+<div>
+<p class="kicker">Part 2 . Retrieval</p>
+<h1 class="h1" style="font-size:48px"><span class="gradient-text">提问</span> . <span class="gradient-text">向量数据库检索</span></h1>
+
+<div style="margin-top:20px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+<span class="tag tag-blue">Query处理</span><span class="pipe-arr" style="font-size:16px">-</span>
+<span class="tag tag-green">向量检索</span><span class="pipe-arr" style="font-size:16px">-</span>
+<span class="tag tag-amber">Rerank重排</span><span class="pipe-arr" style="font-size:16px">-</span>
+<span class="tag tag-slate">LLM生成</span>
+</div></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="15" data-total="23"></span></div>
+</section>
+<section class="slide" 
+
+<section class="slide" data-title="检索全貌" style="padding:44px 72px">
+<p class="kicker">检索流程</p>
+<h2 class="h2">问题 <span class="gradient-text">多路并行</span> 检索，取回相关 Chunk</h2>
+<p class="dim" style="font-size:12px;margin:2px 0 12px">不是一条路走到底。关键词检索和语义检索并行跑，结果融合后取最优 Top-K</p>
+
+<div class="grid g2" style="gap:12px;margin-bottom:10px">
+<div class="card card-warn" style="padding:12px 18px">
+<div class="section-label" style="margin-bottom:4px">路1 . 关键词检索</div>
+<div class="pipe-row" style="flex-wrap:wrap">
+<span class="pipe-n pipe-in" style="padding:5px 10px;font-size:10px">问题</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc" style="background:var(--warn);padding:5px 10px;font-size:10px">BM25</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-in" style="padding:5px 10px;font-size:10px">扫Chunk文本</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out" style="padding:5px 10px;font-size:10px">结果集A</span></div>
+<p class="dim2" style="font-size:10px;margin:4px 0 0">不走向量，直接对原始文本做关键词匹配</p></div>
+<div class="card card-accent" style="padding:12px 18px">
+<div class="section-label" style="margin-bottom:4px">路2 . 语义检索</div>
+<div class="pipe-row" style="flex-wrap:wrap">
+<span class="pipe-n pipe-in" style="padding:5px 10px;font-size:10px">问题</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc" style="padding:5px 10px;font-size:10px">Embedding</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc" style="padding:5px 10px;font-size:10px">查询向量</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out" style="padding:5px 10px;font-size:10px">结果集B</span></div>
+<p class="dim2" style="font-size:10px;margin:4px 0 0">向量化后在向量库做余弦相似度检索</p></div></div>
+
+<div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:10px;background:var(--surface-2);border:1px dashed var(--border-strong);border-radius:var(--radius-sm);padding:10px 14px">
+<div style="display:flex;flex-direction:column;gap:4px;text-align:center"><span class="pipe-n pipe-in" style="padding:4px 8px;font-size:10px">结果集A</span><span class="pipe-n pipe-in" style="padding:4px 8px;font-size:10px">结果集B</span></div>
+<span class="pipe-arr" style="font-size:20px">→</span>
+<div style="text-align:center"><span class="pipe-n pipe-proc" style="background:var(--good);padding:5px 12px;font-size:11px">RRF 加权融合</span><p class="dim2" style="font-size:9px;margin:3px 0 0">两路排名输入，按排名加权合并排序</p></div>
+<span class="pipe-arr" style="font-size:20px">→</span>
+<span class="pipe-n pipe-out" style="padding:5px 12px;font-size:12px">Top-K Chunk</span></div>
+
+<div class="grid g3" style="gap:8px">
+<div class="card card-soft" style="padding:8px 12px;text-align:center"><h4 style="font-size:11px">稀疏向量 SPLADE</h4><p class="dim2" style="font-size:9px;margin:0">介于BM25和Dense之间，学出来的关键词权重</p></div>
+<div class="card card-soft" style="padding:8px 12px;text-align:center"><h4 style="font-size:11px">全文检索 ES</h4><p class="dim2" style="font-size:9px;margin:0">Elasticsearch 倒排索引，另一种关键词路径</p></div>
+<div class="card card-soft" style="padding:8px 12px;text-align:center"><h4 style="font-size:11px">多路融合</h4><p class="dim2" style="font-size:9px;margin:0">所有路径结果用RRF合并，取长补短</p></div>
+</div>
+
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="16" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="基础检索"><p class="kicker">检索方法</p><h2 class="h2">三大基础检索：<span class="gradient-text">BM25 + Dense + Hybrid</span></h2><div class="grid g3" style="gap:14px;margin-bottom:14px"><div class="card card-warn" style="padding:18px 20px;text-align:center"><h4>BM25</h4><p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">关键词稀疏检索<br>直接扫 Chunk 原始文本<br>算关键词相关性</p><div style="margin-top:8px"><span class="tag tag-amber">精准匹配</span></div><p class="dim2" style="font-size:10px;margin:4px 0 0">擅长：专业术语、编号</p></div><div class="card card-accent" style="padding:18px 20px;text-align:center"><h4>Dense Embedding</h4><p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">向量语义检索<br>调用 Embedding API<br>算余弦相似度</p><div style="margin-top:8px"><span class="tag tag-blue">语义泛化</span></div><p class="dim2" style="font-size:10px;margin:4px 0 0">擅长：同义词</p></div><div class="card card-good" style="padding:18px 20px;text-align:center"><h4>Hybrid 混合检索</h4><p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">BM25 + Dense<br>并行跑、结果合并<br>RRF 加权融合</p><div style="margin-top:8px"><span class="tag tag-green">企业标配</span></div><p class="dim2" style="font-size:10px;margin:4px 0 0">取长补短，精确+语义兼顾</p></div></div><div class="flow-box"><div class="pipe-row" style="justify-content:center"><span class="pipe-n pipe-in">问题</span><span class="pipe-arr">→</span><span class="pipe-n pipe-proc">BM25</span><span class="pipe-arr" style="font-size:18px">+</span><span class="pipe-n pipe-proc">Dense</span><span class="pipe-arr">→</span><span class="pipe-n pipe-out">Top-K</span></div></div><div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="17" data-total="23"></span></div></section>
+<section class="slide" data-title="其他检索方法">
+<p class="kicker">检索方法</p>
+<h2 class="h2">更多检索方法：<span class="gradient-text">SPLADE、全文检索、稀疏向量</span></h2>
+<p class="dim" style="font-size:12px;margin:2px 0 14px">除了 BM25 和 Dense，还有几种值得关注的方法，各有适用场景</p>
+
+<div class="grid g2" style="gap:14px;margin-bottom:12px">
+<div class="card card-accent" style="padding:16px 20px">
+<h4>SPLADE 稀疏向量检索</h4>
+<p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">介于 BM25 和 Dense 之间。用神经网络学到每个词的重要性权重，生成稀疏向量（大部分维度为0）。既有关键词匹配的精确性，又有语义扩展能力</p>
+<div style="margin-top:8px"><span class="tag tag-blue">学出来的关键词权重</span><span class="tag tag-slate" style="margin-left:4px">稀疏向量</span></div>
+<p class="dim2" style="font-size:10px;margin:4px 0 0">适合：需要精确匹配但不满足于 BM25 固定权重的场景</p></div>
+<div class="card card-warn" style="padding:16px 20px">
+<h4>Elasticsearch 全文检索</h4>
+<p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">ES 原生支持倒排索引全文检索。可以替代 BM25 作为关键词一路，也能存储文本+元数据。部分版本已内置向量检索，一个引擎搞定混合检索</p>
+<div style="margin-top:8px"><span class="tag tag-amber">倒排索引</span><span class="tag tag-slate" style="margin-left:4px">全文检索</span></div>
+<p class="dim2" style="font-size:10px;margin:4px 0 0">适合：已有 ES 基础设施、不想额外部署向量库的团队</p></div>
+<div class="card card-soft" style="padding:16px 20px">
+<h4>ColBERT 延迟交互</h4>
+<p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">不是把整段压缩成一个向量，而是每个 Token 一个向量。检索时问题 Token 和文档 Token 两两算相似度再求和。精度接近 Cross-Encoder，速度接近 Dense</p>
+<div style="margin-top:8px"><span class="tag tag-slate">Token级向量</span></div>
+<p class="dim2" style="font-size:10px;margin:4px 0 0">适合：对检索精度要求极高又承担不起 Rerank 全量成本的场景</p></div>
+<div class="card card-soft" style="padding:16px 20px">
+<h4>多模态检索</h4>
+<p class="dim2" style="font-size:11px;margin:4px 0;line-height:1.5">不仅检索文本。CLIP 等模型把图片也向量化，可以"以文搜图"或"以图搜图"。回到 Part 1 的思路——图片描述文本已经入库，文本检索覆盖了大部分需求</p>
+<div style="margin-top:8px"><span class="tag tag-slate">文本+图像</span></div>
+<p class="dim2" style="font-size:10px;margin:4px 0 0">适合：电商以图搜图、设计素材库检索</p></div>
+</div>
+
+<div class="callout callout-accent" style="margin-top:10px">方法论：BM25 + Dense 是基线，SPLADE/ColBERT 是增强，ES 是工程选择。根据精度和成本选型</div>
+
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="18" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="查询增强"><p class="kicker">查询优化</p><h2 class="h2">查询增强：让问题<span class="gradient-text">更精准</span></h2><div class="grid g2" style="gap:14px;margin-bottom:14px"><div class="card card-accent" style="padding:16px 20px"><h4>Query Rewriting</h4><p class="dim2" style="font-size:11px;margin:2px 0 6px">LLM 把用户口语问题改写成更适合检索的形式</p><p class="dim" style="font-size:10px;margin:0">"这玩意儿坏了咋修？" "变压器故障排查与维修方法"</p></div><div class="card card-soft" style="padding:16px 20px"><h4>Multi-Query</h4><p class="dim2" style="font-size:11px;margin:2px 0 6px">同一问题生成 3~5 个版本，并行检索后合并</p><p class="dim" style="font-size:10px;margin:0">版本1/版本2/版本3 并行搜 合并结果</p></div><div class="card card-soft" style="padding:16px 20px"><h4>HyDE 假设答案</h4><p class="dim2" style="font-size:11px;margin:2px 0 6px">先让 LLM 编假设答案，用假设答案去检索</p><p class="dim" style="font-size:10px;margin:0">生成假设答案 用其向量去搜</p></div><div class="card card-soft" style="padding:16px 20px"><h4>Step-back</h4><p class="dim2" style="font-size:11px;margin:2px 0 6px">把具体问题抽象为上层背景问题再搜</p><p class="dim" style="font-size:10px;margin:0">"GPT-4注意力头数？""Transformer架构概述"</p></div></div><div class="callout callout-accent">核心：不直接用用户原始问题搜，先加工让问题更容易命中</div><div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="19" data-total="23"></span></div></section>
+<section class="slide" data-title="Rerank重排"><p class="kicker">精排</p><h2 class="h2">Rerank：粗召回后<span class="gradient-text">精排重排</span></h2><p class="dim" style="font-size:12px;margin:2px 0 14px">向量检索快但粗糙（Top-100），Rerank 用精排模型逐条重打分（Top-5）</p><div class="flow-box" style="margin-bottom:14px"><div class="pipe-row" style="justify-content:center"><span class="pipe-n pipe-in">查询</span><span class="pipe-arr">→</span><span class="pipe-n pipe-proc">向量粗召回</span><span class="pipe-arr">→</span><span class="pipe-n pipe-in">Top-100</span><span class="pipe-arr">-</span><span class="pipe-n pipe-proc" style="background:var(--good)">Cross-Encoder Rerank</span><span class="pipe-arr">→</span><span class="pipe-n pipe-out">Top-5</span></div></div><div class="grid g2" style="gap:14px"><div class="card card-accent" style="padding:16px 20px"><h4>Cross-Encoder Reranker</h4><p class="dim2" style="font-size:11px;margin:2px 0;line-height:1.5">把(问题, Chunk)成对输入模型，输出精确相关性分数。bge-reranker、Cohere Rerank 是主流</p><span class="tag tag-blue">企业标配</span></div><div class="card card-soft" style="padding:16px 20px"><h4>LLM as Reranker</h4><p class="dim2" style="font-size:11px;margin:2px 0;line-height:1.5">直接用 LLM 判断每个 Chunk 与问题的相关性，质量高但成本也高</p><span class="tag tag-amber">高精度场景</span></div></div><div class="callout callout-accent" style="margin-top:14px">粗召回保证全（快），精排保证准（慢）。两步走是检索质量的分水岭</div><div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="20" data-total="23"></span></div></section>
+<section class="slide" data-title="高级索引"><p class="kicker">索引策略</p><h2 class="h2">高级索引：<span class="gradient-text">小搜大回</span></h2><p class="dim" style="font-size:12px;margin:2px 0 12px">检索用小粒度精准定位，返回用大粒度保证上下文完整</p><div class="grid g2" style="gap:14px;margin-bottom:12px"><div class="card card-accent" style="padding:16px 20px"><h4>Sentence Window</h4><p class="dim2" style="font-size:11px;margin:0;line-height:1.5">用句子粒度检索（精准），返回时扩展前后 N 句的完整窗口</p><span class="tag tag-blue" style="margin-top:6px">窗口扩展</span></div><div class="card card-soft" style="padding:16px 20px"><h4>Parent Document</h4><p class="dim2" style="font-size:11px;margin:0;line-height:1.5">用小 Chunk(200字)检索，返回大 Chunk(800字)的父文档</p><span class="tag tag-green" style="margin-top:6px">父子文档</span></div><div class="card card-soft" style="padding:16px 20px"><h4>Auto-Merging</h4><p class="dim2" style="font-size:11px;margin:0;line-height:1.5">层级索引，小 Chunk 命中后相似 Chunk 自动合并成大段返回</p><span class="tag tag-amber" style="margin-top:6px">层级合并</span></div><div class="card card-soft" style="padding:16px 20px"><h4>Small-to-Big</h4><p class="dim2" style="font-size:11px;margin:0;line-height:1.5">统一思想：检索小、返回大。避免 Chunk 太大导致语义被噪声稀释</p><span class="tag tag-slate" style="margin-top:6px">最佳实践</span></div></div><div class="callout callout-accent">检索粒度 返回粒度。小粒度精准定位，大粒度喂给 LLM</div><div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="21" data-total="23"></span></div></section>
+<section class="slide" data-title="Agentic RAG">
+<p class="kicker">自适应</p>
+<h2 class="h2">Agentic RAG：让检索<span class="gradient-text">自己判断质量</span></h2>
+<div class="grid g2" style="gap:14px;margin-bottom:12px">
+<div class="card card-accent" style="padding:16px 20px">
+<h4>Self-RAG</h4>
+<p class="dim2" style="font-size:11px;margin:2px 0;line-height:1.5">LLM 检索后自评"是否需要再搜"。不够就多轮检索，够了就停下来生成回答</p>
+<span class="tag tag-blue">按需多轮</span></div>
+<div class="card card-warn" style="padding:16px 20px">
+<h4>CRAG Corrective RAG</h4>
+<p class="dim2" style="font-size:11px;margin:2px 0;line-height:1.5">检索后评估结果质量。质量不行就自动改写 Query 重搜，直到拿到靠谱结果</p>
+<span class="tag tag-amber">纠错重搜</span></div>
+<div class="card card-soft" style="padding:16px 20px">
+<h4>Adaptive RAG</h4>
+<p class="dim2" style="font-size:11px;margin:2px 0;line-height:1.5">路由判断：简单问题（"今天几号"）直接答；复杂问题走检索。按需选择路径</p>
+<span class="tag tag-green">智能路由</span></div>
+<div class="card card-soft" style="padding:16px 20px">
+<h4>GraphRAG Microsoft</h4>
+<p class="dim2" style="font-size:11px;margin:2px 0;line-height:1.5">不走 Chunk 检索。构建知识图谱+社区摘要，适合宏观提问："这个数据集讲了什么？"</p>
+<span class="tag tag-slate">知识图谱</span></div>
+</div>
+<div class="callout callout-accent" style="margin-top:12px">从"搜一次"到"搜对为止"——Agentic RAG 让检索从一次动作变成多轮闭环</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="22" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="完整流水线">
+<p class="kicker">总览</p>
+<h2 class="h2">RAG <span class="gradient-text">完整流水线</span></h2>
+<div class="grid g2" style="gap:14px;margin-bottom:14px">
+<div class="card card-accent" style="padding:14px 18px">
+<div class="section-label">Part 1 . 摄入 Ingestion</div>
+<div style="font-size:11px;color:var(--text-2);line-height:1.6">
+文档 PDF/Word/Excel/图片/视频/JSON<br>
+解析 原生解析 / OCR / ASR<br>
+清洗 去页眉页脚/乱码/水印<br>
+切片 chunk_size=500~800, overlap=10%~20%<br>
+Embedding text-embedding-3-large  向量<br>
+入库 向量 + 文本 + 元数据</div>
+</div>
+<div class="card card-good" style="padding:14px 18px">
+<div class="section-label">Part 2 . 检索 Retrieval</div>
+<div style="font-size:11px;color:var(--text-2);line-height:1.6">
+用户提问<br>
+Query Rewriting 查询改写增强<br>
+Hybrid Search BM25 + Dense 混合检索<br>
+Rerank Cross-Encoder 精排重排<br>
+高级索引 小搜大回 / Auto-Merging<br>
+Agentic Self-RAG / CRAG 自适应</div>
+</div>
+</div>
+<div class="flow-box"><div class="pipe-row" style="justify-content:center">
+<span class="pipe-n pipe-in">任意文档</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc">解析+切片</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-proc">Embedding</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out">向量库</span><span class="pipe-arr" style="font-size:18px">⇄</span>
+<span class="pipe-n pipe-proc" style="background:var(--good)">检索+Rerank</span><span class="pipe-arr">→</span>
+<span class="pipe-n pipe-out" style="background:var(--accent-3)">LLM生成</span>
+</div></div>
+<div class="callout callout-accent" style="margin-top:12px">RAG = Ingestion + Retrieval + Generation。两端都已讲透，LLM 生成是最后一步——把检索到的 Chunk 拼进 Prompt，让 LLM 基于原文回答</div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="23" data-total="23"></span></div>
+</section>
+
+</div>
+<script>
+(function(){
+var slides=document.querySelectorAll('.slide');
+var total=slides.length;
+var current=0;
+function show(i){
+slides.forEach(function(s,idx){
+s.classList.remove('is-active','is-prev');
+if(idx===i)s.classList.add('is-active');
+else if(idx<i)s.classList.add('is-prev');
+});
+var ns=document.querySelectorAll('.slide-number');
+ns.forEach(function(n){n.setAttribute('data-current',i+1);n.setAttribute('data-total',total)});
+}
+function next(){if(current<total-1){current++;show(current);}}
+function prev(){if(current>0){current--;show(current);}}
+document.addEventListener('keydown',function(e){
+if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();next();}
+else if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();prev();}
+else if(e.key==='Home'){e.preventDefault();current=0;show(0);}
+else if(e.key==='End'){e.preventDefault();current=total-1;show(current);}
+});
+var hash=window.location.hash;
+if(hash&&hash.startsWith('#/')){var n=parseInt(hash.slice(2));if(n>=1&&n<=total){current=n-1;}}
+show(current);
+})();
+</script>
+</body></html>
