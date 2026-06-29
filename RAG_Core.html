@@ -79,13 +79,28 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 <h2 class="h2">万物归一：所有文件，最终皆为<span class="gradient-text">文本</span></h2>
 <p class="dim" style="font-size:13px;margin:2px 0 14px;max-width:640px">没有任何公司直接把图片、视频二进制丢进向量库检索——无法匹配语义。所有格式必须归一为文本 + 元数据。</p>
 
-<div class="grid g3" style="gap:12px">
-<div class="card card-accent" style="padding:14px 18px"><h4>PDF 提取/OCR 文本</h4><p class="dim2" style="font-size:11px;margin:0">单栏/多栏/扫描/混合，智能切换解析</p></div>
-<div class="card card-soft" style="padding:14px 18px"><h4>Office 提取段落 文本</h4><p class="dim2" style="font-size:11px;margin:0">Word/PPT/Excel，结构化转自然语言</p></div>
-<div class="card card-soft" style="padding:14px 18px"><h4>图片 OCR/VL 文本</h4><p class="dim2" style="font-size:11px;margin:0">文字走OCR，画面走视觉模型描述</p></div>
-<div class="card card-soft" style="padding:14px 18px"><h4>视频 ASR字幕 文本</h4><p class="dim2" style="font-size:11px;margin:0">抽音轨+抽关键帧，合并长文本+时间戳</p></div>
-<div class="card card-soft" style="padding:14px 18px"><h4>音频 Whisper 文本</h4><p class="dim2" style="font-size:11px;margin:0">语音转文字，清洗语气词、静音片段</p></div>
-<div class="card card-soft" style="padding:14px 18px"><h4>配置 扁平化 文本</h4><p class="dim2" style="font-size:11px;margin:0">JSON/YAML 禁止原生入库，转语义文本</p></div>
+<div class="grid" style="grid-template-columns:repeat(4,1fr);gap:10px">
+<div class="card card-accent" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">PDF <span class="mono dim2" style="font-size:9px">.pdf</span></h4><p class="dim2" style="font-size:10px;margin:0">提取/OCR  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">Office <span class="mono dim2" style="font-size:9px">.docx .xlsx .pptx</span></h4><p class="dim2" style="font-size:10px;margin:0">提取段落  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">纯文本 <span class="mono dim2" style="font-size:9px">.txt .md .csv .jsonl</span></h4><p class="dim2" style="font-size:10px;margin:0">直接切片  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">网页电子书 <span class="mono dim2" style="font-size:9px">.html .epub .mobi</span></h4><p class="dim2" style="font-size:10px;margin:0">提取正文  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">图片 <span class="mono dim2" style="font-size:9px">.jpg .png .tiff</span></h4><p class="dim2" style="font-size:10px;margin:0">OCR / VL  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">视频 <span class="mono dim2" style="font-size:9px">.mp4 .mov</span></h4><p class="dim2" style="font-size:10px;margin:0">ASR字幕  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">音频 <span class="mono dim2" style="font-size:9px">.mp3 .wav</span></h4><p class="dim2" style="font-size:10px;margin:0">Whisper  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">配置 <span class="mono dim2" style="font-size:9px">.json .yaml .xml</span></h4><p class="dim2" style="font-size:10px;margin:0">扁平化  文本</p></div>
+</div>
+
+<div style="margin-top:10px">
+<div class="section-label" style="margin-bottom:6px">按内容类型分：同一个文件里可能有多种内容，各走各路</div>
+<div style="display:flex;gap:10px;flex-wrap:wrap">
+<div class="card card-soft" style="padding:10px 16px;text-align:center;flex:1;min-width:100px"><div style="font-size:20px;margin-bottom:3px">&#x1F4DD;</div><h4 style="font-size:12px">文字段落</h4><p class="dim2" style="font-size:10px;margin:0">直接提取 切片</p></div>
+<div class="card card-soft" style="padding:10px 16px;text-align:center;flex:1;min-width:100px"><div style="font-size:20px;margin-bottom:3px">&#x1F4CA;</div><h4 style="font-size:12px">表格</h4><p class="dim2" style="font-size:10px;margin:0">结构化 自然语言</p></div>
+<div class="card card-soft" style="padding:10px 16px;text-align:center;flex:1;min-width:100px"><div style="font-size:20px;margin-bottom:3px">&#x1F5BC;</div><h4 style="font-size:12px">内嵌图片</h4><p class="dim2" style="font-size:10px;margin:0">OCR / VL 文本</p></div>
+<div class="card card-soft" style="padding:10px 16px;text-align:center;flex:1;min-width:100px"><div style="font-size:20px;margin-bottom:3px">&#x1F4BB;</div><h4 style="font-size:12px">代码块</h4><p class="dim2" style="font-size:10px;margin:0">单独标记 不拆分</p></div>
+<div class="card card-soft" style="padding:10px 16px;text-align:center;flex:1;min-width:100px"><div style="font-size:20px;margin-bottom:3px">&#x1F4D0;</div><h4 style="font-size:12px">公式</h4><p class="dim2" style="font-size:10px;margin:0">LaTeX / MathML 文本</p></div>
+<div class="card card-soft" style="padding:10px 16px;text-align:center;flex:1;min-width:100px"><div style="font-size:20px;margin-bottom:3px">&#x1F4CE;</div><h4 style="font-size:12px">批注/备注</h4><p class="dim2" style="font-size:10px;margin:0">存入元数据，不混正文</p></div>
+</div>
+</div>
 </div>
 <div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="3" data-total="23"></span></div>
 </section>
