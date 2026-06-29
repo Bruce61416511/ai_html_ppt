@@ -141,7 +141,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </div>
 <div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number"></span></div>
 </section><section class="slide" data-title="万物归一">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
+<div class="pipeline-mini"><span class="ps on">文档</span><span class="pa">→</span><span class="ps dim">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">核心哲学</p>
 <h2 class="h2">万物归一 <span style="color:var(--accent);font-weight:700;font-size:28px">=</span> <span class="gradient-text">文本</span></h2>
 <p class="dim" style="font-size:13px;margin:2px 0 14px;max-width:640px">没有任何公司直接把图片、视频二进制丢进向量库检索——无法匹配语义。所有格式必须归一为文本 + 元数据。</p>
@@ -172,7 +172,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </section><section class="slide" data-title="PDF全场景">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">核心高频</p>
-<h2 class="h2">PDF 全场景四分法：工具 + 切片 + 避坑</h2>
+<h2 class="h2">PDF 四种场景</h2>
 <div class="card" style="padding:10px 14px">
 <table class="tb">
 <tr><th style="width:12%">PDF 类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:30%">避坑</th></tr>
@@ -186,7 +186,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </section><section class="slide" data-title="Office文档">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">文件对照表</p>
-<h2 class="h2">Office 文档：工具 + 切片 + 避坑</h2>
+<h2 class="h2">Office 文档</h2>
 <div class="card" style="padding:10px 14px">
 <table class="tb">
 <tr><th style="width:10%">类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:32%">避坑</th></tr>
@@ -200,7 +200,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </section><section class="slide" data-title="图片归一">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">图片归一</p>
-<h2 class="h2">图片（jpg/png/tiff）分两路，全部归一为文本</h2>
+<h2 class="h2">图片 两种场景</h2>
 <p class="dim" style="font-size:12px;margin:2px 0 14px">向量库永远不存图片二进制，只存图片对应的语义文本</p>
 <div class="grid g2" style="gap:18px">
 <div class="card card-accent" style="padding:20px 22px">
@@ -232,7 +232,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </section><section class="slide" data-title="视频归一">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">视频归一</p>
-<h2 class="h2">视频（mp4/mov）企业标准流水线</h2>
+<h2 class="h2">视频 两块内容</h2>
 <p class="dim" style="font-size:12px;margin:2px 0 12px">视频是超级混合文件，两条轨道并行处理，最终合并为长文本</p>
 <div class="grid g2" style="gap:16px;margin-bottom:14px">
 <div class="card card-accent" style="padding:18px 22px"><h4>音频轨道</h4>
@@ -258,7 +258,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </section><section class="slide" data-title="多媒体网页电子书">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">文件对照表</p>
-<h2 class="h2">多媒体 &amp; 网页电子书：工具 + 切片 + 避坑</h2>
+<h2 class="h2">多媒体 &amp; 网页电子书</h2>
 <div class="card" style="padding:10px 14px">
 <table class="tb">
 <tr><th style="width:12%">类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:30%">避坑</th></tr>
