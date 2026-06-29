@@ -149,11 +149,11 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 <div class="grid" style="grid-template-columns:repeat(4,1fr);gap:10px">
 <div class="card card-accent" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">PDF <span class="mono dim2" style="font-size:9px">.pdf</span></h4><p class="dim2" style="font-size:10px;margin:0">提取/OCR  文本</p></div>
 <div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">Office <span class="mono dim2" style="font-size:9px">.docx .xlsx .pptx</span></h4><p class="dim2" style="font-size:10px;margin:0">提取段落  文本</p></div>
-<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">纯文本 <span class="mono dim2" style="font-size:9px">.txt .md .csv .jsonl</span></h4><p class="dim2" style="font-size:10px;margin:0">直接切片  文本</p></div>
-<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">网页电子书 <span class="mono dim2" style="font-size:9px">.html .epub .mobi</span></h4><p class="dim2" style="font-size:10px;margin:0">提取正文  文本</p></div>
 <div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">图片 <span class="mono dim2" style="font-size:9px">.jpg .png .tiff</span></h4><p class="dim2" style="font-size:10px;margin:0">OCR / VL  文本</p></div>
 <div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">视频 <span class="mono dim2" style="font-size:9px">.mp4 .mov</span></h4><p class="dim2" style="font-size:10px;margin:0">ASR字幕  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">网页电子书 <span class="mono dim2" style="font-size:9px">.html .epub .mobi</span></h4><p class="dim2" style="font-size:10px;margin:0">提取正文  文本</p></div>
 <div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">音频 <span class="mono dim2" style="font-size:9px">.mp3 .wav</span></h4><p class="dim2" style="font-size:10px;margin:0">Whisper  文本</p></div>
+<div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">纯文本 <span class="mono dim2" style="font-size:9px">.txt .md .csv .jsonl</span></h4><p class="dim2" style="font-size:10px;margin:0">直接切片  文本</p></div>
 <div class="card card-soft" style="padding:12px 14px;min-height:72px"><h4 style="font-size:12px">配置 <span class="mono dim2" style="font-size:9px">.json .yaml .xml</span></h4><p class="dim2" style="font-size:10px;margin:0">扁平化  文本</p></div>
 </div>
 
@@ -169,108 +169,85 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </div>
 </div>
 <div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="3" data-total="23"></span></div>
-</section><section class="slide" data-title="PDF全场景">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
-<p class="kicker">核心高频</p>
-<h2 class="h2">PDF 四种场景</h2>
-<div class="card" style="padding:10px 14px">
+</section><section class="slide" data-title="PDF与Office">
+<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps on">清洗</span><span class="pa">→</span><span class="ps on">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
+<p class="kicker">文档解析</p>
+<h2 class="h2">PDF &amp; Office <span class="gradient-text">文档</span></h2>
+<div style="margin-bottom:8px"><div class="section-label" style="margin-bottom:4px">PDF 四种场景</div>
+<div class="card" style="padding:8px 12px">
 <table class="tb">
-<tr><th style="width:12%">PDF 类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:30%">避坑</th></tr>
-<tr><td><strong>单栏可复制</strong></td><td><span class="mono">PyMuPDF(fitz) / PDFPlumber</span></td><td>语义段落切片，600~1000大小、15%重叠，绑定页码</td><td>提前清洗重复页眉页脚</td></tr>
-<tr><td><strong>多栏/期刊</strong></td><td><span class="mono">PDFPlumber</span> 布局坐标解析</td><td>先按阅读顺序重构文本，再段落切片</td><td>禁止直接按页面顺序读取，防止左右栏语义错乱</td></tr>
-<tr><td><strong>扫描图片PDF</strong></td><td><span class="mono">pdf2image + PaddleOCR</span></td><td>整页文本拼接清洗后切片，800大小、20%重叠</td><td>开启角度矫正，模糊页切换云端OCR</td></tr>
-<tr><td><strong>混合PDF</strong><br><span class="dim2">(图文混杂)</span></td><td><span class="mono">PyMuPDF</span>优先解析<br>空页自动走OCR</td><td>合并原生+OCR文字，统一清洗后语义切片</td><td>避免纯文字页走OCR，减少误差与算力</td></tr>
-</table></div>
-<div class="callout callout-accent" style="margin-top:12px">铁律：能原生解析绝不OCR，OCR只兜底空白页面——节省算力、提升准确率</div>
-<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="8" data-total="23"></span></div>
-</section><section class="slide" data-title="Office文档">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
-<p class="kicker">文件对照表</p>
-<h2 class="h2">Office 文档</h2>
-<div class="card" style="padding:10px 14px">
+<tr><th style="width:10%">PDF 类型</th><th style="width:18%">工具</th><th style="width:20%">清洗</th><th style="width:28%">切片策略</th><th style="width:24%">避坑</th></tr>
+<tr><td><strong>单栏可复制</strong></td><td><span class="mono">PyMuPDF(fitz) / PDFPlumber</span></td><td>去除重复页眉页脚、水印</td><td>语义段落切片，600~1000大小、15%重叠，绑定页码</td><td>不要直接切片，先清洗再切，否则每个 chunk 带页眉</td></tr>
+<tr><td><strong>多栏/期刊</strong></td><td><span class="mono">PDFPlumber</span> 布局坐标解析</td><td>-</td><td>先按阅读顺序重构文本，再段落切片</td><td>千万别直接按页面顺序读，左右栏会串行</td></tr>
+<tr><td><strong>扫描图片PDF</strong></td><td><span class="mono">pdf2image + PaddleOCR</span></td><td>OCR后文本纠错、去噪、角度矫正</td><td>整页文本拼接清洗后切片，800大小、20%重叠</td><td>模糊页别用本地OCR，切云端；没校准角度直接识别会乱码</td></tr>
+<tr><td><strong>混合PDF</strong><br><span class="dim2">(图文混杂)</span></td><td><span class="mono">PyMuPDF</span>优先解析<br>空页自动走OCR</td><td>合并原生+OCR文字，去除冗余空格/换行</td><td>合并原生+OCR文字，统一清洗后语义切片</td><td>别让纯文字页也走OCR，既浪费算力又增加误差</td></tr>
+</table>
+</div></div>
+<div><div class="section-label" style="margin-bottom:4px">Office 文档</div>
+<div class="card" style="padding:8px 12px">
 <table class="tb">
-<tr><th style="width:10%">类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:32%">避坑</th></tr>
-<tr><td><span class="mono">.docx</span></td><td><span class="mono">python-docx / UnstructuredLoader</span></td><td>标题绑定段落切片，600大小、15%重叠</td><td>侧边批注、浮动备注存入元数据，不混入正文</td></tr>
-<tr><td><span class="mono">.xlsx</span></td><td><span class="mono">openpyxl + Pandas</span></td><td>按工作表聚合，补全多级表头，行数据转自然语言</td><td>修复合并单元格维度丢失</td></tr>
-<tr><td><span class="mono">.pptx</span></td><td><span class="mono">python-pptx</span></td><td>单页独立切片，不拆分单页内容，绑定页码</td><td>清洗页脚、无效备注，去除重复模板文字</td></tr>
-<tr><td><span class="mono">.doc</span>(老版)</td><td><span class="mono">antiword / pywin32</span></td><td>解析后统一语义切片，600大小、15%重叠</td><td>避免直接读取导致乱码、格式丢失</td></tr>
-<tr><td><span class="mono">.wps/.et/.dps</span></td><td><span class="mono">unstructured</span>+适配解析</td><td>适配对应文档类型切片，规则同Office标准</td><td>过滤WPS专属冗余格式代码</td></tr>
-</table></div>
-<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="9" data-total="23"></span></div>
-</section><section class="slide" data-title="图片归一">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
-<p class="kicker">图片归一</p>
-<h2 class="h2">图片 两种场景</h2>
-<p class="dim" style="font-size:12px;margin:2px 0 14px">向量库永远不存图片二进制，只存图片对应的语义文本</p>
-<div class="grid g2" style="gap:18px">
-<div class="card card-accent" style="padding:20px 22px">
-<div class="tag tag-blue" style="margin-bottom:10px">情况 A：图片里是文字</div>
-<h3 style="font-size:18px">合同 / 截图 / 证件 / 发票</h3>
-<div class="pipe-row" style="flex-wrap:wrap;margin:10px 0">
-<span class="pipe-n pipe-proc">PaddleOCR</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">纯文本</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">切片</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-out">入库</span>
-</div>
-<p class="dim2" style="font-size:11px;margin:0">入库：文本 + 图片路径元数据</p>
-</div>
-<div class="card card-warn" style="padding:20px 22px">
-<div class="tag tag-amber" style="margin-bottom:10px">情况 B：图片里是画面</div>
-<h3 style="font-size:18px">流程图 / 架构图 / 照片 / 图表</h3>
-<div class="pipe-row" style="flex-wrap:wrap;margin:10px 0">
-<span class="pipe-n pipe-proc">VL 视觉模型</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">AI 生成描述</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">切片</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-out">入库</span>
-</div>
-<p class="dim2" style="font-size:11px;margin:0">企业标准：Qwen-VL / GPT-4V / BLIP</p>
-<div style="background:var(--surface-2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:10px;color:var(--text-2);line-height:1.5">
-示例输出：「该图片为系统架构图，包含用户层、网关层、RAG 解析层、向量数据库层…」</div>
+<tr><th style="width:8%">类型</th><th style="width:16%">工具</th><th style="width:22%">清洗</th><th style="width:28%">切片策略</th><th style="width:26%">避坑</th></tr>
+<tr><td><span class="mono">.docx</span></td><td><span class="mono">python-docx / UnstructuredLoader</span></td><td>去除批注、浮动备注（存元数据）</td><td>标题绑定段落切片，600大小、15%重叠</td><td>批注别混进正文，会打乱语义且无法溯源</td></tr>
+<tr><td><span class="mono">.xlsx</span></td><td><span class="mono">openpyxl + Pandas</span></td><td>修复合并单元格、补全缺失维度</td><td>按工作表聚合，补全多级表头，行数据转自然语言</td><td>不要直接存原始值，合并单元格会丢失维度信息</td></tr>
+<tr><td><span class="mono">.pptx</span></td><td><span class="mono">python-pptx</span></td><td>去除页脚、无效备注、重复模板文字</td><td>单页独立切片，不拆分单页内容，绑定页码</td><td>不要跨页切片，每页内容独立；模板文字会每页重复出现</td></tr>
+<tr><td><span class="mono">.doc</span>(老版)</td><td><span class="mono">antiword / pywin32</span></td><td>格式转换修复、乱码清理</td><td>解析后统一语义切片，600大小、15%重叠</td><td>不要直接用现代工具读 .doc，先转换再解析</td></tr>
+<tr><td><span class="mono">.wps/.et/.dps</span></td><td><span class="mono">unstructured</span>+适配解析</td><td>过滤WPS专属冗余格式代码</td><td>适配对应文档类型切片，规则同Office标准</td><td>不要直接当标准 Office 解析，会带入大量垃圾格式代码</td></tr>
+</table>
 </div></div>
-<div class="callout callout-accent" style="margin-top:14px">图片 -> OCR 文本 / VL 描述 -> 切片 -> 入库 | 向量库<strong>永不存图片二进制</strong>，只存语义文本</div>
-<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="10" data-total="23"></span></div>
-</section><section class="slide" data-title="视频归一">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
-<p class="kicker">视频归一</p>
-<h2 class="h2">视频 两块内容</h2>
-<p class="dim" style="font-size:12px;margin:2px 0 12px">视频是超级混合文件，两条轨道并行处理，最终合并为长文本</p>
-<div class="grid g2" style="gap:16px;margin-bottom:14px">
-<div class="card card-accent" style="padding:18px 22px"><h4>音频轨道</h4>
-<div class="pipe-row" style="flex-wrap:wrap;margin-top:6px">
-<span class="pipe-n pipe-in">抽音轨</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-proc">Whisper / FunASR</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">字幕文本</span></div></div>
-<div class="card card-warn" style="padding:18px 22px"><h4>画面轨道</h4>
-<div class="pipe-row" style="flex-wrap:wrap;margin-top:6px">
-<span class="pipe-n pipe-in">抽关键帧(每5~10s)</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-proc">VL 视觉模型</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">画面描述文本</span></div></div>
-</div>
-<div class="flow-box" style="margin-bottom:10px"><div class="pipe-row" style="justify-content:center">
-<span class="pipe-n pipe-proc">合并</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-in">字幕文本 + 画面描述</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-proc">统一清洗</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-proc">按时间窗口切片</span><span class="pipe-arr">→</span>
-<span class="pipe-n pipe-out">入库</span>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number"></span></div>
+</section><section class="slide" <section class="slide" data-title="图片与视频">
+<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps on">清洗</span><span class="pa">→</span><span class="ps on">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
+<p class="kicker">媒体解析</p>
+<h2 class="h2">图片 &amp; <span class="gradient-text">视频</span></h2>
+<div style="margin-bottom:8px"><div class="section-label" style="margin-bottom:4px">图片 两种场景</div>
+<div class="card" style="padding:8px 12px">
+<table class="tb">
+<tr><th style="width:10%">类型</th><th style="width:20%">工具</th><th style="width:22%">清洗</th><th style="width:28%">切片策略</th><th style="width:20%">避坑</th></tr>
+<tr><td><strong>文字图片</strong><br><span class="dim2">合同/截图/证件</span></td><td><span class="mono">PaddleOCR</span></td><td>OCR后纠错、去噪、去冗余空格换行</td><td>纯文本段落切片，500~800大小</td><td>低置信度字符标注或丢弃，别当正确文字入库</td></tr>
+<tr><td><strong>画面图片</strong><br><span class="dim2">架构图/照片/图表</span></td><td><span class="mono">Qwen-VL / GPT-4V / BLIP</span></td><td>去除模型幻觉、截断冗余描述、统一格式</td><td>AI 描述文本段落切片，500~800大小</td><td>不要依赖单一模型，复杂图用多模型交叉验证</td></tr>
+</table>
 </div></div>
-<div class="callout callout-accent">最终结果：视频 = 合并后的<strong>长文本</strong> + 时间戳元数据</div>
-<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="11" data-total="23"></span></div>
+<div style="margin-top:8px"><div class="section-label" style="margin-bottom:4px">视频 两块内容</div>
+<div class="card" style="padding:8px 12px">
+<table class="tb">
+<tr><th style="width:10%">类型</th><th style="width:20%">工具</th><th style="width:22%">清洗</th><th style="width:28%">切片策略</th><th style="width:20%">避坑</th></tr>
+<tr><td><strong>音频轨道</strong><br><span class="dim2">语音转文字</span></td><td><span class="mono">Whisper / FunASR</span></td><td>去除语气词（喔/啊）、重复片段、静音标记</td><td>按时间窗口切片，60~120s/段，绑定时间戳</td><td>不要直接用ASR原始输出，先去噪再切片</td></tr>
+<tr><td><strong>画面轨道</strong><br><span class="dim2">关键帧描述</span></td><td><span class="mono">VL模型（每5~10s一帧）</span></td><td>相邻帧相似度去重、纯色/黑屏帧丢弃</td><td>合并时段描述，按时间窗口切片</td><td>不要每帧都入库，相似帧只会浪费向量空间</td></tr>
+<tr><td><strong>合并输出</strong><br><span class="dim2">音频+画面合并</span></td><td>-</td><td>统一清洗、去除时间线重叠冗余</td><td>合并字幕+描述，按时间窗口统一切片</td><td>不要把字幕和描述分开入库，时间线对齐后合并</td></tr>
+</table>
+</div></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number"></span></div>
 </section><section class="slide" data-title="多媒体网页电子书">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
+<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps on">清洗</span><span class="pa">→</span><span class="ps on">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">文件对照表</p>
 <h2 class="h2">多媒体 &amp; 网页电子书</h2>
 <div class="card" style="padding:10px 14px">
 <table class="tb">
-<tr><th style="width:12%">类型</th><th style="width:22%">工具</th><th style="width:36%">切片策略</th><th style="width:30%">避坑</th></tr>
-<tr><td><strong>图片</strong><br><span class="dim2">jpg/png/tiff</span></td><td><span class="mono">PaddleOCR / 云OCR</span></td><td>全图文本清洗后切片，500大小、15%重叠</td><td>矫正倾斜、过滤反光模糊，清理OCR乱换行</td></tr>
-<tr><td><strong>音频</strong><br><span class="dim2">mp3/wav</span></td><td><span class="mono">Whisper / FunASR</span></td><td>30~60s时间窗口聚合切片，携带时间戳元数据</td><td>清洗口头语气词、重复口头禅、静音片段</td></tr>
-<tr><td><strong>视频</strong><br><span class="dim2">mp4</span></td><td><span class="mono">抽音频+Whisper ASR</span></td><td>按时间轴分段切片，绑定视频时间节点</td><td>过滤无效黑屏、静音片段，减少冗余</td></tr>
-<tr><td><span class="mono">.html</span> 网页</td><td><span class="mono">Trafilatura / BeautifulSoup</span></td><td>提取正文后语义切片，700大小、15%重叠</td><td>过滤导航栏、广告、侧边栏、页头页尾</td></tr>
-<tr><td><span class="mono">.epub / .mobi</span></td><td><span class="mono">ebooklib / Calibre</span></td><td>按章节整体切片，携带章节名元数据</td><td>禁止跨章节切割，目录存入元数据</td></tr>
-<tr><td><span class="mono">.azw3</span> Kindle</td><td><span class="mono">Calibre</span>转epub后解析</td><td>同epub章节切片规则，保留目录层级</td><td>必须格式转换后再入库</td></tr>
-<tr><td><span class="mono">.srt / .lrc</span></td><td>自定义字幕解析器</td><td>按时间区间聚合切片，携带时间戳元数据</td><td>过滤序号、纯时间轴无效字符</td></tr>
+<tr><th style="width:10%">类型</th><th style="width:18%">工具</th><th style="width:20%">清洗</th><th style="width:26%">切片策略</th><th style="width:26%">避坑</th></tr>
+<tr><td>图片<br><span class="mono dim2">jpg/png/tiff</span></td><td><span class="mono">PaddleOCR / 云OCR</span></td><td>矫正倾斜、去除反光模糊、清理OCR乱换行</td><td>全图文本清洗后切片，500大小、15%重叠</td><td>不要对倾斜/模糊图直接OCR，先预处理再识别</td></tr>
+<tr><td>音频<br><span class="mono dim2">mp3/wav</span></td><td><span class="mono">Whisper / FunASR</span></td><td>去除语气词、重复口头禅、静音片段</td><td>30~60s时间窗口聚合切片，携带时间戳元数据</td><td>不要一句一切，语义会断裂；时间窗口太大会稀释语义</td></tr>
+<tr><td>视频<br><span class="mono dim2">mp4</span></td><td>抽音频+Whisper ASR</td><td>过滤无效黑屏、静音片段，减少冗余</td><td>按时间轴分段切片，绑定视频时间节点</td><td>不要把整个视频当一个 chunk，时间跨度太大语义会稀释</td></tr>
+<tr><td>.html</td><td><span class="mono">Trafilatura / BeautifulSoup</span></td><td>过滤导航栏、广告、侧边栏、页头页尾</td><td>提取正文后语义切片，700大小、15%重叠</td><td>不要直接切片HTML源码，先提取正文再切</td></tr>
+<tr><td>.epub / .mobi</td><td><span class="mono">ebooklib / Calibre</span></td><td>去除出版元数据噪音、版权声明页</td><td>按章节整体切片，携带章节名元数据</td><td>不要跨章节切割，目录存入元数据</td></tr>
+<tr><td>.azw3</td><td><span class="mono">Calibre转epub后解析</span></td><td>格式转换后清理乱码、去除DRM残余</td><td>同epub章节切片规则，保留目录层级</td><td>必须先转换格式再入库，原生.azw3无法直接解析</td></tr>
+<tr><td>.srt / .lrc</td><td>自定义字幕解析器</td><td>过滤序号、纯时间轴无效字符</td><td>按时间区间聚合切片，携带时间戳元数据</td><td>不要一条字幕一个 chunk，时间间隔太短语义不完整</td></tr>
 </table></div>
 <div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="12" data-total="23"></span></div>
+</section><section class="slide" data-title="纯文本结构化">
+<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps on">清洗</span><span class="pa">→</span><span class="ps on">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
+<p class="kicker">文件对照表</p>
+<h2 class="h2">纯文本 &amp; 结构化文件</h2>
+<div class="card" style="padding:10px 14px">
+<table class="tb">
+<tr><th style="width:8%">类型</th><th style="width:18%">工具</th><th style="width:22%">清洗</th><th style="width:26%">切片策略</th><th style="width:26%">避坑</th></tr>
+<tr><td><span class="mono">.txt</span></td><td><span class="mono">Python read + chardet</span></td><td>统一UTF-8编码、清理空行、重复分隔符</td><td>固定块切片，600大小、15%重叠</td><td>不要假设编码正确，先自动检测再解析</td></tr>
+<tr><td><span class="mono">.md</span></td><td><span class="mono">UnstructuredLoader / LlamaIndex</span></td><td>过滤超长无效代码块、清理HTML残余标签</td><td>标题上下文分层切片，不跨一级标题切割；代码块单独标记</td><td>代码块不要混入普通文本一起切，会打乱语义</td></tr>
+<tr><td><span class="mono">.csv / .tsv</span></td><td><span class="mono">Pandas / CSVLoader</span></td><td>补全合并单元格表头、去除空列/纯空行</td><td>按业务行聚合，拼接表头为上下文，转自然语言切片</td><td>不要直接存原始CSV字符，必须转自然语言后入库</td></tr>
+<tr><td><span class="mono">.json / .jsonl</span></td><td><span class="mono">JsonLoader / 递归解析</span></td><td>3级以上嵌套必须扁平化、去除空值/null字段</td><td>按最小业务实体切片，携带上级维度路径元数据</td><td>深层嵌套不要直接入库，先扁平化否则检索无法命中</td></tr>
+<tr><td><span class="mono">.yaml / .yml</span></td><td><span class="mono">pyyaml</span></td><td>去除注释、清理缩进符号干扰</td><td>按配置模块切片，携带层级路径，500大小、10%重叠</td><td>不要依赖缩进符号判断层级，用解析器获取真实结构</td></tr>
+<tr><td><span class="mono">.xml / .ini</span></td><td><span class="mono">xml.etree / configparser</span></td><td>过滤无效标签、注释、命名空间冗余</td><td>按节点/分区聚合切片，绑定节点属性元数据</td><td>不要将XML标签当作内容入库，只提取文本值</td></tr>
+</table></div>
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="7" data-total="23"></span></div>
 </section><section class="slide" data-title="工具栈与工程差异">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps on">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">工具栈</p>
@@ -295,7 +272,7 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 <div class="card card-good" style="padding:14px 18px">
 <div style="display:flex;flex-direction:column;gap:10px">
 <div><h4>智能分支判断</h4><p class="dim2" style="font-size:11px;margin:0">后缀 + 文件魔数 + 空页检测 - 智能切换 OCR / 原生解析</p></div>
-<div><h4>清洗规则</h4><p class="dim2" style="font-size:11px;margin:0">去页眉页脚、乱码、水印、空行；不清洗 = 效果垃圾</p></div>
+<div><h4>清洗规则 <span class="dim2" style="font-size:10px">(无现成工具，全靠工程师定制)</span></h4><p class="dim2" style="font-size:11px;margin:0">正则去页眉页脚、页码 │ Unicode normalize 处理乱码 │ 去空行、去重复段落 │ 没有通用工具，全靠 if/else + re.sub()</p></div>
 <div><h4>结构化 -> 自然语言</h4><p class="dim2" style="font-size:11px;margin:0">JSON/表格扁平化 + 补全维度表头，禁止原生符号入库</p></div>
 <div><h4>Metadata 体系</h4><p class="dim2" style="font-size:11px;margin:0">全维度溯源：文件名、页码、文件类型、解析方式、时间戳</p></div>
 </div></div></div></div>
@@ -311,46 +288,31 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 <div style="background:var(--accent);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">D</div>
 <div><h4 style="margin:0">Dify</h4><span class="mono dim2" style="font-size:10px">140k+</span></div></div>
 <p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">国内最强开源 RAG 平台，自带万能文件解析、OCR、切片、重排、溯源、知识库管理、前端页面、API。政企、创业公司直接部署当成品系统。</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-blue">一站式</span><span class="tag tag-green">政企首选</span><span class="tag tag-slate">自动OCR兜底</span></div>
+<div class="dim2" style="font-size:10px;margin:0 0 4px">清洗：⭐⭐ 内置清洗策略，自动去空行/去URL/去特殊字符</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-blue">一站式</span><span class="tag tag-green">政企首选</span><span class="tag tag-slate">自动OCR兜底</span></div>
 </div>
 <div class="card card-warn" style="padding:18px 22px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
 <div style="background:var(--warn);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px">R</div>
 <div><h4 style="margin:0">RAGFlow</h4><span class="mono dim2" style="font-size:10px">30k+</span></div></div>
 <p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">深度文档解析天花板。PDF 多栏布局、表格还原、扫描 OCR、复杂排版行业最强。字节、腾讯很多团队参考其解析逻辑。</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-amber">文档解析最强</span><span class="tag tag-slate">多栏PDF</span><span class="tag tag-slate">表格还原</span></div>
+<div class="dim2" style="font-size:10px;margin:0 0 4px">清洗：⭐⭐ 解析阶段自带清洗，去页眉页脚/水印检测</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-amber">文档解析最强</span><span class="tag tag-slate">多栏PDF</span><span class="tag tag-slate">表格还原</span></div>
 </div>
 <div class="card card-good" style="padding:18px 22px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
 <div style="background:var(--good);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">LI</div>
 <div><h4 style="margin:0">LlamaIndex</h4><span class="mono dim2" style="font-size:10px">40k+</span></div></div>
 <p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">数据 RAG 天花板。结构化文件、Excel、JSON、数据库检索最强。切片、上下文关联、元数据体系最完善。企业结构化知识库首选。</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-green">数据结构化最强</span><span class="tag tag-slate">元数据体系</span></div>
+<div class="dim2" style="font-size:10px;margin:0 0 4px">清洗：⭐ 提供 Transformations 框架，默认不洗，需自定义节点</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-green">数据结构化最强</span><span class="tag tag-slate">元数据体系</span></div>
 </div>
 <div class="card" style="padding:18px 22px">
 <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
 <div style="background:var(--text-1);color:#fff;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px">LC</div>
 <div><h4 style="margin:0">LangChain</h4><span class="mono dim2" style="font-size:10px">98k+</span></div></div>
 <p class="dim2" style="font-size:11px;margin:0 0 8px;line-height:1.5">生态最全、组件最多。所有解析器、向量库、LLM 全部集成。但原生切片粗糙，需自己优化。适合复杂工作流、Agent+RAG。</p>
-<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-slate">生态最全</span><span class="tag tag-slate">Agent+RAG</span><span style="color:var(--warn);font-size:10px">需自行优化切片</span></div>
+<div class="dim2" style="font-size:10px;margin:0 0 4px">清洗：✖ 不提供清洗，全靠工程师自己写规则</div><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tag tag-slate">生态最全</span><span class="tag tag-slate">Agent+RAG</span><span style="color:var(--warn);font-size:10px">需自行优化切片</span></div>
 </div></div>
 <div class="callout callout-accent" style="margin-top:14px">选型建议：一键成品 <strong>Dify</strong> | 文档解析精度 <strong>RAGFlow</strong> | 结构化数据 <strong>LlamaIndex</strong> | 复杂工作流 <strong>LangChain</strong></div>
 <div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="5" data-total="23"></span></div>
-</section><section class="slide" data-title="纯文本结构化">
-<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps dim">解析+元数据</span><span class="pa">→</span><span class="ps on">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
-<p class="kicker">文件对照表</p>
-<h2 class="h2">纯文本 &amp; 结构化文件：解析工具 + 切片策略</h2>
-<div class="card" style="padding:10px 14px">
-<table class="tb">
-<tr><th style="width:8%">类型</th><th style="width:22%">工具</th><th style="width:38%">切片策略</th><th style="width:32%">避坑</th></tr>
-<tr><td><span class="mono">.txt</span></td><td><span class="mono">Python read + chardet</span></td><td>固定块切片，600大小、15%重叠</td><td>统一UTF-8，清理空行、重复分隔符</td></tr>
-<tr><td><span class="mono">.md</span></td><td><span class="mono">UnstructuredLoader / LlamaIndex</span></td><td>标题上下文分层切片，不跨一级标题切割；代码块单独标记</td><td>过滤超长无效代码块</td></tr>
-<tr><td><span class="mono">.csv / .tsv</span></td><td><span class="mono">Pandas / CSVLoader</span></td><td>按业务行聚合，拼接表头为上下文，转自然语言切片</td><td>补全合并单元格表头</td></tr>
-<tr><td><span class="mono">.json / .jsonl</span></td><td><span class="mono">JsonLoader / 递归解析</span></td><td>按最小业务实体切片，携带上级维度路径元数据</td><td>3级以上嵌套必须扁平化</td></tr>
-<tr><td><span class="mono">.yaml / .yml</span></td><td><span class="mono">pyyaml</span></td><td>按配置模块切片，携带层级路径，500大小、10%重叠</td><td>避免缩进符号干扰语义</td></tr>
-<tr><td><span class="mono">.xml / .ini</span></td><td><span class="mono">xml.etree / configparser</span></td><td>按节点/分区聚合切片，绑定节点属性元数据</td><td>过滤无效标签、注释</td></tr>
-</table></div>
-<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="7" data-total="23"></span></div>
 </section><section class="slide" data-title="通用规则">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps dim">解析+元数据</span><span class="pa">→</span><span class="ps on">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">标准化</p>
@@ -381,7 +343,57 @@ h4,.h4{font-size:14px;line-height:1.3;font-weight:600;margin:0 0 4px}
 </div></div></div>
 <div class="callout callout-accent">铁律：噪声数据加大重叠率；结构化数据不存原生符号，必须转自然语言</div>
 <div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="6" data-total="23"></span></div>
-</section><section class="slide" data-title="铁律收尾">
+</section>
+<section class="slide" data-title="去重过滤">
+<div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps dim">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps on">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
+<p class="kicker">清洗·切片</p>
+<h2 class="h2">切片后：<span class="gradient-text">去重 & 质量过滤</span></h2>
+<div class="grid g2" style="gap:18px;margin-bottom:14px">
+<div class="card card-accent" style="padding:16px 20px">
+<h3 style="font-size:17px;margin-bottom:10px">去重（切片后）</h3>
+<div style="display:flex;flex-direction:column;gap:8px;font-size:12px;line-height:1.55">
+<div><span class="tag tag-blue" style="margin-right:4px">余弦相似度去重</span>两个 chunk 相似度 > 0.95，只保留一个</div>
+<div><span class="tag tag-blue" style="margin-right:4px">编辑距离去重</span>Levenshtein 距离小于阈值，认为重复</div>
+<div><span class="tag tag-blue" style="margin-right:4px">MinHash / SimHash</span>大规模文档高效去重算法</div>
+<div style="color:var(--warn);font-weight:600;margin-top:4px">主原因：PDF 页眉页脚、合同条款、跨页表格头反复出现</div>
+</div></div>
+<div class="card card-warn" style="padding:16px 20px">
+<h3 style="font-size:17px;margin-bottom:10px">质量过滤</h3>
+<div style="display:flex;flex-direction:column;gap:8px;font-size:12px;line-height:1.55">
+<div><span class="tag tag-amber" style="margin-right:4px">长度过滤</span>太短（< 50 字）或太长（> 2000 字）扔掉</div>
+<div><span class="tag tag-amber" style="margin-right:4px">乱码占比过滤</span>非中/英文字符占比 > 30% 直接丢弃</div>
+<div><span class="tag tag-amber" style="margin-right:4px">语言检测</span>langdetect 判断，只保留目标语言 chunk</div>
+<div><span class="tag tag-amber" style="margin-right:4px">意义密度</span>纯数字/纯符号/只含标点 chunk 扔掉</div>
+</div></div></div>
+
+<div class="grid g2" style="gap:14px;margin-bottom:14px">
+<div class="card" style="padding:12px 16px">
+<div class="section-label" style="font-size:11px">去重工具</div>
+<table class="tb">
+<tr><th>方法</th><th>工具</th></tr>
+<tr><td>余弦相似度</td><td><span class="mono">sklearn / numpy</span></td></tr>
+<tr><td>编辑距离</td><td><span class="mono">python-Levenshtein / difflib</span></td></tr>
+<tr><td>MinHash / SimHash</td><td><span class="mono">datasketch</span></td></tr>
+<tr><td>一站式去重</td><td><span class="mono">text-dedup</span></td></tr>
+</table>
+<p class="dim2" style="font-size:9px;margin-top:4px">实际项目多自己写，“什么叫重复”每家定义不同，调参比选工具更关键</p>
+</div>
+<div class="card" style="padding:12px 16px">
+<div class="section-label" style="font-size:11px">过滤工具</div>
+<table class="tb">
+<tr><th>方法</th><th>工具</th></tr>
+<tr><td>语言检测</td><td><span class="mono">langdetect / fasttext</span></td></tr>
+<tr><td>Unicode 清洗</td><td><span class="mono">unicodedata</span></td></tr>
+<tr><td>文本统计</td><td><span class="mono">re / collections</span></td></tr>
+<tr><td>质量评分</td><td><span class="mono">自定义规则函数</span></td></tr>
+</table>
+<p class="dim2" style="font-size:9px;margin-top:4px">过滤全靠规则脚本，无通用工具，每类文档写一套</p>
+</div></div>
+<div class="callout callout-accent">清洗（切片前）vs 去重/过滤（切片后）：分开处理、各司其职</div>
+
+<div class="deck-footer"><span class="dim2">RAG Core</span><span class="slide-number" data-current="7" data-total="23"></span></div>
+</section>
+<section class="slide" data-title="铁律收尾">
 <div class="pipeline-mini"><span class="ps dim">文档</span><span class="pa">→</span><span class="ps dim">解析+元数据</span><span class="pa">→</span><span class="ps dim">清洗</span><span class="pa">→</span><span class="ps dim">切片</span><span class="pa">→</span><span class="ps dim">去重/过滤</span><span class="pa">→</span><span class="ps dim">Embedding</span><span class="pa">→</span><span class="ps dim">向量库</span></div>
 <p class="kicker">总结</p>
 <h2 class="h2">RAG 解析核心<span class="gradient-text">五条铁律</span></h2>
